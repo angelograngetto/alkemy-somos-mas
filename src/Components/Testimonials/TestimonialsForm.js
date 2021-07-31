@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../FormStyles.css';
 
-const CategoriesForm = () => {
+const TestimonialForm = () => {
   const [initialValues, setInitialValues] = useState({
     name: '',
     description: '',
@@ -26,7 +26,7 @@ const CategoriesForm = () => {
       <input
         className="input-field"
         name="name"
-        placeholder="Title"
+        placeholder="Testimonial Title"
         type="text"
         value={initialValues.name}
         onChange={handleChange}
@@ -34,7 +34,7 @@ const CategoriesForm = () => {
       <input
         className="input-field"
         name="description"
-        placeholder="Write some description"
+        placeholder="Testimonial description"
         type="text"
         value={initialValues.description}
         onChange={handleChange}
@@ -46,4 +46,4 @@ const CategoriesForm = () => {
   );
 };
 
-export default CategoriesForm;
+export default TestimonialForm;
