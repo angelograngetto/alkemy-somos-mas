@@ -4,6 +4,7 @@ import './App.css';
 
 import Backoffice from './Components/Backoffice/Index';
 import RegisterForm from './Components/Auth/RegisterForm';
+import DetailView from './Components/Activities/Detail/DetailView';
 
 function App() {
   return (
@@ -12,7 +13,7 @@ function App() {
         <Redirect exact from="/" to="/home" />
         <Route component={RegisterForm} path="/register" />
         <Route component={Backoffice} path="/backoffice" />
-        <Route path="/home" />
+        <Route component={DetailView} path="/actividades/:id" />
       </Switch>
     </Router>
   );
