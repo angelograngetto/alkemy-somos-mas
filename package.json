@@ -12,13 +12,8 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.21.1",
-<<<<<<< HEAD
-    "ckeditor4-react": "^2.0.0",
-    "formik": "^2.2.9",
-=======
     "ckeditor4-react": "^1.4.1",
     "formik": "^2.2.6",
->>>>>>> 3fc0c85263ac14fb43e15147c7beb38eafdfe61d
     "framer-motion": "^4.1.11",
     "gsap": "^3.6.1",
     "luxon": "^1.27.0",
