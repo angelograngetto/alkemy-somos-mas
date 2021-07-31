@@ -12,6 +12,7 @@ function App() {
         <Redirect exact from="/" to="/home" />
         <Route component={RegisterForm} path="/register" />
         <Route component={Backoffice} path="/backoffice" />
+        <Route path="/home" />
       </Switch>
     </Router>
   );
