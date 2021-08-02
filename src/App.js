@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-d
 import './App.css';
 
 import Backoffice from './Components/Backoffice/Index';
+import Edit from './Components/Backoffice/Organization/Edit';
 import SlidesForm from './Components/Slides/SlidesForm';
 import Organization from './Components/Backoffice/Organization/Index';
 import RegisterForm from './Components/Auth/RegisterForm';
@@ -22,7 +23,7 @@ function App() {
         <Route exact component={UsersForm} path="/backoffice/users/create" />
         <Route path="/home" />
         <Route exact component={Organization} path="/backoffice/organization" />
-        <Route exact component={MemberForm} path="/backoffice/organization/edit" />
+        <Route exact component={Edit} path="/backoffice/organization/edit" />
         <Route exact component={MemberForm} path="/backoffice/organization/edit/:id" />
         <Route exact component={Backoffice} path="/backoffice" />
         <Route component={NewsForm} path="/backoffice/novedades" />
