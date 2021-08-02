@@ -5,6 +5,7 @@ import './App.css';
 import Backoffice from './Components/Backoffice/Index';
 import Organization from './Components/Backoffice/Organization/Index';
 import RegisterForm from './Components/Auth/RegisterForm';
+import UsersForm from './Components/Users/UsersForm';
 import MemberForm from './Components/Backoffice/MemberForm';
 import NewsForm from './Components/News/NewsForm';
 import DetailView from './Components/Activities/Detail/DetailView';
@@ -16,6 +17,8 @@ function App() {
       <Switch>
         <Redirect exact from="/" to="/home" />
         <Route component={RegisterForm} path="/register" />
+        <Route exact component={UsersForm} path="/backoffice/users/create" />
+        <Route path="/home" />
         <Route exact component={Organization} path="/backoffice/organization" />
         <Route exact component={MemberForm} path="/backoffice/organization/edit" />
         <Route exact component={MemberForm} path="/backoffice/organization/edit/:id" />
