@@ -8,6 +8,7 @@ import RegisterForm from './Components/Auth/RegisterForm';
 import MemberForm from './Components/Backoffice/MemberForm';
 import NewsForm from './Components/News/NewsForm';
 import DetailView from './Components/Activities/Detail/DetailView';
+import DetailNew from './Components/News/Detail/DetailNew';
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route exact component={Backoffice} path="/backoffice" />
         <Route component={NewsForm} path="/backoffice/novedades" />
         <Route component={DetailView} path="/actividades/:id" />
+        <Route component={DetailNew} path="/novedades/:id" />
       </Switch>
     </Router>
   );
