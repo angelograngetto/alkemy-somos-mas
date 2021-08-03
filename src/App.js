@@ -12,6 +12,7 @@ import MemberForm from './Components/Backoffice/MemberForm';
 import NewsForm from './Components/News/NewsForm';
 import DetailView from './Components/Activities/Detail/DetailView';
 import DetailNew from './Components/News/Detail/DetailNew';
+import CategoriesForm from './Components/Categories/CategoriesForm';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route component={NewsForm} path="/backoffice/novedades" />
         <Route component={DetailView} path="/actividades/:id" />
         <Route component={DetailNew} path="/novedades/:id" />
+        <Route exact component={CategoriesForm} path="/backoffice/categories/create" />
       </Switch>
     </Router>
   );
