@@ -1,15 +1,20 @@
 import axios from 'axios';
 
-const config = {
-    headers: {
-        Group: 01                //Aqui va el ID del equipo!!
+const instance = axios.create({
+  baseURL: 'http://ongapi.alkemy.org/api/',
+  headers: {
+    Group: 54,
+  },
+});
+
+export default {
+  get: async (url, id) => {
+    // In url use /slides, /activities, etc because there's already a baseurl
+    try {
+      const resp = await instance.get(`${url}${id ? `/${id}` : ''}`);
+      return resp;
+    } catch (error) {
+      throw new Error(error);
     }
-}
-
-const Get = () => {
-    axios.get('https://jsonplaceholder.typicode.com/users', config)
-    .then(res => console.log(res))
-    .catch(err => console.log(err))
-}
-
-export default Get;
+  },
+};
