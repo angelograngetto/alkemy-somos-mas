@@ -13,6 +13,7 @@ import NewsForm from './Components/News/NewsForm';
 import DetailView from './Components/Activities/Detail/DetailView';
 import DetailNew from './Components/News/Detail/DetailNew';
 import CategoriesForm from './Components/Categories/CategoriesForm';
+import NewsList from './Components/News/NewsList';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route component={DetailView} path="/actividades/:id" />
         <Route component={DetailNew} path="/novedades/:id" />
         <Route exact component={CategoriesForm} path="/backoffice/categories/create" />
+        <Route exact component={NewsList} path="/backoffice/news" />
         <Route exact component={ActivitiesList} path="/actividades" />
       </Switch>
     </Router>
