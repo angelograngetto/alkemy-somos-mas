@@ -1,8 +1,9 @@
 import axios from 'axios';
+import axiosInstance from './axiosInstance';
 
 const config = {
   headers: {
-    Group: 1, //Aqui va el ID del equipo!!
+    Group: 54, //Aqui va el ID del equipo!!
   },
 };
 
@@ -17,6 +18,16 @@ export const getToken = () => {
   return {
     headerAuthorization: headerAuthorization,
   };
+};
+
+export const Put = (endpoint, id, obj) => {
+  const token = getToken();
+  axiosInstance
+    .put(`${endpoint}/${id}`, obj, {
+      headers: { Authorization: token.headerAuthorization },
+    })
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
 };
 
 const Get = () => {
