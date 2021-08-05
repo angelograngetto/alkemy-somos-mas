@@ -7,7 +7,7 @@ const config = {
 };
 
 export const getToken = () => {
-  const headerAuthorization = '';
+  let headerAuthorization = '';
   const token = localStorage.getItem('token') || '';
 
   if (token !== '') {
@@ -29,6 +29,21 @@ export const Put = (endpoint, id, obj) => {
     .catch((err) => console.log(err));
 };
 
+export const Delete = async (url, id) => {
+  const token = getToken();
+  try {
+    const response = await instance.delete(`${url}/${id}`, {
+      headers: {
+        Authorization: token.headerAuthorization,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+export default Get;
 export const Post = async (url, body) => {
   try {
     const token = await getToken();
