@@ -1,4 +1,3 @@
-import axios from 'axios';
 import axiosInstance from './axiosInstance';
 
 const config = {
@@ -30,11 +29,13 @@ export const Put = (endpoint, id, obj) => {
     .catch((err) => console.log(err));
 };
 
-const Get = () => {
-  axios
-    .get('https://jsonplaceholder.typicode.com/users', config)
-    .then((res) => console.log(res))
-    .catch((err) => console.log(err));
+export const Post = async (url, body) => {
+  try {
+    const token = await getToken();
+    await axiosInstance.post(`${url}`, body, {
+      headers: { Authorization: token.headerAuthorization },
+    });
+  } catch (error) {
+    console.log(error);
+  }
 };
-
-export default Get;
