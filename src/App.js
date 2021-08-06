@@ -18,6 +18,7 @@ import Gracias from './Components/Donations/Gracias';
 import NewsList from './Components/News/NewsList';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import About from './Components/About/index';
 
 function App() {
   return (
@@ -42,6 +43,11 @@ function App() {
         <Route exact component={Gracias} path="/gracias" />
         <Route exact component={NewsList} path="/backoffice/news" />
         <Route exact component={ActivitiesList} path="/actividades" />
+        <Route
+          exact
+          path="/nosotros"
+          render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
+        />
         <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
       </Switch>
     </Router>
