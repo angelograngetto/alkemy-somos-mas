@@ -17,4 +17,13 @@ export default {
       throw new Error(error);
     }
   },
+  post: async (url, body) => {
+    // In url use /slides, /activities, etc because there's already a baseurl
+    try {
+      const resp = await instance.post(url, body);
+      return resp;
+    } catch (error) {
+      throw new Error(error);
+    }
+  },
 };
