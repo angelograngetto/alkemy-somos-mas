@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import axiosInstance from './axiosInstance';
 
 const config = {
@@ -19,6 +20,16 @@ export const getToken = () => {
   };
 };
 
+export const Get = (path, id) => {
+  const token = getToken();
+  axiosInstance
+    .get(`${path}/${id ? id : ''}`, {
+      headers: { Authorization: token.headerAuthorization },
+    })
+    .then((res) => console.log(res))
+    .catch((err) => console.log(err));
+};
+
 export const Put = (endpoint, id, obj) => {
   const token = getToken();
   axiosInstance
@@ -28,7 +39,6 @@ export const Put = (endpoint, id, obj) => {
     .then((res) => console.log(res))
     .catch((err) => console.log(err));
 };
-
 export const Delete = async (url, id) => {
   const token = getToken();
   try {
