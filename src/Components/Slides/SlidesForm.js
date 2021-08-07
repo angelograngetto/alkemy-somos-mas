@@ -16,6 +16,7 @@ import {
 import * as Yup from 'yup';
 
 import axios from 'axios';
+import SlidesService from './SlidesService';
 
 const SlidesForm = ({ slide }) => {
   const [slides, setSlides] = useState([]);
@@ -101,45 +102,29 @@ const SlidesForm = ({ slide }) => {
         file: { url: slide?.image } ?? '',
       }}
       validationSchema={validateSchema}
-      onSubmit={(values, actions) => {
+      onSubmit={async (values, actions) => {
+        let response;
         setUtils({ error: null, success: null, loading: true });
         if (slide && !slide.id) return;
+        const newSlide = {
+          name: values.slideName,
+          description: values.slideDescription,
+          order: values.slideOrder,
+          image: values.file.imageParsed,
+        };
+
         if (!slide) {
-          axios
-            .post('http://ongapi.alkemy.org/api/slides', {
-              name: values.slideName,
-              description: values.slideDescription,
-              order: values.slideOrder,
-              image: values.file.imageParsed,
-            })
-            .then((resp) => {
-              setUtils({ error: false, success: true, loading: false });
-              actions.resetForm({
-                values: {
-                  slideName: '',
-                  slideDescription: '',
-                  slideOrder: '',
-                  file: '',
-                },
-              });
-            })
-            .catch((err) => {
-              setUtils({ error: true, sucess: false, loading: false });
-            });
+          response = await SlidesService.create(newSlide);
         } else {
-          axios
-            .put(`http://ongapi.alkemy.org/api/slides/${slide?.id}`, {
-              name: values.slideName,
-              description: values.slideDescription,
-              order: values.slideOrder,
-              image: values.file.imageParsed,
-            })
-            .then((resp) => {
-              setUtils({ error: false, success: true, loading: false });
-            })
-            .catch((err) => {
-              setUtils({ error: true, sucess: false, loading: false });
-            });
+          newSlide.id = slide.id;
+          response = await SlidesService.update(newSlide);
+        }
+
+        if (response.success) {
+          setUtils({ error: false, success: true, loading: false });
+          actions.resetForm();
+        } else {
+          setUtils({ error: true, sucess: false, loading: false });
         }
       }}
     >

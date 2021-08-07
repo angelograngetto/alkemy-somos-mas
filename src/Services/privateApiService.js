@@ -17,7 +17,7 @@ export const getToken = () => {
 export const Get = async (path, id) => {
   try {
     const token = getToken();
-    const resp = await axiosInstance.get(`${path}/${id ? id : ''}`, {
+    const resp = await axiosInstance.get(`${path}${id ? `/${id}` : ''}`, {
       headers: {
         Authorization: token.headerAuthorization,
       },
