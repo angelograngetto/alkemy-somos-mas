@@ -20,6 +20,7 @@ import Slides from './Components/Slides';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 import Home from './Components/Home/Index';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import Contact from './Components/Contact/index';
 import About from './Components/About/index';
 
 function App() {
@@ -51,6 +52,13 @@ function App() {
           render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
         />
         <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
+        <Route
+          exact
+          path="/contacto"
+          render={() => (
+            <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
+          )}
+        />
       </Switch>
     </Router>
   );
