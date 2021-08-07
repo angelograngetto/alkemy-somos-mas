@@ -28,3 +28,7 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+
+### Spinner Components
+
+The Spinner component used the Chakra UI library, which is implemented in the project. The Spinner element offered by this library is used in the Feedback section (https://chakra-ui.com/docs/feedback/spinner)
