@@ -69,3 +69,17 @@ export const Post = async (url, body) => {
     throw new Error(error);
   }
 };
+
+export const Patch = async (url, id, body) => {
+  const token = getToken();
+  try {
+    const response = await axiosInstance.patch(`${url}/${id}`, body, {
+      headers: {
+        Authorization: token.headerAuthorization,
+      },
+    });
+    return response;
+  } catch (error) {
+    throw new Error(error);
+  }
+};
