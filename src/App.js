@@ -52,6 +52,7 @@ function App() {
           render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
         />
         <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
+        <Route exact path="/novedades" render={() => <News newsData={''} />} />
         <Route
           exact
           path="/contacto"
