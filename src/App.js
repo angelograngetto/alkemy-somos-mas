@@ -20,6 +20,7 @@ import Slides from './Components/Slides/Index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 import Home from './Components/Home/Index';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import MemberList from './Components/Backoffice/MemberList';
 import Contact from './Components/Contact/index';
 import About from './Components/About/index';
 
@@ -32,6 +33,7 @@ function App() {
         <Route exact component={Slides} path="/backoffice/slides" />
         <Route component={RegisterForm} path="/register" />
         <Route exact component={UsersForm} path="/backoffice/users/create" />
+        <Route exact component={MemberList} path="/backoffice/members" />
         <Route exact component={Organization} path="/backoffice/organization" />
         <Route exact component={Edit} path="/backoffice/organization/edit" />
         <Route exact component={MemberForm} path="/backoffice/organization/edit/:id" />
