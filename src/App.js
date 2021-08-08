@@ -16,7 +16,7 @@ import CategoriesForm from './Components/Categories/CategoriesForm';
 import Donacion from './Components/Donations/Donacion';
 import Gracias from './Components/Donations/Gracias';
 import NewsList from './Components/News/NewsList';
-import Slides from './Components/Slides';
+import Slides from './Components/Slides/Index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 import Home from './Components/Home/Index';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';

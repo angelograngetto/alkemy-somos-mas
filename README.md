@@ -29,6 +29,11 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### PROGRESS BAR
+
+You can use the ProgressBar component inside the Utils component to show a feedback
+to the User when a page or a component is loading. The component was created with Chakra UI Progress animated Component. See the progressBar in: https://chakra-ui.com/docs/feedback/progress.
+
 ### Spinner Components
 
 The Spinner component used the Chakra UI library, which is implemented in the project. The Spinner element offered by this library is used in the Feedback section (https://chakra-ui.com/docs/feedback/spinner)
