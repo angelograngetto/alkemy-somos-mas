@@ -18,6 +18,14 @@ import MemberForm from './Components/Backoffice/MemberForm';
 import NewsForm from './Components/News/NewsForm';
 import NewsList from './Components/News/NewsList';
 import Slides from './Components/Slides/Index';
+import ActivitiesList from './Components/Activities/ActivitiesList';
+import Home from './Components/Home/Index';
+import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import CategoriesListScreen from './Components/Backoffice/Categories/Index';
+import MemberList from './Components/Backoffice/MemberList';
+import Contact from './Components/Contact/index';
+import About from './Components/About/index';
+import News from './Components/News/index';
 import MemberList from './Components/Backoffice/MemberList';
 
 function App() {
@@ -37,6 +45,7 @@ function App() {
         <Route component={NewsForm} path="/backoffice/novedades" />
         <Route component={DetailView} path="/actividades/:id" />
         <Route component={DetailNew} path="/novedades/:id" />
+        <Route exact component={CategoriesListScreen} path="/backoffice/categories" />
         <Route exact component={CategoriesForm} path="/backoffice/categories/create" />
         <Route exact path="/donar">
           <Donacion text="¡Contribuye!" />
