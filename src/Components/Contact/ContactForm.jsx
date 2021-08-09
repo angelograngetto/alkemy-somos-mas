@@ -16,6 +16,7 @@ import { useFormik } from 'formik';
 import '../../Components/FormStyles.css';
 import validationSchema from './ValidationSchema';
 import '../FormStyles.css';
+import ContactService from './ContactService';
 
 const ContactForm = () => {
   const onSubmit = (e) => {
@@ -37,7 +38,9 @@ const ContactForm = () => {
   const formik = useFormik({
     initialValues: initialValues,
     validateOnBlur: true,
-    onSubmit,
+    onSubmit: async (values) => {
+      const response = await ContactService.create(values);
+    },
     validationSchema: validationSchema,
   });
 
@@ -50,7 +53,7 @@ const ContactForm = () => {
           justify="center"
           w={{ base: '400px', md: '600px', lg: '850px' }}
         >
-          <form className="form-container" onSubmit={formik.onSubmit}>
+          <form className="form-container" onSubmit={formik.handleSubmit}>
             <Stack spacing={3}>
               <FormControl isRequired rounded="sm">
                 <FormLabel>Nombre</FormLabel>
