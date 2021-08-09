@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Flex, Box, Container, Image, Button } from '@chakra-ui/react';
 import { ArrowForwardIcon } from '@chakra-ui/icons';
+import OrganizationService from '../../../Services/OrganitationService';
 
 const Organization = () => {
   const history = useHistory();
+  const [organization, setOrganization] = useState(null);
+
+  useEffect(() => {
+    const fetchOrganization = async () => {
+      const response = await OrganizationService.get();
+      setOrganization(response.data);
+    };
+    fetchOrganization();
+  }, []);
 
   const toEdit = () => {
     history.push('/backoffice/organization/edit');

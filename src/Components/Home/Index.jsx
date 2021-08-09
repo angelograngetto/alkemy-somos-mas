@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heading, Box } from '@chakra-ui/react';
-import Slides from '../Slides/Index';
+import Slides from '../Slides';
+import OrganizationService from '../../Services/OrganitationService';
 
 export const Home = () => {
+  const [organization, setOrganization] = useState(null);
+
+  useEffect(() => {
+    const fetchOrganization = async () => {
+      const response = await OrganizationService.get();
+      setOrganization(response.data);
+    };
+    fetchOrganization();
+  }, []);
   return (
     <>
       <Slides />

@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from './slides.module.css';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Heading } from '@chakra-ui/react';
-import SlidesService from '../../Components/Slides/SlidesService.js';
+import SlidesService from './SlidesService.js';
 
 const Slides = () => {
   const [index, setIndex] = useState(0);

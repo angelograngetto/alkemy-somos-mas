@@ -2,27 +2,23 @@ import React from 'react';
 import { BrowserRouter as Router, Switch, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
-import Backoffice from './Components/Backoffice/Index';
+import About from './Components/About/index';
+import ActivitiesList from './Components/Activities/ActivitiesList';
+import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import Backoffice from './Components/Backoffice';
+import CategoriesForm from './Components/Categories/CategoriesForm';
+import Contact from './Components/Contact/index';
+import DetailNew from './Components/News/Detail/DetailNew';
+import DetailView from './Components/Activities/Detail/DetailView';
+import Donacion from './Components/Donations/Donacion';
 import Edit from './Components/Backoffice/Organization/Edit';
-import SlidesForm from './Components/Slides/SlidesForm';
-import Organization from './Components/Backoffice/Organization/Index';
-import RegisterForm from './Components/Auth/RegisterForm';
-import UsersForm from './Components/Users/UsersForm';
+import Gracias from './Components/Donations/Gracias';
+import Home from './Components/Home/Index';
 import MemberForm from './Components/Backoffice/MemberForm';
 import NewsForm from './Components/News/NewsForm';
-import DetailView from './Components/Activities/Detail/DetailView';
-import DetailNew from './Components/News/Detail/DetailNew';
-import CategoriesForm from './Components/Categories/CategoriesForm';
-import Donacion from './Components/Donations/Donacion';
-import Gracias from './Components/Donations/Gracias';
 import NewsList from './Components/News/NewsList';
 import Slides from './Components/Slides/Index';
-import ActivitiesList from './Components/Activities/ActivitiesList';
-import Home from './Components/Home/Index';
-import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
 import MemberList from './Components/Backoffice/MemberList';
-import Contact from './Components/Contact/index';
-import About from './Components/About/index';
 
 function App() {
   return (
@@ -54,7 +50,7 @@ function App() {
           render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
         />
         <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
-        <Route exact path="/novedades" render={() => <News newsData={''} />} />
+        {/* <Route exact path="/novedades" render={() => <News newsData={''} />} /> */}
         <Route
           exact
           path="/contacto"

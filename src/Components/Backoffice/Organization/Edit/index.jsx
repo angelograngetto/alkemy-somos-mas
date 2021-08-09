@@ -15,6 +15,7 @@ import {
   InputGroup,
   InputLeftAddon,
 } from '@chakra-ui/react';
+import OrganizationService from '../../../../Services/OrganitationService';
 
 const Edit = (props) => {
   /*   let { name, file, shortDesc, longDesc, email, instagram, facebook, linkedin } = props;
@@ -67,11 +68,17 @@ const Edit = (props) => {
               linkedin: props.linkedin || '',
             }}
             validationSchema={validationSchema}
-            onSubmit={(values, actions) => {
-              setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
+            onSubmit={async (values, actions) => {
+              try {
+                const organization = { ...values };
+                organization.id = props.id;
+                const response = await OrganizationService.edit(organization);
+              } catch (error) {
+                // eslint-disable-next-line no-console
+                console.error(error);
+              } finally {
                 actions.setSubmitting(false);
-              }, 1000);
+              }
             }}
           >
             {(props) => (
