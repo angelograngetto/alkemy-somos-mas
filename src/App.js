@@ -21,6 +21,7 @@ import Slides from './Components/Slides/Index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
 import Home from './Components/Home/Index';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import SlidesListScreen from './Components/Backoffice/Slides/Index';
 import CategoriesListScreen from './Components/Backoffice/Categories/Index';
 import MemberList from './Components/Backoffice/MemberList';
 import Contact from './Components/Contact/index';
@@ -32,6 +33,8 @@ function App() {
   return (
     <Router>
       <Switch>
+        <Redirect exact from="/" to="/home" />
+        <Route exact component={SlidesListScreen} path="/backoffice/slides" />
         <Route exact component={Home} path="/" />
         <Route exact component={SlidesForm} path="/backoffice/slides/create" />
         <Route exact component={Slides} path="/backoffice/slides" />
