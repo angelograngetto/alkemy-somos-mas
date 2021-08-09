@@ -29,6 +29,10 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
+### `Skeleton Component`
+
+A Skeleton Loader is created using the react-content-loader library, already available in the project.
+
 ### PROGRESS BAR
 
 You can use the ProgressBar component inside the Utils component to show a feedback
