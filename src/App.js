@@ -19,6 +19,9 @@ import NewsForm from './Components/News/NewsForm';
 import NewsList from './Components/News/NewsList';
 import Slides from './Components/Slides/Index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
+import UsersListScreen from './Components/Backoffice/Users/Index';
+import Home from './Components/Home/Index';
+import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
 import Home from './Components/Home/Index';
 import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
 import SlidesListScreen from './Components/Backoffice/Slides/Index';
@@ -40,6 +43,8 @@ function App() {
         <Route exact component={Slides} path="/backoffice/slides" />
         <Route component={RegisterForm} path="/register" />
         <Route exact component={UsersForm} path="/backoffice/users/create" />
+        <Route exact component={UsersListScreen} path="/backoffice/users" />
+        <Route path="/home" />
         <Route exact component={MemberList} path="/backoffice/members" />
         <Route exact component={Organization} path="/backoffice/organization" />
         <Route exact component={Edit} path="/backoffice/organization/edit" />
