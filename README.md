@@ -41,3 +41,36 @@ to the User when a page or a component is loading. The component was created wit
 ### Spinner Components
 
 The Spinner component used the Chakra UI library, which is implemented in the project. The Spinner element offered by this library is used in the Feedback section (https://chakra-ui.com/docs/feedback/spinner)
+
+### `Alerts`
+
+Alerts component is inside the Utils component. With them you can show information, success, error and confirmation alerts.
+
+How to use?
+You need to call Alert function and pass the following parameters in this order:
+
+- type
+- title
+- text
+
+example:
+
+```javascript
+import Alert from "../Utils/Alert";
+Alert("success", "Alert title", "Alert description text");
+```
+
+Alert types:
+
+- success (show a success message and dissapears after 2.5 seconds).
+- error (show a error message).
+- info (show a info message).
+- confirm or question (show a confirmation alert whit accept and cancel buttons)
+
+This function returns a promise that is resolved when it is accepted or canceled, returning true or false respectively.
+Example:
+
+```javascript
+const response => await Alert('confirm','Are you sure?', 'Deleting this user');
+console.log(response); // print true if accept the alert or false if alert is canceled.
+```
