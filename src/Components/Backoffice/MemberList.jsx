@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router';
 import {
   Table,
   Thead,
@@ -14,37 +15,32 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-
-const MEMBERS = [
-  {
-    id: 1,
-    name: 'Mariela Perez',
-    image:
-      'https://www.dzoom.org.es/wp-content/uploads/2020/02/portada-foto-perfil-redes-sociales-consejos.jpg',
-  },
-  {
-    id: 2,
-    name: 'Juan Perez',
-    image:
-      'https://st.depositphotos.com/1224365/2408/i/600/depositphotos_24084839-stock-photo-portrait-of-a-normal-boy.jpg',
-  },
-  {
-    id: 3,
-    name: 'Eliana',
-    image:
-      'https://img.freepik.com/foto-gratis/mujer-hermosa-joven-mirando-camara-chica-moda-verano-casual-camiseta-blanca-pantalones-cortos-hembra-positiva-muestra-emociones-faciales-modelo-divertido-aislado-amarillo_158538-15796.jpg?size=626&ext=jpg',
-  },
-];
+import MembersService from '../Members/MembersService';
 
 export const MemberList = () => {
-  const [members, setMembers] = useState(MEMBERS);
+  const history = useHistory();
+  const [members, setMembers] = useState([]);
+
+  useEffect(() => {
+    const fetchMembers = async () => {
+      const response = await MembersService.getAll();
+      setMembers(response.data);
+    };
+    fetchMembers();
+  }, []);
 
   const handleEdit = (id) => {
-    // Edit member here
+    history.push(`/backoffice/organization/edit/${id}`);
   };
 
-  const handleDelete = (id) => {
-    // Delete member here
+  const handleDelete = async (id) => {
+    try {
+      await MembersService.delete(id);
+      setMembers(members.filter((member) => member.id !== id));
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+    }
   };
 
   return (

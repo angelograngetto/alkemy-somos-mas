@@ -3,6 +3,7 @@ import { Formik } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Box, Input, Text, Button, Image, Heading, Alert } from '@chakra-ui/react';
+import MembersService from '../Members/MembersService';
 
 const MemberForm = () => {
   const history = useHistory();
@@ -14,24 +15,26 @@ const MemberForm = () => {
   const [linkedinURL, setLinkedinURL] = useState('');
 
   useEffect(() => {
+    const fetchMember = async (id) => {
+      try {
+        const response = await MembersService.getById(id);
+        const member = response.data;
+        setName(member.name);
+        setDescription(member.description);
+        setImage(member.image);
+        setFacebookURL(member.facebookUrl);
+        setLinkedinURL(member.linkedinUrl);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+        history.push('/backoffice');
+      }
+    };
     // if received id in params get the member data for edit
     if (id) {
-      fetch(`http://ongapi.alkemy.org/api/members/${id}`)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.success === true) {
-            setName(data.data.name);
-            setDescription(data.data.description);
-            setImage(data.data.image);
-            setFacebookURL(data.data.facebookUrl);
-            setLinkedinURL(data.data.linkedinUrl);
-          } else {
-            // if member id not exist goes to backoffice home
-            history.push('/backoffice');
-          }
-        });
+      fetchMember(id);
     }
-  }, []);
+  }, [id]);
 
   // this function reads the image file to preview
   const showImage = (fileToRead) => {
@@ -89,7 +92,8 @@ const MemberForm = () => {
           }
           return errors;
         }}
-        onSubmit={({ name, description, facebookURL, linkedinURL }) => {
+        onSubmit={async ({ name, description, facebookURL, linkedinURL }) => {
+          let response;
           const data = {
             name,
             description,
@@ -97,7 +101,12 @@ const MemberForm = () => {
             linkedinUrl: linkedinURL,
           };
 
-          //send data to api here
+          if (id) {
+            data.id = id;
+            response = await MembersService.update(data);
+          } else {
+            response = await MembersService.create(data);
+          }
         }}
       >
         {({ values, errors, handleChange, handleSubmit, setFieldValue }) => (
