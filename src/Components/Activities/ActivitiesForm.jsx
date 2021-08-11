@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import { Button, Input, Image, Text, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { createActivity, updateActivity } from '../../features/activities/activitiesSlice';
 import CKEditor from 'ckeditor4-react';
-import ActivitiesService from './ActivitiesService';
+import ActivitiesService from '../../Services/ActivitiesService';
 import validationSchema from './ValidationSchema';
 import '../FormStyles.css';
 
 const ActivitiesForm = ({ activity }) => {
   const [file, setFile] = useState(null);
+  const dispatch = useDispatch();
 
   const initialValues = {
     name: activity ? activity.name : '',
@@ -32,9 +35,9 @@ const ActivitiesForm = ({ activity }) => {
 
       if (activity) {
         data.id = activity.id;
-        ActivitiesService.update(data);
+        dispatch(updateActivity(data));
       } else {
-        ActivitiesService.create(data);
+        dispatch(createActivity(data));
       }
     },
   });

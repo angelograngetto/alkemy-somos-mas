@@ -1,24 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import ActivitiesService from './ActivitiesService';
+import React, { useEffect } from 'react';
 import TitleComponent from '../Title/TitleComponent';
 import ActivityContent from './ActivityContent';
-import '../CardListStyles.css';
 import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchActivitiesList } from '../../features/activities/activitiesSlice';
+import '../CardListStyles.css';
 
 const ActivitiesList = () => {
-  const [activities, setActivities] = useState([]);
+  const dispatch = useDispatch();
+  const { activitiesList, loading } = useSelector((state) => state.activities);
+
   useEffect(() => {
-    const getActivities = async () => {
-      try {
-        const resp = await ActivitiesService.getActivities();
-        setActivities(resp.data.data);
-      } catch (error) {
-        alert(error);
-        setActivities([]);
-      }
-    };
-    getActivities();
+    dispatch(fetchActivitiesList());
   }, []);
+
+  if (loading) return 'Loading...';
 
   return (
     <Flex alignItems="center" flexDirection="column" flexWrap="wrap" justifyContent="center">
@@ -34,8 +30,8 @@ const ActivitiesList = () => {
         <TitleComponent img="" text="ACTIVIDADES" />
       </Box>
       <SimpleGrid columns={[1, 2, 3]} gap={12} mt={4}>
-        {activities.length > 0 ? (
-          activities.map((activity) => {
+        {activitiesList.length > 0 ? (
+          activitiesList.map((activity) => {
             return (
               <Box
                 key={activity.id}

@@ -1,4 +1,4 @@
-import { Post, Put, Get, Delete } from '../../Services/privateApiService';
+import { Post, Put, Get, Delete } from './privateApiService';
 class ActivitiesService {
   static async create(activity) {
     const response = await Post('/activities', { ...activity });
