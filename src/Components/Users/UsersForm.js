@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import axios from 'axios';
+import UsersService from './UsersService';
 import {
   FormControl,
   Input,
@@ -25,20 +25,16 @@ const UsersForm = ({ user }) => {
   });
   const [alertShowed, setAlertShowed] = useState(true);
   useEffect(() => {
-    const getUsers = async () => {
+    const fetchUsers = async () => {
       try {
-        const resp = await axios.get('http://ongapi.alkemy.org/api/users');
-        return resp.data.data;
+        const resp = await UsersService.get();
+        setUsers(resp.data.data);
       } catch (error) {
-        throw new Error(error);
-      }
-    };
-    getUsers()
-      .then((resp) => setUsers(resp))
-      .catch((err) => {
         setUsers([]);
         alert('No se pudo obtener los datos solicitados');
-      });
+      }
+    };
+    fetchUsers();
     return () => setAlertShowed(false);
   }, [alertShowed]);
 
@@ -99,42 +95,42 @@ const UsersForm = ({ user }) => {
         // profilePhoto: user?.profilePhoto ?? '',
       }}
       validationSchema={validationSchema}
-      onSubmit={(values, actions) => {
+      onSubmit={async (values, actions) => {
         if (user && !user.id) return;
+        const userData = {
+          name: values.name,
+          email: values.email,
+          password: values.password,
+          role_id: values.role,
+        };
         setUtils({ error: null, success: null, loading: true });
         if (user) {
-          axios
-            .put(`http://ongapi.alkemy.org/api/users/${user.id}`, {
-              name: values.name,
-              email: values.email,
-              password: values.password,
-              role_id: values.role,
-            })
-            .then((resp) => setUtils({ error: false, success: true, loading: false }))
-            .catch((err) => setUtils({ error: true, sucess: false, loading: false }))
-            .finally(() => setAlertShowed(true));
+          try {
+            const resp = await UsersService.update(user.id, userData);
+            setUtils({ error: false, success: true, loading: false });
+          } catch (error) {
+            setUtils({ error: true, sucess: false, loading: false });
+          } finally {
+            setAlertShowed(true);
+          }
         } else {
-          axios
-            .post('http://ongapi.alkemy.org/api/users', {
-              name: values.name,
-              email: values.email,
-              password: values.password,
-              role_id: values.role,
-            })
-            .then((resp) => {
-              setUtils({ error: false, success: true, loading: false });
-              actions.resetForm({
-                values: {
-                  name: '',
-                  email: '',
-                  role: 0,
-                  password: '',
-                  // file: '',
-                },
-              });
-            })
-            .catch((err) => setUtils({ error: true, sucess: false, loading: false }))
-            .finally(() => setAlertShowed(true));
+          try {
+            const resp = await UsersService.create(userData);
+            setUtils({ error: false, success: true, loading: false });
+            actions.resetForm({
+              values: {
+                name: '',
+                email: '',
+                role: 0,
+                password: '',
+                // file: '',
+              },
+            });
+          } catch (error) {
+            setUtils({ error: true, sucess: false, loading: false });
+          } finally {
+            setAlertShowed(true);
+          }
         }
       }}
     >

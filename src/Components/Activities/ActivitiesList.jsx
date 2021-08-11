@@ -1,33 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import ActivitiesService from './ActivitiesService';
 import TitleComponent from '../Title/TitleComponent';
 import ActivityContent from './ActivityContent';
 import '../CardListStyles.css';
 import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
 
 const ActivitiesList = () => {
-  const activitiesMock = [
-    {
-      id: 1,
-      name: 'Actividad 1',
-      image: 'http://ongapi.alkemy.org/storage/ROcLEJ3iTb.jpeg',
-      description:
-        '<p>Para todas las edades. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut quaerat molestias, nobis ipsum dolor, facere esse repudiandae exercitationem eos consectetur eum ipsam incidunt voluptate assumenda dolores. Eum, a. Nostrum, sapiente!.</p>',
-    },
-    {
-      id: 2,
-      name: 'Actividad 2',
-      image: 'http://ongapi.alkemy.org/storage/ROcLEJ3iTb.jpeg',
-      description:
-        '<p>Para todas las edades. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut quaerat molestias, nobis ipsum dolor, facere esse repudiandae exercitationem eos consectetur eum ipsam incidunt voluptate assumenda dolores. Eum, a. Nostrum, sapiente!.</p>',
-    },
-    {
-      id: 3,
-      name: 'Actividad 3',
-      image: 'http://ongapi.alkemy.org/storage/ROcLEJ3iTb.jpeg',
-      description:
-        '<p>Para todas las edades. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut quaerat molestias, nobis ipsum dolor, facere esse repudiandae exercitationem eos consectetur eum ipsam incidunt voluptate assumenda dolores. Eum, a. Nostrum, sapiente!.</p>',
-    },
-  ];
+  const [activities, setActivities] = useState([]);
+  useEffect(() => {
+    const getActivities = async () => {
+      try {
+        const resp = await ActivitiesService.getActivities();
+        setActivities(resp.data.data);
+      } catch (error) {
+        alert(error);
+        setActivities([]);
+      }
+    };
+    getActivities();
+  }, []);
 
   return (
     <Flex alignItems="center" flexDirection="column" flexWrap="wrap" justifyContent="center">
@@ -43,8 +34,8 @@ const ActivitiesList = () => {
         <TitleComponent img="" text="ACTIVIDADES" />
       </Box>
       <SimpleGrid columns={[1, 2, 3]} gap={12} mt={4}>
-        {activitiesMock.length > 0 ? (
-          activitiesMock.map((activity) => {
+        {activities.length > 0 ? (
+          activities.map((activity) => {
             return (
               <Box
                 key={activity.id}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import UsersService from '../../Users/UsersService';
 import {
   Flex,
   Button,
@@ -58,16 +58,14 @@ const UsersListScreen = (props) => {
   };
 
   useEffect(() => {
-    async function getUsers() {
-      await axios
-        .get('http://ongapi.alkemy.org/api/users')
-        .then(function (response) {
-          setUsers(response.data.data);
-        })
-        .catch(function (error) {
-          setError(error);
-        });
-    }
+    const getUsers = async () => {
+      try {
+        const response = await UsersService.get();
+        setUsers(response.data.data);
+      } catch (err) {
+        setError(err);
+      }
+    };
     getUsers();
   }, [isDeleteOpen, isEditOpen]);
 

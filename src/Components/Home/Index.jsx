@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box } from '@chakra-ui/react';
-import Slides from '../Slides';
+import Slides from '../Slides/Index';
 import OrganizationService from '../../Services/OrganitationService';
 
 export const Home = () => {
