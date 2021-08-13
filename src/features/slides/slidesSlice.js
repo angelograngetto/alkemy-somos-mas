@@ -30,6 +30,15 @@ export const getSlideById = createAsyncThunk('slides/id', async (id, { rejectWit
   }
 });
 
+export const createSlide = createAsyncThunk('slide/create', async (slide, { rejectWithValue }) => {
+  try {
+    const response = await SlidesServices.create(slide);
+    return response.data.data;
+  } catch (error) {
+    return rejectWithValue([], error);
+  }
+});
+
 const slidesSlice = createSlice({
   name: 'slides',
   initialState,
@@ -61,6 +70,20 @@ const slidesSlice = createSlice({
       state.slideActive = payload;
       state.error = error;
       state.loading = false;
+    },
+
+    [createSlide.pending]: (state, action) => {
+      state.loading = true;
+    },
+
+    [createSlide.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.error = null;
+      state.slidesList = [...state.slidesList, payload];
+    },
+    [createSlide.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
     },
   },
 });
