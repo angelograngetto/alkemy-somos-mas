@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
 import * as yup from 'yup';
 
 import { useFormik } from 'formik';
-import { CKEditor } from 'ckeditor4-react';
+import CKEditor from 'ckeditor4-react';
+
+import { convertBase64 } from '../Utils/ConvertBase64';
 
 import '../FormStyles.css';
+
+const path = process.env.REACT_APP_TESTIMONIALS_ENDPOINT;
 
 const TestimonialForm = ({ testimonial }) => {
   const initialValues = {
@@ -39,22 +43,6 @@ const TestimonialForm = ({ testimonial }) => {
     },
   });
 
-  //Helper function - base64
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = function () {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = function (event) {
-        reject('error');
-      };
-    });
-  };
-
   const handleImageChange = (e) => {
     formik.setFieldValue('image', e.target.files[0]);
   };
@@ -74,7 +62,7 @@ const TestimonialForm = ({ testimonial }) => {
         $ref: '#/definitions/Testimonial',
       },
     };
-    const resp = await axios.post('http://ongapi.alkemy.org/api/testimonials', newTestimony);
+    const resp = await axios.post('http://ongapi.alkemy.org/api' + path, newTestimony);
   };
 
   const editTestimonial = async (values) => {
@@ -89,7 +77,7 @@ const TestimonialForm = ({ testimonial }) => {
       },
     };
     const resp = await axios.put(
-      `http://ongapi.alkemy.org/api/testimonials/${testimonial.id}`,
+      `http://ongapi.alkemy.org/api${path}/${testimonial.id}`,
       editedTestimony,
     );
   };

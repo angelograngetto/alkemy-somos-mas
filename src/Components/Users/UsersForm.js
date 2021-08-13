@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
-import UsersService from './UsersService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers, createUser, updateUser } from '../../features/users/usersSlice';
 import {
   FormControl,
   Input,
@@ -17,26 +18,12 @@ import {
 } from '@chakra-ui/react';
 
 const UsersForm = ({ user }) => {
-  const [users, setUsers] = useState([]);
-  const [utils, setUtils] = useState({
-    error: null,
-    success: null,
-    loading: false,
-  });
-  const [alertShowed, setAlertShowed] = useState(true);
+  const dispatch = useDispatch();
+  const { usersList, loading, error, success } = useSelector((state) => state.users);
+
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const resp = await UsersService.get();
-        setUsers(resp.data.data);
-      } catch (error) {
-        setUsers([]);
-        alert('No se pudo obtener los datos solicitados');
-      }
-    };
-    fetchUsers();
-    return () => setAlertShowed(false);
-  }, [alertShowed]);
+    dispatch(fetchUsers());
+  }, []);
 
   // const convertBase64 = (file) => {
   //   if (file) {
@@ -55,9 +42,10 @@ const UsersForm = ({ user }) => {
 
   // const formatFileSupported = ['image/jpg', 'image/png', 'image/jpeg'];
 
-  const usersEmail = users
+  const usersEmail = usersList
     ?.filter((item) => item?.email !== user?.email)
     .map((item) => item?.email);
+
   const validationSchema = Yup.object().shape({
     name: Yup.string()
       .required('Campo requerido')
@@ -103,20 +91,10 @@ const UsersForm = ({ user }) => {
           password: values.password,
           role_id: values.role,
         };
-        setUtils({ error: null, success: null, loading: true });
         if (user) {
-          try {
-            const resp = await UsersService.update(user.id, userData);
-            setUtils({ error: false, success: true, loading: false });
-          } catch (error) {
-            setUtils({ error: true, sucess: false, loading: false });
-          } finally {
-            setAlertShowed(true);
-          }
+          dispatch(updateUser({ ...userData, id: user.id }));
         } else {
-          try {
-            const resp = await UsersService.create(userData);
-            setUtils({ error: false, success: true, loading: false });
+          dispatch(createUser(userData)).then(
             actions.resetForm({
               values: {
                 name: '',
@@ -125,12 +103,8 @@ const UsersForm = ({ user }) => {
                 password: '',
                 // file: '',
               },
-            });
-          } catch (error) {
-            setUtils({ error: true, sucess: false, loading: false });
-          } finally {
-            setAlertShowed(true);
-          }
+            }),
+          );
         }
       }}
     >
@@ -206,7 +180,7 @@ const UsersForm = ({ user }) => {
                 src={values.profilePhoto?.imageParsed}
               />
             )} */}
-          {utils.loading ? (
+          {loading ? (
             <Button isLoading colorScheme="blue" loadingText="Enviando" my="2">
               Enviar
             </Button>
@@ -215,14 +189,14 @@ const UsersForm = ({ user }) => {
               Enviar
             </Button>
           )}
-          {utils.success ? (
+          {success ? (
             <Alert status="success">
               <AlertIcon />
               {user
                 ? 'El usuario se ha editado exitosamente'
                 : 'El usuario ha sido creado exitosamente'}
             </Alert>
-          ) : utils.error ? (
+          ) : error ? (
             <Alert status="error">
               <AlertIcon />
               {user

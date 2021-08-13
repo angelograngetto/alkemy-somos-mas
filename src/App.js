@@ -4,7 +4,7 @@ import './App.css';
 
 import About from './Components/About/index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
-// import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
 import Backoffice from './Components/Backoffice/Index';
 import CategoriesForm from './Components/Categories/CategoriesForm';
 import CategoriesListScreen from './Components/Backoffice/Categories/Index';
@@ -23,7 +23,7 @@ import NewsList from './Components/News/NewsList';
 import Organization from './Components/Backoffice/Organization';
 import RegisterForm from './Components/Auth/RegisterForm';
 import SlidesForm from './Components/Slides/SlidesForm';
-import SlidesListScreen from './Components/Backoffice/Slides/Index';
+import SlidesListScreen from './Components/Backoffice/Slides';
 import UsersForm from './Components/Users/UsersForm';
 import UsersListScreen from './Components/Backoffice/Users/Index';
 import ContactForm from './Components/Contact/ContactForm';
@@ -36,7 +36,7 @@ function App() {
         <Route exact component={ActivitiesList} path="/activities" />
         <Route exact component={DetailView} path="/activities/:id" />
         <Route exact component={Backoffice} path="/backoffice" />
-        {/* <Route exact component={ActivitiesListBack} path="/backoffice/activities" /> */}
+        <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
         <Route exact component={CategoriesListScreen} path="/backoffice/categories" />
         <Route exact component={CategoriesForm} path="/backoffice/categories/create" />
         <Route exact component={MemberList} path="/backoffice/members" />
