@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+const baseURL = 'http://ongapi.alkemy.org/api';
+
 const instance = axios.create({
-  baseURL: 'http://ongapi.alkemy.org/api/',
+  baseURL: baseURL,
   headers: {
     Group: 54,
   },
