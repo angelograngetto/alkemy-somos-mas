@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import UsersService from '../../Users/UsersService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsers } from '../../../features/users/usersSlice';
 import {
   Flex,
   Button,
@@ -13,8 +14,9 @@ import {
   Tr,
   Th,
   ButtonGroup,
+  Center,
 } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon, CloseIcon, EditIcon } from '@chakra-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
 import UserForm from '../../Users/UsersForm';
 import Error from '../Utils/Error';
@@ -22,8 +24,8 @@ import ModalDelete from '../Utils/ModalDelete';
 import ModalEdit from '../Utils/ModalEdit';
 
 const UsersListScreen = (props) => {
-  const [users, setUsers] = useState([]);
-  const [error, setError] = useState('');
+  const dispatch = useDispatch();
+  const { usersList, error } = useSelector((state) => state.users);
 
   const [next, setNext] = useState(10);
   const [prev, setPrev] = useState(0);
@@ -58,41 +60,34 @@ const UsersListScreen = (props) => {
   };
 
   useEffect(() => {
-    const getUsers = async () => {
-      try {
-        const response = await UsersService.get();
-        setUsers(response.data.data);
-      } catch (err) {
-        setError(err);
-      }
-    };
-    getUsers();
+    dispatch(fetchUsers());
   }, [isDeleteOpen, isEditOpen]);
 
   if (error) {
     return <Error error={error} />;
-  } else {
-    return (
-      <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
-        <Flex
-          borderRadius={{ base: '0', sm: 'xl' }}
-          borderWidth="1px"
-          boxShadow="2xl"
-          flexDir="column"
-          justify="center"
-          overflow="hidden"
-          p={{ base: 1, sm: 5 }}
-          w="5xl"
-        >
-          <Flex align="center" justify="space-between" m={{ base: 3, sm: 0 }}>
-            <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
-              Users - Total: {users.length}
-            </Text>
-            <Button colorScheme="green" onClick={toCreate}>
-              Create
-            </Button>
-          </Flex>
-          <Divider mb="5" />
+  }
+  return (
+    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
+      <Flex
+        borderRadius={{ base: '0', sm: 'xl' }}
+        borderWidth="1px"
+        boxShadow="2xl"
+        flexDir="column"
+        justify="center"
+        overflow="hidden"
+        p={{ base: 1, sm: 5 }}
+        w="5xl"
+      >
+        <Flex align="center" justify="space-between" m={{ base: 3, sm: 0 }}>
+          <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
+            Users - Total: {usersList.length}
+          </Text>
+          <Button colorScheme="green" onClick={toCreate}>
+            Create
+          </Button>
+        </Flex>
+        <Divider mb="5" />
+        {usersList.length !== 0 ? (
           <Table
             colorScheme="green"
             size={{ base: 'sm', md: 'md', lg: 'lg' }}
@@ -110,10 +105,10 @@ const UsersListScreen = (props) => {
               >
                 <ChevronLeftIcon /> Previous
               </Button>
-              {`${prev === 0 ? 1 : prev} - ${next >= users.length ? users.length : next}`}
+              {`${prev === 0 ? 1 : prev} - ${next >= usersList.length ? usersList.length : next}`}
               <Button
                 colorScheme="blue"
-                isDisabled={next <= users.length - 1 ? false : true}
+                isDisabled={next <= usersList.length - 1 ? false : true}
                 m="3"
                 w="100px"
                 onClick={handleNext}
@@ -129,8 +124,8 @@ const UsersListScreen = (props) => {
               </Tr>
             </Thead>
             <Tbody>
-              {users ? (
-                users.slice(prev, next).map((user) => (
+              {usersList ? (
+                usersList.slice(prev, next).map((user) => (
                   <Tr key={user.id}>
                     <Td lineHeight="10">{user.name}</Td>
                     <Td>{user.email}</Td>
@@ -140,7 +135,7 @@ const UsersListScreen = (props) => {
                           <EditIcon />
                         </Button>
                         <Button colorScheme="red" size="xs" onClick={() => handleDeleteOpen(user)}>
-                          <CloseIcon />
+                          <DeleteIcon />
                         </Button>
                       </ButtonGroup>
                     </Td>
@@ -155,20 +150,21 @@ const UsersListScreen = (props) => {
               )}
             </Tbody>
           </Table>
-        </Flex>
-        <ModalDelete
-          isDeleteOpen={isDeleteOpen}
-          setIsDeleteOpen={setIsDeleteOpen}
-          toDeleteComponent="users"
-          toDeleteObj={toDeleteUser}
-        />
-
-        <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-          <UserForm user={toEditUser} />
-        </ModalEdit>
+        ) : (
+          <Center m="5">there are no users yet, create one!</Center>
+        )}
       </Flex>
-    );
-  }
+      <ModalDelete
+        isDeleteOpen={isDeleteOpen}
+        setIsDeleteOpen={setIsDeleteOpen}
+        toDeleteComponent="users"
+        toDeleteObj={toDeleteUser}
+      />
+      <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
+        <UserForm user={toEditUser} />
+      </ModalEdit>
+    </Flex>
+  );
 };
 
 export default UsersListScreen;
