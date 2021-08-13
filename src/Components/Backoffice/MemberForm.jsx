@@ -3,38 +3,35 @@ import { Formik } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Box, Input, Text, Button, Image, Heading, Alert } from '@chakra-ui/react';
-import MembersService from '../Members/MembersService';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMembers, createMember, updateMember } from '../../features/members/membersSlice';
+import CustomAlert from '../Utils/Alert';
 
 const MemberForm = () => {
+  const dispatch = useDispatch();
+  const { membersList, loading, error } = useSelector((state) => state.members);
   const history = useHistory();
   const { id } = useParams();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState('/images/no-user.jpg');
   const [facebookURL, setFacebookURL] = useState('');
   const [linkedinURL, setLinkedinURL] = useState('');
 
   useEffect(() => {
-    const fetchMember = async (id) => {
-      try {
-        const response = await MembersService.getById(id);
-        const member = response.data;
-        setName(member.name);
-        setDescription(member.description);
-        setImage(member.image);
-        setFacebookURL(member.facebookUrl);
-        setLinkedinURL(member.linkedinUrl);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error(error);
-        history.push('/backoffice');
-      }
-    };
-    // if received id in params get the member data for edit
-    if (id) {
-      fetchMember(id);
-    }
+    dispatch(fetchMembers());
   }, [id]);
+
+  useEffect(() => {
+    if (id) {
+      const member = membersList.filter((member) => member.id == id);
+      setName(member[0]?.name);
+      setDescription(member[0]?.description);
+      setImage(member[0]?.image);
+      setLinkedinURL(member[0]?.linkedinUrl);
+      setFacebookURL(member[0]?.facebookUrl);
+    }
+  }, [membersList]);
 
   // this function reads the image file to preview
   const showImage = (fileToRead) => {
@@ -92,9 +89,9 @@ const MemberForm = () => {
           }
           return errors;
         }}
-        onSubmit={async ({ name, description, facebookURL, linkedinURL }) => {
-          let response;
-          const data = {
+        onSubmit={async ({ name, description, facebookURL, linkedinURL, file }) => {
+          let data = {
+            id,
             name,
             description,
             facebookUrl: facebookURL,
@@ -102,22 +99,28 @@ const MemberForm = () => {
           };
 
           if (id) {
-            data.id = id;
-            response = await MembersService.update(data);
+            if (file) data = { ...data, image };
+            dispatch(updateMember(data));
           } else {
-            response = await MembersService.create(data);
+            data = { ...data, image };
+            dispatch(createMember(data));
           }
+          if (error)
+            CustomAlert('error', 'Error', 'Ocurrió un error al guardar, vuelve a intentarlo.');
+          if (!loading) history.push('/backoffice/members');
         }}
       >
         {({ values, errors, handleChange, handleSubmit, setFieldValue }) => (
           <form onSubmit={handleSubmit}>
-            <Image
-              alt="Miembro"
-              borderRadius="full"
-              boxSize="150px"
-              fit="cover"
-              m="auto"
-              src={image ? image : '/images/no-user.jpg'}
+            <img
+              src={image}
+              style={{
+                borderRadius: '100%',
+                width: '180px',
+                height: '180px',
+                margin: 'auto',
+                objectFit: 'cover',
+              }}
             />
             <Text mb="8px">Subir imagen: </Text>
             <Input
