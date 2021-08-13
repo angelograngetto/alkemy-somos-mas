@@ -17,6 +17,7 @@ import '../../Components/FormStyles.css';
 import validationSchema from './ValidationSchema';
 import '../FormStyles.css';
 import ContactService from './ContactService';
+import AlertComponent from '../Utils/Alert';
 
 const ContactForm = () => {
   const onSubmit = (e) => {
@@ -39,7 +40,12 @@ const ContactForm = () => {
     initialValues: initialValues,
     validateOnBlur: true,
     onSubmit: async (values) => {
-      const response = await ContactService.create(values);
+      try {
+        const response = await ContactService.create(values);
+        return response;
+      } catch (error) {
+        AlertComponent('error', 'Error', 'Ups! Algo salió mal!');
+      }
     },
     validationSchema: validationSchema,
   });

@@ -12,6 +12,7 @@ export const Home = () => {
     try {
       setUtils({ error: false, loading: true });
       const response = await OrganizationService.get();
+      console.log(response);
       setOrganization(response.data);
       setUtils({ error: false, loading: false });
     } catch (err) {
