@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import SlidesForm from '../../Slides/SlidesForm';
 import { useHistory } from 'react-router-dom';
 import ModalEdit from '../Utils/ModalEdit';
-import axios from 'axios';
 import { Flex, Divider, Text, Spacer, ButtonGroup, Button, Box } from '@chakra-ui/react';
 import { EditIcon, CloseIcon } from '@chakra-ui/icons';
 import Error from '../Utils/Error';
 import ModalDelete from '../Utils/ModalDelete';
+import { getSlidesList } from '../../../features/slides/slidesSlice';
 
 const SlidesListScreen = () => {
-  const [slides, setSlides] = useState([]);
+  const dispatch = useDispatch();
+  const { slidesList } = useSelector((state) => state.slides);
   const [error, setError] = useState('');
   const history = useHistory();
 
@@ -30,18 +32,8 @@ const SlidesListScreen = () => {
   };
 
   useEffect(() => {
-    async function getSlides() {
-      await axios
-        .get('http://ongapi.alkemy.org/api/slides')
-        .then(function (response) {
-          setSlides(response.data.data);
-        })
-        .catch(function (error) {
-          setError(error);
-        });
-    }
-    getSlides();
-  }, [isDeleteOpen, isEditOpen]);
+    dispatch(getSlidesList());
+  }, [dispatch, isDeleteOpen, isEditOpen]);
 
   const toCreate = () => history.push('/backoffice/slides/create');
 
@@ -71,7 +63,7 @@ const SlidesListScreen = () => {
           </Flex>
           <Divider mb="5" />
           <Flex wrap="wrap">
-            {slides.map((slide) => (
+            {slidesList.map((slide) => (
               <Box key={slide.id} d="flex" flexGrow="2" m="5" minWidth="275px">
                 <Box w="100%">
                   <Box

@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import styles from './slides.module.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
 import { Heading } from '@chakra-ui/react';
-import SlidesService from './SlidesService.js';
+
+import styles from './slides.module.css';
+
+import { getSlidesList } from '../../features/slides/slidesSlice';
 
 const Slides = () => {
+  const dispatch = useDispatch();
+  const { slidesList } = useSelector((state) => state.slides);
   const [index, setIndex] = useState(0);
-  const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchSlides = async () => {
-      const response = await SlidesService.getAll();
-      setData(response.data);
-    };
-
-    fetchSlides();
-  }, []);
+    dispatch(getSlidesList());
+  }, [dispatch]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (index === data.length - 1) {
+      if (index === slidesList.length - 1) {
         setIndex(0);
       } else {
         setIndex(index + 1);
@@ -30,7 +28,7 @@ const Slides = () => {
   }, [index]);
 
   const handleClickNext = () => {
-    if (index === data.length - 1) {
+    if (index === slidesList.length - 1) {
       setIndex(0);
     } else {
       setIndex(index + 1);
@@ -39,7 +37,7 @@ const Slides = () => {
 
   const handleClickPrev = () => {
     if (index === 0) {
-      setIndex(data.length - 1);
+      setIndex(slidesList.length - 1);
     } else {
       setIndex(index - 1);
     }
@@ -50,11 +48,11 @@ const Slides = () => {
       {data.length !== 0 && (
         <div className={styles.slider}>
           <div className={styles.image__container}>
-            <img src={data[index].image} />
+            <img src={slidesList[index].image} />
             <div className={styles.info__container}>
               <div className={styles.info__text}>
-                <Heading>{data[index].name}</Heading>
-                <div dangerouslySetInnerHTML={{ __html: `${data[index].description}` }}></div>
+                <Heading>{slidesList[index].name}</Heading>
+                <div dangerouslySetInnerHTML={{ __html: `${slidesList[index].description}` }}></div>
               </div>
             </div>
             <div className={styles.buttons}>
