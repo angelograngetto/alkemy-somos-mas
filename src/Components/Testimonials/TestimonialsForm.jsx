@@ -7,7 +7,7 @@ import { CKEditor } from 'ckeditor4-react';
 
 import '../FormStyles.css';
 
-const TestimonialForm = ({testimonial}) => {
+const TestimonialForm = ({ testimonial }) => {
   const initialValues = {
     name: testimonial ? testimonial.name : '',
     image: testimonial ? testimonial.image : '',
@@ -88,7 +88,10 @@ const TestimonialForm = ({testimonial}) => {
         $ref: '#/definitions/Testimonial',
       },
     };
-    const resp = await axios.put(`http://ongapi.alkemy.org/api/testimonials/${testimonial.id}`, editedTestimony);
+    const resp = await axios.put(
+      `http://ongapi.alkemy.org/api/testimonials/${testimonial.id}`,
+      editedTestimony,
+    );
   };
 
   return (
