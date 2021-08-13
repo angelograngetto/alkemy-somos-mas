@@ -45,7 +45,7 @@ const Slides = () => {
 
   return (
     <>
-      {data.length !== 0 && (
+      {slidesList.length !== 0 && (
         <div className={styles.slider}>
           <div className={styles.image__container}>
             <img src={slidesList[index].image} />
