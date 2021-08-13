@@ -4,6 +4,7 @@ import SlidesServices from '../../Services/SlidesService';
 
 const initialState = {
   slidesList: [],
+  slideActive: [],
   loading: false,
   error: '',
 };
