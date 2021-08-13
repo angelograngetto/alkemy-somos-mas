@@ -18,7 +18,7 @@ const ProgressBar = ({ value, isIndeterminate, colorScheme }) => {
         colorScheme={colorScheme}
         isIndeterminate={isIndeterminate}
         value={value}
-        width="40%"
+        width="30%"
       />
     </Box>
   );
