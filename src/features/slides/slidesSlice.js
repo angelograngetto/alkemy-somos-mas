@@ -39,6 +39,26 @@ export const createSlide = createAsyncThunk('slide/create', async (slide, { reje
   }
 });
 
+export const updateSlide = createAsyncThunk('slide/update', async (slide, { rejectWithValue }) => {
+  try {
+    const response = await SlidesServices.update(slide);
+    return response.data.data;
+  } catch (error) {
+    return rejectWithValue([], error);
+  }
+});
+
+export const deleteSlide = createAsyncThunk('slide/delete', async (id, { rejectWithValue }) => {
+  try {
+    const response = await SlidesServices.delete(id);
+    return id;
+  } catch (error) {
+    const errorMessage = getSpanishError(error.message);
+    Alert('error', 'Ocurrió un error', errorMessage);
+    return rejectWithValue(errorMessage || error.message);
+  }
+});
+
 const slidesSlice = createSlice({
   name: 'slides',
   initialState,
@@ -85,6 +105,28 @@ const slidesSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+  },
+
+  [updateSlide.pending]: (state, action) => {
+    state.loading = true;
+  },
+
+  [updateSlide.fulfilled]: (state, { payload }) => {
+    const index = state.slidesList.findIndex((slide) => slide.id === payload.id);
+    const updatedSlide = { ...state.slidesList[index], ...payload };
+
+    state.loading = false;
+    state.error = null;
+    state.slidesList = [
+      ...state.slidesList.slice(0, index),
+      updatedSlide,
+      ...state.slidesList.slice(index + 1),
+    ];
+  },
+
+  [updateSlide.rejected]: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
   },
 });
 
