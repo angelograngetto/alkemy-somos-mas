@@ -14,13 +14,13 @@ import DetailView from './Components/Activities/Detail/DetailView';
 import Donacion from './Components/Donations/Donacion';
 import Edit from './Components/Backoffice/Organization/Edit';
 import Gracias from './Components/Donations/Gracias';
-import Home from './Components/Home/Index';
+import Home from './Components/Home';
 import MemberForm from './Components/Backoffice/MemberForm';
 import MemberList from './Components/Backoffice/MemberList';
 import News from './Components/News/index';
 import NewsForm from './Components/News/NewsForm';
 import NewsList from './Components/News/NewsList';
-import Organization from './Components/Backoffice/Organization/Index';
+import Organization from './Components/Backoffice/Organization';
 import RegisterForm from './Components/Auth/RegisterForm';
 import SlidesForm from './Components/Slides/SlidesForm';
 import SlidesListScreen from './Components/Backoffice/Slides/Index';
@@ -33,8 +33,8 @@ function App() {
     <Router>
       <Switch>
         <Route exact component={Home} path="/" />
-        <Route exact component={ActivitiesList} path="/actividades" />
-        <Route exact component={DetailView} path="/actividades/:id" />
+        <Route exact component={ActivitiesList} path="/activities" />
+        <Route exact component={DetailView} path="/activities/:id" />
         <Route exact component={Backoffice} path="/backoffice" />
         {/* <Route exact component={ActivitiesListBack} path="/backoffice/activities" /> */}
         <Route exact component={CategoriesListScreen} path="/backoffice/categories" />

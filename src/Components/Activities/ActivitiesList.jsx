@@ -5,10 +5,12 @@ import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchActivitiesList } from '../../features/activities/activitiesSlice';
 import '../CardListStyles.css';
+import Alert from '../Utils/Alert';
+import getError from '../Utils/HttpErrors';
 
 const ActivitiesList = () => {
   const dispatch = useDispatch();
-  const { activitiesList, loading } = useSelector((state) => state.activities);
+  const { activitiesList, error, loading } = useSelector((state) => state.activities);
 
   useEffect(() => {
     dispatch(fetchActivitiesList());

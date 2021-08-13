@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Button, Input, Image, Text, Stack } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { createActivity, updateActivity } from '../../features/activities/activitiesSlice';
 import CKEditor from 'ckeditor4-react';
-import ActivitiesService from '../../Services/ActivitiesService';
 import validationSchema from './ValidationSchema';
+import { convertBase64 } from '../Utils/ConvertBase64';
 import '../FormStyles.css';
 
-const ActivitiesForm = ({ activity }) => {
+const ActivitiesForm = ({ activity, setIsEditOpen }) => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
+  const { error } = useSelector((state) => state.activities);
 
   const initialValues = {
     name: activity ? activity.name : '',
@@ -39,6 +40,7 @@ const ActivitiesForm = ({ activity }) => {
       } else {
         dispatch(createActivity(data));
       }
+      setIsEditOpen(false);
     },
   });
 
@@ -50,21 +52,6 @@ const ActivitiesForm = ({ activity }) => {
     const image = await convertBase64(event.target.files[0]);
     setFile(image);
     formik.setFieldValue('image', image);
-  };
-
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-
-      fileReader.onload = function () {
-        resolve(fileReader.result);
-      };
-
-      fileReader.onerror = function (event) {
-        reject(null);
-      };
-    });
   };
 
   return (

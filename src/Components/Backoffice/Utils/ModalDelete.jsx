@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -18,36 +17,19 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react';
+import { useDispatch } from 'react-redux';
+import { deleteActivity } from '../../../features/activities/activitiesSlice';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
   const toast = useToast();
+  const dispatch = useDispatch();
+
   const toDelDescHTML = toDeleteObj.description || '';
   const plainStrToDelDesc = toDelDescHTML.replace(/<[^>]+>/g, '') || '';
 
   const onDelete = (toDeleteObj) => {
-    async function deleteComponent() {
-      await axios
-        .delete(`http://ongapi.alkemy.org/api/${toDeleteComponent}/${toDeleteObj.id}`)
-        .then((res) => {
-          setIsDeleteOpen(false);
-          toast({
-            title: `${toDeleteObj.name} has been successfully removed`,
-            status: 'success',
-            duration: 3000,
-            isClosable: true,
-          });
-        })
-        .catch((error) =>
-          toast({
-            title: `Error on delete ${toDeleteObj.name}`,
-            description: error.message,
-            status: 'error',
-            duration: 9000,
-            isClosable: true,
-          }),
-        );
-    }
-    deleteComponent();
+    dispatch(deleteActivity(toDeleteObj.id));
+    setIsDeleteOpen(false);
   };
 
   const onDeleteClose = () => setIsDeleteOpen(false);
