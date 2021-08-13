@@ -2,7 +2,7 @@ import { Delete, Get, Post, Put } from './privateApiService';
 
 class SlidesService {
   static async getAll() {
-    const response = await Get('/slides');
+    const response = await Get('slides');
     return response.data;
   }
 
