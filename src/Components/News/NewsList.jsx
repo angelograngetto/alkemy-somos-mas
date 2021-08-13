@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AspectRatio,
   Box,
@@ -15,25 +15,45 @@ import {
 } from '@chakra-ui/react';
 
 import LinkNews from './LinkNews';
+import NewsService from '../../Services/NewsService';
+import Alert from '../Utils/Alert';
+import ModalEdit from '../Backoffice/Utils/ModalEdit';
+import NewsForm from './NewsForm';
 
 const NewsList = () => {
-  const newsMock = [
-    {
-      name: 'Titulo de prueba 1',
-      image: 'https://i.blogs.es/aa1b9a/luna-100mpx/450_1000.jpg',
-      createdAt: new Date().toString(),
-    },
-    {
-      name: 'Titulo de prueba 2',
-      image: 'https://i.blogs.es/aa1b9a/luna-100mpx/450_1000.jpg',
-      createdAt: new Date().toString(),
-    },
-    {
-      name: 'Titulo de prueba 3',
-      image: '',
-      createdAt: new Date().toString(),
-    },
-  ];
+  const [news, setNews] = useState([]);
+  const fetchNews = async () => {
+    try {
+      const resp = await NewsService.getNews();
+      setNews(resp.data.data);
+    } catch (err) {
+      alert(err);
+    }
+  };
+
+  //MODAL EDIT
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [toEditNew, setToEditNew] = useState([]);
+  const handleEditOpen = (newItem) => {
+    setIsEditOpen(true);
+    setToEditNew(newItem);
+  };
+
+  useEffect(() => {
+    fetchNews();
+  }, [isEditOpen]);
+
+  const handleClick = async (id) => {
+    const respAlert = await Alert(
+      'confirm',
+      '¿Estás seguro de querer eliminar esta novedad?',
+      'Esta acción no se puede deshacer',
+    );
+    if (respAlert) {
+      await NewsService.remove(id);
+      await fetchNews();
+    }
+  };
 
   return (
     <Box mt="3">
@@ -55,8 +75,8 @@ const NewsList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {newsMock.length > 0 ? (
-              newsMock.map((news, index) => (
+            {news.length > 0 ? (
+              news.map((news, index) => (
                 <Tr key={index}>
                   <Td textAlign="center">{news.name}</Td>
                   <Td>
@@ -69,10 +89,12 @@ const NewsList = () => {
                       />
                     </AspectRatio>
                   </Td>
-                  <Td textAlign="center">{news.createdAt}</Td>
+                  <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
                   <Td textAlign="center">
-                    <Button backgroundColor="yellow">Editar</Button>
-                    <Button backgroundColor="red.500" m="2">
+                    <Button backgroundColor="yellow" onClick={() => handleEditOpen(news)}>
+                      Editar
+                    </Button>
+                    <Button backgroundColor="red.500" m="2" onClick={() => handleClick(news.id)}>
                       Borrar
                     </Button>
                   </Td>
@@ -84,6 +106,10 @@ const NewsList = () => {
           </Tbody>
         </Table>
       </Box>
+
+      <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
+        <NewsForm news={toEditNew} />
+      </ModalEdit>
     </Box>
   );
 };

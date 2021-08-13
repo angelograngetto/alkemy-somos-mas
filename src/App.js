@@ -64,7 +64,7 @@ function App() {
           path="/nosotros"
           render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
         />
-        <Route exact path="/novedades" render={() => <News newsData={''} />} />
+        <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={RegisterForm} path="/register" />
       </Switch>
