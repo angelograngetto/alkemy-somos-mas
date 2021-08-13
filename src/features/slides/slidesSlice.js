@@ -11,7 +11,7 @@ const initialState = {
 export const getSlidesList = createAsyncThunk('slides/fetchList', async () => {
   try {
     const response = await SlidesServices.getAll();
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -20,7 +20,7 @@ export const getSlidesList = createAsyncThunk('slides/fetchList', async () => {
 export const getSlideById = createAsyncThunk('slides/id', async (id, { rejectWithValue }) => {
   try {
     const response = await SlidesServices.getById(id);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -29,7 +29,7 @@ export const getSlideById = createAsyncThunk('slides/id', async (id, { rejectWit
 export const createSlide = createAsyncThunk('slide/create', async (slide, { rejectWithValue }) => {
   try {
     const response = await SlidesServices.create(slide);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw error;
   }
@@ -38,7 +38,7 @@ export const createSlide = createAsyncThunk('slide/create', async (slide, { reje
 export const updateSlide = createAsyncThunk('slide/update', async (slide, { rejectWithValue }) => {
   try {
     const response = await SlidesServices.update(slide);
-    return response.data.data;
+    return response.data;
   } catch (error) {
     throw error;
   }
