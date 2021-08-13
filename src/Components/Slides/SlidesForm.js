@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import {
@@ -15,32 +16,20 @@ import {
 } from '@chakra-ui/react';
 import * as Yup from 'yup';
 
-import axios from 'axios';
-import SlidesService from './SlidesService';
+import { createSlide, getSlidesList, updateSlide } from '../../features/slides/slidesSlice';
 
 const SlidesForm = ({ slide }) => {
-  const [slides, setSlides] = useState([]);
+  const dispatch = useDispatch();
+  const { slidesList } = useSelector((state) => state.slides);
   const [utils, setUtils] = useState({
     error: null,
     success: null,
     loading: null,
   });
+
   useEffect(() => {
-    const getSlides = async () => {
-      try {
-        const response = await axios.get('http://ongapi.alkemy.org/api/slides');
-        return response.data.data;
-      } catch (error) {
-        throw new Error(error);
-      }
-    };
-    getSlides()
-      .then((resp) => setSlides(resp))
-      .catch((err) => {
-        setSlides([]);
-        alert('No se pudo obtener los datos solicitados');
-      });
-  }, []);
+    dispatch(getSlidesList());
+  }, [dispatch]);
 
   const convertBase64 = (file) => {
     if (file) {
@@ -60,7 +49,7 @@ const SlidesForm = ({ slide }) => {
   };
 
   const formatFileSupported = ['image/jpg', 'image/png', 'image/jpeg'];
-  const slideOrders = slides
+  const slideOrders = slidesList
     .filter((item) => item?.order !== slide?.order)
     .map((item) => item?.order);
   const validateSchema = Yup.object().shape({
@@ -114,10 +103,10 @@ const SlidesForm = ({ slide }) => {
         };
 
         if (!slide) {
-          response = await SlidesService.create(newSlide);
+          response = dispatch(createSlide(newSlide));
         } else {
           newSlide.id = slide.id;
-          response = await SlidesService.update(newSlide);
+          response = dispatch(updateSlide(newSlide));
         }
 
         if (response.success) {
