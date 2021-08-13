@@ -21,6 +21,15 @@ export const getSlidesList = createAsyncThunk(
   },
 );
 
+export const getSlideById = createAsyncThunk('slides/id', async (id, { rejectWithValue }) => {
+  try {
+    const response = await SlidesServices.getById(id);
+    return response.data.data;
+  } catch (error) {
+    return rejectWithValue([], error);
+  }
+});
+
 const slidesSlice = createSlice({
   name: 'slides',
   initialState,
@@ -36,6 +45,20 @@ const slidesSlice = createSlice({
     },
     [getSlidesList.rejected]: (state, { payload, error }) => {
       state.slidesList = payload;
+      state.error = error;
+      state.loading = false;
+    },
+
+    [getSlideById.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getSlideById.fulfilled]: (state, { payload }) => {
+      state.slideActive = payload;
+      state.loading = false;
+      state.error = '';
+    },
+    [getSlideById.rejected]: (state, { payload, error }) => {
+      state.slideActive = payload;
       state.error = error;
       state.loading = false;
     },
