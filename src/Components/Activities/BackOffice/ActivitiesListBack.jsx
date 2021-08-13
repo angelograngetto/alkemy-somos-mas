@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import ActivitiesService from '../ActivitiesService';
+import ActivitiesService from '../../../Services/ActivitiesService';
 import {
   AspectRatio,
   Box,

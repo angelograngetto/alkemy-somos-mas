@@ -15,11 +15,11 @@ import {
 } from '@chakra-ui/react';
 import { EditIcon, CloseIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import CategoriesForm from '../../Categories/CategoriesForm';
 import ModalEdit from '../Utils/ModalEdit';
 import ModalDelete from '../Utils/ModalDelete';
 import Error from '../Utils/Error';
+import CategoriesServices from '../../../Services/CategoriesServices';
 
 const CategoriesListScreen = () => {
   const [error, setError] = useState('');
@@ -44,10 +44,9 @@ const CategoriesListScreen = () => {
 
   useEffect(() => {
     async function getCategories() {
-      await axios
-        .get('http://ongapi.alkemy.org/api/categories')
+      await CategoriesServices.getAll()
         .then(function (response) {
-          setCategories(response.data.data);
+          setCategories(response);
         })
         .catch(function (error) {
           setError(error);

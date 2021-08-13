@@ -3,7 +3,6 @@ import { Link as RouterLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import * as Yup from 'yup';
-import axios from 'axios';
 import {
   Button,
   Alert,
@@ -15,6 +14,7 @@ import {
   Container,
   Link,
 } from '@chakra-ui/react';
+import CategoriesServices from '../../Services/CategoriesServices';
 
 const CategoriesForm = ({ categorie }) => {
   const [utils, setUtils] = useState({ error: false, success: false, loading: false });
@@ -62,32 +62,26 @@ const CategoriesForm = ({ categorie }) => {
       onSubmit={(values, actions) => {
         if (categorie && !categorie.id) return;
         setUtils({ ...utils, loading: true });
+        let data = {
+          name: values.name,
+          description: values.description,
+          image: values.image.imageParsed,
+        };
         if (categorie) {
           if (values.image.url) {
-            axios
-              .put(`http://ongapi.alkemy.org/api/categories/${categorie.id}`, {
-                name: values.name,
-                description: values.description,
-              })
+            CategoriesServices.update(
+              { name: values.name, description: values.description },
+              categorie.id,
+            )
               .then((resp) => setUtils({ error: false, loading: false, success: true }))
               .catch((err) => setUtils({ error: true, loading: false, success: false }));
           } else {
-            axios
-              .put(`http://ongapi.alkemy.org/api/categories/${categorie.id}`, {
-                name: values.name,
-                description: values.description,
-                image: values.image.imageParsed,
-              })
+            CategoriesServices.update(data, categorie.id)
               .then((resp) => setUtils({ error: false, loading: false, success: true }))
               .catch((err) => setUtils({ error: true, loading: false, success: false }));
           }
         } else {
-          axios
-            .post('http://ongapi.alkemy.org/api/categories', {
-              name: values.name,
-              description: values.description,
-              image: values.image.imageParsed,
-            })
+          CategoriesServices.create(data)
             .then((resp) => {
               actions.resetForm({
                 name: '',
