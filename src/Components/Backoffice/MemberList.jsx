@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchMembers, deleteMember } from '../../features/members/membersSlice';
 import {
   Table,
   Thead,
@@ -15,18 +17,14 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import MembersService from '../Members/MembersService';
 
 export const MemberList = () => {
+  const { membersList } = useSelector((state) => state.members);
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [members, setMembers] = useState([]);
 
   useEffect(() => {
-    const fetchMembers = async () => {
-      const response = await MembersService.getAll();
-      setMembers(response.data);
-    };
-    fetchMembers();
+    dispatch(fetchMembers());
   }, []);
 
   const handleEdit = (id) => {
@@ -34,13 +32,7 @@ export const MemberList = () => {
   };
 
   const handleDelete = async (id) => {
-    try {
-      await MembersService.delete(id);
-      setMembers(members.filter((member) => member.id !== id));
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.error(error);
-    }
+    dispatch(deleteMember(id));
   };
 
   return (
@@ -54,7 +46,7 @@ export const MemberList = () => {
         </Link>
       </Box>
       <Box borderRadius="md" borderWidth="1px" m="auto" shadow="md" w="85%">
-        {members.length > 0 ? (
+        {membersList?.length > 0 ? (
           <Table w="100%">
             <Thead>
               <Tr>
@@ -64,7 +56,7 @@ export const MemberList = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {members.map((member) => (
+              {membersList.map((member) => (
                 <Tr key={member.id}>
                   <Td>
                     <Image

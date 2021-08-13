@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { postNews, updateNews } from './helpers/NewsService';
+import NewsService from '../../Services/NewsService';
+import CategoriesService from '../../Services/CategoriesServices';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
 import {
@@ -23,8 +23,8 @@ const NewsForm = ({ news }) => {
   //FETCHING CATEGORIES
 
   const fetchCategories = async () => {
-    const response = await axios.get('http://ongapi.alkemy.org/api/categories');
-    setCategories(response.data.data);
+    const response = await CategoriesService.getAll();
+    setCategories(response);
   };
 
   useEffect(() => {
@@ -44,10 +44,10 @@ const NewsForm = ({ news }) => {
 
     if (news) {
       data.id = news.id;
-      updateNews(news, data);
+      NewsService.update(news.id, data);
       formik.resetForm();
     } else {
-      postNews(data);
+      NewsService.create(data);
       formik.resetForm();
     }
   };

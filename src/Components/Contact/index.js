@@ -5,7 +5,7 @@ const index = ({ datosContacto }) => {
   return (
     <div>
       <TitleComponent text={'Contacto'} />
-      {datosContacto ? <p>{datosContacto}</p> : null}
+      {datosContacto ? <p>{datosContacto}</p> : <p>{'Datos no disponibles'}</p>}
     </div>
   );
 };

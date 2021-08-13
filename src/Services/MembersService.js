@@ -1,4 +1,4 @@
-import { Delete, Get, Post, Put } from '../../Services/privateApiService';
+import { Delete, Get, Post, Put } from './privateApiService';
 
 class MembersService {
   static async getAll() {

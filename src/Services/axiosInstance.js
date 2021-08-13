@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const axiosInstance = axios.create({
-  baseURL: 'http://ongapi.alkemy.org/public/api/',
-});
+const baseURL = 'http://ongapi.alkemy.org/api';
+
+const axiosInstance = axios.create({ baseURL });
 
 export default axiosInstance;

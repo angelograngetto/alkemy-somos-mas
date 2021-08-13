@@ -4,7 +4,7 @@ import './App.css';
 
 import About from './Components/About/index';
 import ActivitiesList from './Components/Activities/ActivitiesList';
-import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
+// import ActivitiesListBack from './Components/Activities/BackOffice/ActivitiesListBack';
 import Backoffice from './Components/Backoffice/Index';
 import CategoriesForm from './Components/Categories/CategoriesForm';
 import CategoriesListScreen from './Components/Backoffice/Categories/Index';
@@ -26,6 +26,7 @@ import SlidesForm from './Components/Slides/SlidesForm';
 import SlidesListScreen from './Components/Backoffice/Slides/Index';
 import UsersForm from './Components/Users/UsersForm';
 import UsersListScreen from './Components/Backoffice/Users/Index';
+import ContactForm from './Components/Contact/ContactForm';
 
 function App() {
   return (
@@ -35,7 +36,7 @@ function App() {
         <Route exact component={ActivitiesList} path="/actividades" />
         <Route exact component={DetailView} path="/actividades/:id" />
         <Route exact component={Backoffice} path="/backoffice" />
-        <Route exact component={ActivitiesListBack} path="/backoffice/activities" />
+        {/* <Route exact component={ActivitiesListBack} path="/backoffice/activities" /> */}
         <Route exact component={CategoriesListScreen} path="/backoffice/categories" />
         <Route exact component={CategoriesForm} path="/backoffice/categories/create" />
         <Route exact component={MemberList} path="/backoffice/members" />
@@ -64,7 +65,7 @@ function App() {
           path="/nosotros"
           render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
         />
-        <Route exact path="/novedades" render={() => <News newsData={''} />} />
+        <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={RegisterForm} path="/register" />
       </Switch>
