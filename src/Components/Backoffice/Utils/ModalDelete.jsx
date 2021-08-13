@@ -19,6 +19,7 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { deleteActivity } from '../../../features/activities/activitiesSlice';
+import { deleteSlide } from '../../../features/slides/slidesSlice';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
   const toast = useToast();
@@ -28,7 +29,17 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
   const plainStrToDelDesc = toDelDescHTML.replace(/<[^>]+>/g, '') || '';
 
   const onDelete = (toDeleteObj) => {
-    dispatch(deleteActivity(toDeleteObj.id));
+    switch (toDeleteComponent) {
+      case 'slides':
+        dispatch(deleteSlide(toDeleteObj.id));
+        break;
+      case 'activities':
+        dispatch(deleteActivity(toDeleteObj.id));
+        break;
+      default:
+        break;
+    }
+
     setIsDeleteOpen(false);
   };
 
