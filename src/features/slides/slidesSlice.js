@@ -1,5 +1,4 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-
 import SlidesServices from '../../Services/SlidesService';
 
 const initialState = {
@@ -9,24 +8,21 @@ const initialState = {
   error: '',
 };
 
-export const getSlidesList = createAsyncThunk(
-  'slides/fetchList',
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await SlidesServices.getAll();
-      return response.data.data;
-    } catch (error) {
-      return rejectWithValue([], error);
-    }
-  },
-);
+export const getSlidesList = createAsyncThunk('slides/fetchList', async () => {
+  try {
+    const response = await SlidesServices.getAll();
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+});
 
 export const getSlideById = createAsyncThunk('slides/id', async (id, { rejectWithValue }) => {
   try {
     const response = await SlidesServices.getById(id);
     return response.data.data;
   } catch (error) {
-    return rejectWithValue([], error);
+    throw error;
   }
 });
 
@@ -35,7 +31,7 @@ export const createSlide = createAsyncThunk('slide/create', async (slide, { reje
     const response = await SlidesServices.create(slide);
     return response.data.data;
   } catch (error) {
-    return rejectWithValue([], error);
+    throw error;
   }
 });
 
@@ -44,7 +40,7 @@ export const updateSlide = createAsyncThunk('slide/update', async (slide, { reje
     const response = await SlidesServices.update(slide);
     return response.data.data;
   } catch (error) {
-    return rejectWithValue([], error);
+    throw error;
   }
 });
 
@@ -53,7 +49,7 @@ export const deleteSlide = createAsyncThunk('slide/delete', async (id, { rejectW
     await SlidesServices.delete(id);
     return id;
   } catch (error) {
-    return rejectWithValue([], error);
+    throw error;
   }
 });
 
@@ -62,7 +58,7 @@ const slidesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [getSlidesList.pending]: (state, action) => {
+    [getSlidesList.pending]: (state) => {
       state.loading = true;
     },
     [getSlidesList.fulfilled]: (state, { payload }) => {
@@ -70,13 +66,12 @@ const slidesSlice = createSlice({
       state.loading = false;
       state.error = '';
     },
-    [getSlidesList.rejected]: (state, { payload, error }) => {
-      state.slidesList = payload;
-      state.error = error;
+    [getSlidesList.rejected]: (state, action) => {
+      state.error = action.error.message;
       state.loading = false;
     },
 
-    [getSlideById.pending]: (state, action) => {
+    [getSlideById.pending]: (state) => {
       state.loading = true;
     },
     [getSlideById.fulfilled]: (state, { payload }) => {
@@ -84,62 +79,50 @@ const slidesSlice = createSlice({
       state.loading = false;
       state.error = '';
     },
-    [getSlideById.rejected]: (state, { payload, error }) => {
-      state.slideActive = payload;
-      state.error = error;
+    [getSlideById.rejected]: (state, action) => {
+      state.error = action.error.message;
       state.loading = false;
     },
 
-    [createSlide.pending]: (state, action) => {
+    [createSlide.pending]: (state) => {
       state.loading = true;
     },
 
     [createSlide.fulfilled]: (state, { payload }) => {
       state.loading = false;
-      state.error = null;
       state.slidesList = [...state.slidesList, payload];
     },
     [createSlide.rejected]: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.error.payload;
     },
   },
 
-  [updateSlide.pending]: (state, action) => {
+  [updateSlide.pending]: (state) => {
     state.loading = true;
   },
 
   [updateSlide.fulfilled]: (state, { payload }) => {
-    const index = state.slidesList.findIndex((slide) => slide.id === payload.id);
-    const updatedSlide = { ...state.slidesList[index], ...payload };
-
+    state.slidesList = state.slidesList.map((slide) => (slide.id === payload.id ? payload : slide));
     state.loading = false;
-    state.error = null;
-    state.slidesList = [
-      ...state.slidesList.slice(0, index),
-      updatedSlide,
-      ...state.slidesList.slice(index + 1),
-    ];
   },
-
   [updateSlide.rejected]: (state, action) => {
     state.loading = false;
     state.error = action.payload;
   },
 
-  [deleteSlide.pending]: (state, action) => {
+  [deleteSlide.pending]: (state) => {
     state.loading = true;
   },
 
   [deleteSlide.fulfilled]: (state, { payload }) => {
     state.loading = false;
-    state.error = null;
     state.slidesList = state.slidesList.filter((slide) => slide.id !== payload.id);
   },
 
   [deleteSlide.rejected]: (state, action) => {
     state.loading = false;
-    state.error = action.payload;
+    state.error = action.error.message;
   },
 });
 
