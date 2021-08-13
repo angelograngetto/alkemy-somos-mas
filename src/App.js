@@ -23,7 +23,7 @@ import NewsList from './Components/News/NewsList';
 import Organization from './Components/Backoffice/Organization';
 import RegisterForm from './Components/Auth/RegisterForm';
 import SlidesForm from './Components/Slides/SlidesForm';
-import SlidesListScreen from './Components/Backoffice/Slides/Index';
+import SlidesListScreen from './Components/Backoffice/Slides';
 import UsersForm from './Components/Users/UsersForm';
 import UsersListScreen from './Components/Backoffice/Users/Index';
 import ContactForm from './Components/Contact/ContactForm';
