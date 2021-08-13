@@ -16,6 +16,7 @@ import {
   InputLeftAddon,
 } from '@chakra-ui/react';
 import OrganizationService from '../../../../Services/OrganitationService';
+import Alert from '../../../Utils/Alert';
 
 const Edit = (props) => {
   /*   let { name, file, shortDesc, longDesc, email, instagram, facebook, linkedin } = props;
@@ -73,9 +74,18 @@ const Edit = (props) => {
                 const organization = { ...values };
                 organization.id = props.id;
                 const response = await OrganizationService.edit(organization);
+                const responseAlert = await Alert(
+                  'success',
+                  'Operación satisfactoria',
+                  `La organización se editó correctamente a ${organization.name}`,
+                );
               } catch (error) {
                 // eslint-disable-next-line no-console
-                console.error(error);
+                const responseAlert = await Alert(
+                  'error',
+                  'Ocurrió un error',
+                  'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
+                );
               } finally {
                 actions.setSubmitting(false);
               }
