@@ -6,8 +6,8 @@ class NewsService {
     return response;
   }
 
-  static async update(id, news) {
-    const response = await Put('/news', id, { ...news });
+  static async update(news) {
+    const response = await Put('/news', news.id, { ...news });
     return response;
   }
 

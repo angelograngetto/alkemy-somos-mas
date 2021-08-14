@@ -14,16 +14,16 @@ import DetailView from './Components/Activities/Detail/DetailView';
 import Donacion from './Components/Donations/Donacion';
 import Edit from './Components/Backoffice/Organization/Edit';
 import Gracias from './Components/Donations/Gracias';
-import Home from './Components/Home';
+import Home from './Components/Home/Index';
 import MemberForm from './Components/Backoffice/MemberForm';
 import MemberList from './Components/Backoffice/MemberList';
 import News from './Components/News/index';
 import NewsForm from './Components/News/NewsForm';
 import NewsList from './Components/News/NewsList';
-import Organization from './Components/Backoffice/Organization';
+import Organization from './Components/Backoffice/Organization/Index';
 import RegisterForm from './Components/Auth/RegisterForm';
 import SlidesForm from './Components/Slides/SlidesForm';
-import SlidesListScreen from './Components/Backoffice/Slides';
+import SlidesListScreen from './Components/Backoffice/Slides/Index';
 import UsersForm from './Components/Users/UsersForm';
 import UsersListScreen from './Components/Backoffice/Users/Index';
 import ContactForm from './Components/Contact/ContactForm';
@@ -42,6 +42,7 @@ function App() {
         <Route exact component={MemberList} path="/backoffice/members" />
         <Route exact component={NewsList} path="/backoffice/news" />
         <Route exact component={NewsForm} path="/backoffice/news/create" />
+        <Route exact component={NewsForm} path="/backoffice/news/create/:id" />
         <Route exact component={Organization} path="/backoffice/organization" />
         <Route exact component={Edit} path="/backoffice/organization/edit" />
         <Route exact component={MemberForm} path="/backoffice/organization/edit/:id" />

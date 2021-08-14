@@ -13,23 +13,20 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchNewsList, deleteNews } from '../../features/news/newsSlice';
 import LinkNews from './LinkNews';
-import NewsService from '../../Services/NewsService';
 import Alert from '../Utils/Alert';
 import ModalEdit from '../Backoffice/Utils/ModalEdit';
 import NewsForm from './NewsForm';
 
 const NewsList = () => {
-  const [news, setNews] = useState([]);
-  const fetchNews = async () => {
-    try {
-      const resp = await NewsService.getNews();
-      setNews(resp.data.data);
-    } catch (err) {
-      alert(err);
-    }
-  };
+  const dispatch = useDispatch();
+  const { newsList } = useSelector((state) => state.news);
+
+  useEffect(() => {
+    dispatch(fetchNewsList());
+  }, []);
 
   //MODAL EDIT
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -39,19 +36,15 @@ const NewsList = () => {
     setToEditNew(newItem);
   };
 
-  useEffect(() => {
-    fetchNews();
-  }, [isEditOpen]);
-
-  const handleClick = async (id) => {
+  const handleDelete = async (id) => {
     const respAlert = await Alert(
       'confirm',
       '¿Estás seguro de querer eliminar esta novedad?',
       'Esta acción no se puede deshacer',
     );
     if (respAlert) {
-      await NewsService.remove(id);
-      await fetchNews();
+      dispatch(deleteNews(id));
+      dispatch(fetchNewsList());
     }
   };
 
@@ -60,7 +53,6 @@ const NewsList = () => {
       <Text fontSize={24} fontWeight="bold" textAlign="center">
         Listado de Novedades
       </Text>
-
       <Box m="5">
         <Table size="md" variant="striped">
           <TableCaption mb="2" placement="top">
@@ -75,8 +67,8 @@ const NewsList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {news.length > 0 ? (
-              news.map((news, index) => (
+            {newsList?.length > 0 ? (
+              newsList.map((news, index) => (
                 <Tr key={index}>
                   <Td textAlign="center">{news.name}</Td>
                   <Td>
@@ -94,14 +86,14 @@ const NewsList = () => {
                     <Button backgroundColor="yellow" onClick={() => handleEditOpen(news)}>
                       Editar
                     </Button>
-                    <Button backgroundColor="red.500" m="2" onClick={() => handleClick(news.id)}>
+                    <Button backgroundColor="red.500" m="2" onClick={() => handleDelete(news.id)}>
                       Borrar
                     </Button>
                   </Td>
                 </Tr>
               ))
             ) : (
-              <p>No hay novedades</p>
+              <Text>No hay novedades.</Text>
             )}
           </Tbody>
         </Table>

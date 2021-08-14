@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import NewsService from '../../Services/NewsService';
+import { createNews, updateNews } from '../../features/news/newsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import CategoriesService from '../../Services/CategoriesServices';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
@@ -16,11 +17,16 @@ import {
 import { useFormik } from 'formik';
 import validationSchema from './ValidationSchema';
 import '../../Components/FormStyles.css';
+import { useHistory } from 'react-router-dom';
 
 const NewsForm = ({ news }) => {
   const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const history = useHistory();
 
-  //FETCHING CATEGORIES
+  const { loading, error, success } = useSelector((state) => state.news);
+
+  // FETCHING CATEGORIES
 
   const fetchCategories = async () => {
     const response = await CategoriesService.getAll();
@@ -34,9 +40,9 @@ const NewsForm = ({ news }) => {
   //SUBMIT OR EDIT FUNCTION DEPENDING ON EXISTENCE OF NEWS
   const onSubmit = async (values) => {
     const img = await convertBase64(values.image);
-    const data = {
-      id: values.id,
+    let data = {
       name: values.name,
+      required: false,
       content: values.content,
       category: values.category,
       image: img,
@@ -44,10 +50,10 @@ const NewsForm = ({ news }) => {
 
     if (news) {
       data.id = news.id;
-      NewsService.update(news.id, data);
+      dispatch(updateNews(data));
       formik.resetForm();
     } else {
-      NewsService.create(data);
+      dispatch(createNews(data));
       formik.resetForm();
     }
   };
@@ -55,10 +61,10 @@ const NewsForm = ({ news }) => {
   //INITIAL VALUES
 
   const initialValues = {
-    name: news ? news.name : '',
-    content: news ? news.content : '',
-    category: news ? news.category : '',
-    image: news ? news.image : '',
+    name: news?.name ?? '',
+    content: news?.content ?? '',
+    category: news?.category ?? '',
+    image: news?.image ?? '',
   };
 
   //FORMIK INITIAL VALUES
@@ -68,6 +74,7 @@ const NewsForm = ({ news }) => {
     validateOnBlur: true,
     onSubmit,
     validationSchema: validationSchema,
+    enableReinitialize: true,
   });
 
   return (
