@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createNews, updateNews } from '../../features/news/newsSlice';
-import { useDispatch } from 'react-redux';
-import CategoriesService from '../../Services/CategoriesServices';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCategories } from '../../features/categories/categoriesSlice';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
 import {
@@ -21,27 +21,13 @@ import { useHistory } from 'react-router-dom';
 import Alert from '../Utils/Alert';
 
 const NewsForm = ({ news, setIsEditOpen }) => {
-  const [categories, setCategories] = useState([]);
+  const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const history = useHistory();
 
   // FETCHING CATEGORIES
-
-  const fetchCategories = async () => {
-    try {
-      const response = await CategoriesService.getAll();
-      setCategories(response);
-    } catch (error) {
-      await Alert(
-        'error',
-        'Ocurrió un error',
-        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
-      );
-    }
-  };
-
   useEffect(() => {
-    fetchCategories();
+    dispatch(fetchCategories());
   }, []);
 
   //SUBMIT OR EDIT FUNCTION DEPENDING ON EXISTENCE OF NEWS

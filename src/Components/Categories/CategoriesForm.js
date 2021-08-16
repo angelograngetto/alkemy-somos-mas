@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Formik, Form, Field } from 'formik';
 import CKEditor from 'ckeditor4-react';
@@ -14,10 +14,12 @@ import {
   Container,
   Link,
 } from '@chakra-ui/react';
-import CategoriesServices from '../../Services/CategoriesServices';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateCategory, createCategory } from '../../features/categories/categoriesSlice';
 
 const CategoriesForm = ({ categorie }) => {
-  const [utils, setUtils] = useState({ error: false, success: false, loading: false });
+  const dispatch = useDispatch();
+  const { status } = useSelector((state) => state.categories);
 
   const convertBase64 = (file) => {
     if (file) {
@@ -61,7 +63,6 @@ const CategoriesForm = ({ categorie }) => {
       validationSchema={validateSchema}
       onSubmit={(values, actions) => {
         if (categorie && !categorie.id) return;
-        setUtils({ ...utils, loading: true });
         let data = {
           name: values.name,
           description: values.description,
@@ -69,28 +70,25 @@ const CategoriesForm = ({ categorie }) => {
         };
         if (categorie) {
           if (values.image.url) {
-            CategoriesServices.update(
-              { name: values.name, description: values.description },
-              categorie.id,
-            )
-              .then((resp) => setUtils({ error: false, loading: false, success: true }))
-              .catch((err) => setUtils({ error: true, loading: false, success: false }));
+            dispatch(
+              updateCategory({
+                name: values.name,
+                description: values.description,
+                id: categorie.id,
+              }),
+            );
           } else {
-            CategoriesServices.update(data, categorie.id)
-              .then((resp) => setUtils({ error: false, loading: false, success: true }))
-              .catch((err) => setUtils({ error: true, loading: false, success: false }));
+            dispatch(updateCategory({ ...data, id: categorie.id }));
           }
         } else {
-          CategoriesServices.create(data)
-            .then((resp) => {
-              actions.resetForm({
-                name: '',
-                description: '',
-                image: '',
-              });
-              setUtils({ error: false, loading: false, success: true });
-            })
-            .catch((err) => setUtils({ error: true, loading: false, success: false }));
+          dispatch(createCategory(data));
+          if (status === 'complete') {
+            actions.resetForm({
+              name: '',
+              description: '',
+              image: '',
+            });
+          }
         }
       }}
     >
@@ -161,7 +159,7 @@ const CategoriesForm = ({ categorie }) => {
               />
             ) : null}
 
-            {utils.loading ? (
+            {status === 'loading' ? (
               <Button isLoading colorScheme="blue" loadingText="Enviando" my="2">
                 Enviar
               </Button>
@@ -171,14 +169,14 @@ const CategoriesForm = ({ categorie }) => {
               </Button>
             )}
 
-            {utils.success ? (
+            {status === 'complete' ? (
               <Alert my="2" status="success">
                 <AlertIcon />
                 {categorie
                   ? 'La categoría ha sido editada exitosamente '
                   : 'La categoría se ha creado exitosamente'}
               </Alert>
-            ) : utils.error ? (
+            ) : status === 'failed' ? (
               <Alert my="2" status="error">
                 <AlertIcon />
                 {categorie

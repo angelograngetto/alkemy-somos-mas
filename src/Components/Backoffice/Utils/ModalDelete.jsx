@@ -20,6 +20,7 @@ import {
 import { useDispatch } from 'react-redux';
 import { deleteActivity } from '../../../features/activities/activitiesSlice';
 import { deleteSlide } from '../../../features/slides/slidesSlice';
+import { deleteCategory } from '../../../features/categories/categoriesSlice';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
   const toast = useToast();
@@ -36,6 +37,8 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
       case 'activities':
         dispatch(deleteActivity(toDeleteObj.id));
         break;
+      case 'categories':
+        dispatch(deleteCategory(toDeleteObj.id));
       default:
         break;
     }

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Flex,
   Divider,
@@ -19,12 +20,16 @@ import CategoriesForm from '../../Categories/CategoriesForm';
 import ModalEdit from '../Utils/ModalEdit';
 import ModalDelete from '../Utils/ModalDelete';
 import Error from '../Utils/Error';
-import CategoriesServices from '../../../Services/CategoriesServices';
+import { fetchCategories } from '../../../features/categories/categoriesSlice';
 
 const CategoriesListScreen = () => {
-  const [error, setError] = useState('');
-  const [categories, setCategories] = useState([]);
+  const dispatch = useDispatch();
+  const { categories, status, error } = useSelector((state) => state.categories);
   const history = useHistory();
+
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, []);
 
   // ↓↓↓ MODAL EDIT ↓↓↓ //
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -41,19 +46,6 @@ const CategoriesListScreen = () => {
     setIsDeleteOpen(true);
     setToDeleteCategorie(categorie);
   };
-
-  useEffect(() => {
-    async function getCategories() {
-      await CategoriesServices.getAll()
-        .then(function (response) {
-          setCategories(response);
-        })
-        .catch(function (error) {
-          setError(error);
-        });
-    }
-    getCategories();
-  }, [isDeleteOpen, isEditOpen]);
 
   const toCreate = () => history.push('/backoffice/categories/create');
 

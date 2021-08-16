@@ -15,6 +15,7 @@ import Donacion from './Components/Donations/Donacion';
 import Edit from './Components/Backoffice/Organization/Edit';
 import Gracias from './Components/Donations/Gracias';
 import Home from './Components/Home/Index';
+import LoginForm from './Components/Auth/LoginForm';
 import MemberForm from './Components/Backoffice/MemberForm';
 import MemberList from './Components/Backoffice/MemberList';
 import News from './Components/News/index';
@@ -61,11 +62,11 @@ function App() {
           <Donacion text="¡Contribuye!" />
         </Route>
         <Route exact component={Gracias} path="/gracias" />
+        <Route exact component={LoginForm} path="/login" />
         <Route exact component={About} path="/nosotros" />
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={RegisterForm} path="/register" />
-        <Route exact component={LoginForm} path="/login" />
       </Switch>
     </Router>
   );

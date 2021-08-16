@@ -1,22 +1,21 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Container, Image, Stack, Text } from '@chakra-ui/react';
 import TitleComponent from '../../../Title/TitleComponent';
 import NewsService from '../../../../Services/NewsService';
-import CategoriesService from '../../../../Services/CategoriesServices';
+import { fetchCategoryById } from '../../../../features/categories/categoriesSlice';
 
 const DetailNew = () => {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const { category } = useSelector((state) => state.categories);
   const [newItem, setNewItem] = useState('');
-  const [category, setCategory] = useState('');
   const fetchData = async () => {
     try {
       const newsResponse = await NewsService.getNews(id);
       setNewItem(newsResponse.data.data);
-      const categoriesResponse = await CategoriesService.getById(
-        newsResponse.data.data.category_id,
-      );
-      setCategory(categoriesResponse.data);
+      dispatch(fetchCategoryById(newsResponse.data.data.category_id));
     } catch (err) {
       alert(err);
     }
