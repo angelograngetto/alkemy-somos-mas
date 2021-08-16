@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
@@ -61,11 +61,7 @@ function App() {
           <Donacion text="¡Contribuye!" />
         </Route>
         <Route exact component={Gracias} path="/gracias" />
-        <Route
-          exact
-          path="/nosotros"
-          render={() => <About sobreNosotros={'texto que se obtendrá de la api'} />}
-        />
+        <Route exact component={About} path="/nosotros" />
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={RegisterForm} path="/register" />
