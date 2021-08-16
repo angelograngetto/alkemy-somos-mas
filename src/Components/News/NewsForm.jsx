@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createNews, updateNews } from '../../features/news/newsSlice';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import CategoriesService from '../../Services/CategoriesServices';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
@@ -18,19 +18,26 @@ import { useFormik } from 'formik';
 import validationSchema from './ValidationSchema';
 import '../../Components/FormStyles.css';
 import { useHistory } from 'react-router-dom';
+import Alert from '../Utils/Alert';
 
-const NewsForm = ({ news }) => {
+const NewsForm = ({ news, setIsEditOpen }) => {
   const [categories, setCategories] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { loading, error, success } = useSelector((state) => state.news);
-
   // FETCHING CATEGORIES
 
   const fetchCategories = async () => {
-    const response = await CategoriesService.getAll();
-    setCategories(response);
+    try {
+      const response = await CategoriesService.getAll();
+      setCategories(response);
+    } catch (error) {
+      await Alert(
+        'error',
+        'Ocurrió un error',
+        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
+      );
+    }
   };
 
   useEffect(() => {
@@ -39,27 +46,37 @@ const NewsForm = ({ news }) => {
 
   //SUBMIT OR EDIT FUNCTION DEPENDING ON EXISTENCE OF NEWS
   const onSubmit = async (values) => {
-    const img = await convertBase64(values.image);
-    let data = {
-      name: values.name,
-      required: false,
-      content: values.content,
-      category: values.category,
-      image: img,
-    };
+    try {
+      const img = await convertBase64(values.image);
+      let data = {
+        name: values.name,
+        required: false,
+        content: values.content,
+        category: values.category,
+        image: img,
+      };
 
-    if (news) {
-      data.id = news.id;
-      dispatch(updateNews(data));
-      formik.resetForm();
-    } else {
-      dispatch(createNews(data));
-      formik.resetForm();
+      if (news) {
+        data.id = news.id;
+        dispatch(updateNews(data));
+        setIsEditOpen(false);
+        await Alert('success', 'Novedad Editada', 'La novedad se editó correctamente');
+      } else {
+        dispatch(createNews(data));
+        formik.resetForm();
+        await Alert('success', 'Novedad Creada', 'La novedad se creó correctamente');
+        history.push('.');
+      }
+    } catch (error) {
+      await Alert(
+        'error',
+        'Ocurrió un error',
+        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
+      );
     }
   };
 
   //INITIAL VALUES
-
   const initialValues = {
     name: news?.name ?? '',
     content: news?.content ?? '',
@@ -68,7 +85,6 @@ const NewsForm = ({ news }) => {
   };
 
   //FORMIK INITIAL VALUES
-
   const formik = useFormik({
     initialValues: initialValues,
     validateOnBlur: true,

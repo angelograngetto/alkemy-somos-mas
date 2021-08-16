@@ -2,6 +2,8 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import NewsService from '../../Services/NewsService';
 
+import Alert from '../../Components/Utils/Alert';
+
 const initialState = {
   newsList: [],
 

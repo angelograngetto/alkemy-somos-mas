@@ -25,7 +25,15 @@ const NewsList = () => {
   const { newsList } = useSelector((state) => state.news);
 
   useEffect(() => {
-    dispatch(fetchNewsList());
+    try {
+      dispatch(fetchNewsList());
+    } catch (error) {
+      Alert(
+        'error',
+        'Ocurrió un error',
+        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
+      );
+    }
   }, []);
 
   //MODAL EDIT
@@ -44,6 +52,7 @@ const NewsList = () => {
     );
     if (respAlert) {
       dispatch(deleteNews(id));
+      await Alert('success', 'Novedad Eliminada', 'Novedad eliminada correctamente');
       dispatch(fetchNewsList());
     }
   };
@@ -100,7 +109,7 @@ const NewsList = () => {
       </Box>
 
       <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-        <NewsForm news={toEditNew} />
+        <NewsForm isEditOpen={isEditOpen} news={toEditNew} setIsEditOpen={setIsEditOpen} />
       </ModalEdit>
     </Box>
   );
