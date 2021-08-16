@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import TitleComponent from '../Title/TitleComponent';
 import ActivityContent from './ActivityContent';
-import { Box, Flex, SimpleGrid } from '@chakra-ui/react';
+import { Box, Flex, SimpleGrid, Alert as ChakraAlert, AlertIcon, Button } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchActivitiesList } from '../../features/activities/activitiesSlice';
+import ProgressBar from '../Utils/ProgressBar';
 import '../CardListStyles.css';
 import Alert from '../Utils/Alert';
 import getError from '../Utils/HttpErrors';
@@ -16,7 +17,7 @@ const ActivitiesList = () => {
     dispatch(fetchActivitiesList());
   }, []);
 
-  if (loading) return 'Loading...';
+  if (loading) return <ProgressBar colorScheme="blue" isIndeterminate={true} />;
 
   return (
     <Flex alignItems="center" flexDirection="column" flexWrap="wrap" justifyContent="center">
@@ -31,7 +32,7 @@ const ActivitiesList = () => {
       >
         <TitleComponent img="" text="ACTIVIDADES" />
       </Box>
-      <SimpleGrid columns={[1, 2, 3]} gap={12} mt={4}>
+      <SimpleGrid columns={activitiesList.length > 0 ? [1, 2, 3] : [1, 1, 1]} gap={12} mt={4}>
         {activitiesList.length > 0 ? (
           activitiesList.map((activity) => {
             return (
@@ -48,7 +49,29 @@ const ActivitiesList = () => {
             );
           })
         ) : (
-          <p>No hay actividades</p>
+          <Box alignItems="center" d="flex" flexDirection="column" justifyContent="center" m="4">
+            <ChakraAlert
+              alignItems="center"
+              d="flex"
+              flexDirection="column"
+              justifyContent="center"
+              status="error"
+              textAlign="center"
+            >
+              <AlertIcon />
+              Ocurrió un error al visualizar las actividades, comprueba tu conexión a internet o
+              inténtalo de nuevo.
+            </ChakraAlert>
+            <Button
+              colorScheme="blue"
+              my="2"
+              variant="outline"
+              w="fit-content"
+              onClick={() => dispatch(fetchActivitiesList())}
+            >
+              Volver a intentar
+            </Button>
+          </Box>
         )}
       </SimpleGrid>
     </Flex>

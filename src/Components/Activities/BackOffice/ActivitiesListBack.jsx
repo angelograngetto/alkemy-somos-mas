@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchActivitiesList } from '../../../features/activities/activitiesSlice';
@@ -67,33 +68,33 @@ const ActivitiesListBack = () => {
           <Tbody>
             {activitiesList.length > 0
               ? activitiesList.map((activity, index) => (
-                  <Tr key={index}>
-                    <Td textAlign="center">{activity.name}</Td>
-                    <Td>
-                      <AspectRatio maxW="100px" ratio={4 / 3}>
-                        <Image
-                          alt="Image Card"
-                          fallbackSrc="../images/placeholder/100x100.png"
-                          objectFit="cover"
-                          src={activity.image}
-                        />
-                      </AspectRatio>
-                    </Td>
-                    <Td textAlign="center">{new Date(activity.created_at).toLocaleDateString()}</Td>
-                    <Td textAlign="center">
-                      <Button backgroundColor="yellow" onClick={() => handleEditOpen(activity)}>
-                        Editar
-                      </Button>
-                      <Button
-                        backgroundColor="red.500"
-                        m="2"
-                        onClick={() => handleDeleteOpen(activity)}
-                      >
-                        Borrar
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                <Tr key={index}>
+                  <Td textAlign="center">{activity.name}</Td>
+                  <Td>
+                    <AspectRatio maxW="100px" ratio={4 / 3}>
+                      <Image
+                        alt="Image Card"
+                        fallbackSrc="../images/placeholder/100x100.png"
+                        objectFit="cover"
+                        src={activity.image}
+                      />
+                    </AspectRatio>
+                  </Td>
+                  <Td textAlign="center">{new Date(activity.created_at).toLocaleDateString()}</Td>
+                  <Td textAlign="center">
+                    <Button backgroundColor="yellow" onClick={() => handleEditOpen(activity)}>
+                      Editar
+                    </Button>
+                    <Button
+                      backgroundColor="red.500"
+                      m="2"
+                      onClick={() => handleDeleteOpen(activity)}
+                    >
+                      Borrar
+                    </Button>
+                  </Td>
+                </Tr>
+              ))
               : null}
           </Tbody>
         </Table>
