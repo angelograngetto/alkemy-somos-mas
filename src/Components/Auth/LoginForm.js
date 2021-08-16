@@ -4,6 +4,8 @@ import { Button, ButtonGroup } from '@chakra-ui/react';
 import '../FormStyles.css';
 import { Form, useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useDispatch } from 'react-redux';
+import { login } from '../../features/auth/authSlice';
 
 const LoginForm = () => {
   let user = {
@@ -11,6 +13,7 @@ const LoginForm = () => {
     password: '',
   };
 
+  const dispatch = useDispatch();
   // Expresion regular para un número, una letra y un símbolo
   const passRegex = /^(?=.*[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
 
@@ -32,6 +35,7 @@ const LoginForm = () => {
         password: values.password,
       };
       localStorage.setItem('token', 'tokenValueExample');
+      dispatch(login(user));
     },
   });
 

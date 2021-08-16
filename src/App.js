@@ -69,6 +69,7 @@ function App() {
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={RegisterForm} path="/register" />
+        <Route exact component={LoginForm} path="/login" />
       </Switch>
     </Router>
   );
