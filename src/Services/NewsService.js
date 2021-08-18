@@ -20,6 +20,11 @@ class NewsService {
     const response = await Get('/news', id ? id : null);
     return response;
   }
+
+  static async search(value) {
+    const response = await Get(`/news?search=${value}`);
+    return response;
+  }
 }
 
 export default NewsService;
