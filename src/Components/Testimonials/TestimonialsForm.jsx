@@ -1,14 +1,11 @@
 import React from 'react';
 import axios from 'axios';
 import * as yup from 'yup';
-
 import { useFormik } from 'formik';
 import CKEditor from 'ckeditor4-react';
-
 import { convertBase64 } from '../Utils/ConvertBase64';
-
+import Alert from '../Utils/Alert';
 import '../FormStyles.css';
-
 const path = process.env.REACT_APP_TESTIMONIALS_ENDPOINT;
 
 const TestimonialForm = ({ testimonial }) => {
@@ -52,34 +49,60 @@ const TestimonialForm = ({ testimonial }) => {
   };
 
   const createTestimonial = async (values) => {
-    const image = await convertBase64(values.image);
-    const newTestimony = {
-      name: values.name,
-      description: values.description,
-      image: image,
-      required: false,
-      schema: {
-        $ref: '#/definitions/Testimonial',
-      },
-    };
-    const resp = await axios.post('http://ongapi.alkemy.org/api' + path, newTestimony);
+    try {
+      const image = await convertBase64(values.image);
+      const newTestimony = {
+        name: values.name,
+        description: values.description,
+        image: image,
+        required: false,
+        schema: {
+          $ref: '#/definitions/Testimonial',
+        },
+      };
+      const resp = await axios.post('http://ongapi.alkemy.org/api' + path, newTestimony);
+      Alert(
+        'success',
+        'Operación completada con éxito',
+        `El testimonio ${newTestimony.name} fue creado correctamente`,
+      );
+    } catch (err) {
+      Alert(
+        'error',
+        'Ocurrió un error',
+        'Por favor, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+      );
+    }
   };
 
   const editTestimonial = async (values) => {
-    const image = await convertBase64(values.image);
-    const editedTestimony = {
-      name: values.name,
-      description: values.description,
-      image: image,
-      required: false,
-      schema: {
-        $ref: '#/definitions/Testimonial',
-      },
-    };
-    const resp = await axios.put(
-      `http://ongapi.alkemy.org/api${path}/${testimonial.id}`,
-      editedTestimony,
-    );
+    try {
+      const image = await convertBase64(values.image);
+      const editedTestimony = {
+        name: values.name,
+        description: values.description,
+        image: image,
+        required: false,
+        schema: {
+          $ref: '#/definitions/Testimonial',
+        },
+      };
+      const resp = await axios.put(
+        `http://ongapi.alkemy.org/api${path}/${testimonial.id}`,
+        editedTestimony,
+      );
+      Alert(
+        'success',
+        'Operación completada con éxito',
+        `El testimonio ${editedTestimony.name} fue editado correctamente`,
+      );
+    } catch (err) {
+      Alert(
+        'error',
+        'Ocurrió un error',
+        'Por favor, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+      );
+    }
   };
 
   return (
