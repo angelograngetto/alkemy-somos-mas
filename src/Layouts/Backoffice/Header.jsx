@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Stack, Text } from '@chakra-ui/react';
+import { Stack } from '@chakra-ui/react';
 import HeaderLogo from './HeaderLogo';
 import MenuToggle from './MenuToggle';
+import MenuLinks from './MenuLinks';
 
-const Header = () => {
+const Header = ({ links }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -17,10 +18,12 @@ const Header = () => {
       direction="row"
       height="70px"
       justifyContent="space-between"
-      paddingX={5}
+      paddingX={8}
+      w="100%"
     >
+      <MenuToggle isOpen={isOpen} links={links} toggle={toggle} />
       <HeaderLogo />
-      <MenuToggle isOpen={isOpen} toggle={toggle} />
+      <MenuLinks links={links} />
     </Stack>
   );
 };
