@@ -1,21 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TitleComponent from '../Title/TitleComponent';
 import ActivityContent from './ActivityContent';
 import { Box, Flex, SimpleGrid, Alert as ChakraAlert, AlertIcon, Button } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchActivitiesList } from '../../features/activities/activitiesSlice';
+import {
+  fetchActivitiesList,
+  searchActivitiesList,
+} from '../../features/activities/activitiesSlice';
 import ProgressBar from '../Utils/ProgressBar';
 import '../CardListStyles.css';
 import Alert from '../Utils/Alert';
 import getError from '../Utils/HttpErrors';
+import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
 const ActivitiesList = () => {
   const dispatch = useDispatch();
-  const { activitiesList, error, loading } = useSelector((state) => state.activities);
+  const [term, setTerm] = useState('');
+  const [activitiesFiltered, setActivitiesFiltered] = useState([]);
+  const { activitiesList, searchResults, error, loading } = useSelector(
+    (state) => state.activities,
+  );
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
   }, []);
+
+  useEffect(() => {
+    setActivitiesFiltered(activitiesList);
+  }, [activitiesList]);
+
+  useEffect(() => {
+    if (term.length >= 3) {
+      dispatch(searchActivitiesList(term));
+    }
+  }, [term]);
+
+  useEffect(() => {
+    setActivitiesFiltered(searchResults);
+  }, [searchResults]);
 
   if (loading) return <ProgressBar colorScheme="blue" isIndeterminate={true} />;
 
@@ -32,9 +54,14 @@ const ActivitiesList = () => {
       >
         <TitleComponent img="" text="ACTIVIDADES" />
       </Box>
+      <SearchInput
+        onDebounce={(value) => {
+          setTerm(value);
+        }}
+      />
       <SimpleGrid columns={activitiesList.length > 0 ? [1, 2, 3] : [1, 1, 1]} gap={12} mt={4}>
         {activitiesList.length > 0 ? (
-          activitiesList.map((activity) => {
+          activitiesFiltered.map((activity) => {
             return (
               <Box
                 key={activity.id}

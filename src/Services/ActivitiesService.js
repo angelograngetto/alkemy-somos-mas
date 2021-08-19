@@ -20,6 +20,11 @@ class ActivitiesService {
     const response = await Get(path, id ? id : null);
     return response;
   }
+
+  static async search(value) {
+    const response = await Get(`activities?search=${value}`);
+    return response;
+  }
 }
 
 export default ActivitiesService;
