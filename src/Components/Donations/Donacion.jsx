@@ -1,5 +1,6 @@
-import { Box, Button, Text } from '@chakra-ui/react';
 import React from 'react';
+import { Box, Button, Text, Image } from '@chakra-ui/react';
+import ScriptTag from 'react-script-tag';
 
 const Donacion = ({ text }) => {
   return (
@@ -13,15 +14,14 @@ const Donacion = ({ text }) => {
         mt="220px"
       >
         <Text fontSize={{ base: '30px', md: '40px', lg: '50px' }}>{text}</Text>
-        <Button
-          _hover={{ bg: '#9999ff' }}
-          bg="#6767FF"
-          color="white"
-          marginTop={{ base: '30px', lg: '10px' }}
-        >
-          Mercadopago
-        </Button>
-        {/* ADD STYLE OF BUTTON */}
+        <Box alignItems="center" display="flex" flexDirection="column">
+          <Image alt="" src="https://form.com.ar/wp-content/uploads/2020/09/form-mercadopago.png" />
+          <ScriptTag
+            data-preference-id="198476654-f50d59a9-3348-4973-a1bb-a6a4ac270b6c"
+            data-source="button"
+            src="https://www.mercadopago.com.ar/integrations/v1/web-payment-checkout.js"
+          />
+        </Box>
       </Box>
     </>
   );
