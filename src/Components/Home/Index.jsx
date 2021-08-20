@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box, Alert, AlertIcon, Button, Container } from '@chakra-ui/react';
-import Slides from '../Slides/Index';
+import Slides from '../Slides';
 import OrganizationService from '../../Services/OrganitationService';
 import ProgressBar from '../Utils/ProgressBar';
+import PublicHeader from '../Headers/PublicHeader';
+
+const linksList = [
+  { text: 'Home', to: '/', requireLogin: false },
+  { text: 'Nosotros', to: '/nosotros', requireLogin: false },
+  { text: 'Contacto', to: '/contacto', requireLogin: false },
+  { text: 'Admin', to: '/admin', requireLogin: true },
+];
 
 export const Home = () => {
   const [organization, setOrganization] = useState([]);
@@ -12,7 +20,6 @@ export const Home = () => {
     try {
       setUtils({ error: false, loading: true });
       const response = await OrganizationService.get();
-      console.log(response);
       setOrganization(response.data);
       setUtils({ error: false, loading: false });
     } catch (err) {
@@ -26,6 +33,7 @@ export const Home = () => {
 
   return (
     <>
+      <PublicHeader options={linksList} />
       {utils.loading ? (
         <ProgressBar colorScheme="blue" isIndeterminate={true} />
       ) : utils.error ? (
