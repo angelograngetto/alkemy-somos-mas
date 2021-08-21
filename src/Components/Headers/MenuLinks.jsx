@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Stack } from '@chakra-ui/react';
 import { useLocation } from 'react-router-dom';
 import MenuItem from './MenuItem';
+import DonateButton from '../Donations/DonateButton';
 
 const MenuLinks = ({ isOpen, isLogged, options }) => {
+  const { auth, isAdmin } = useSelector((state) => state.auth);
   const location = useLocation();
 
   if (!isLogged) {
@@ -37,6 +40,7 @@ const MenuLinks = ({ isOpen, isLogged, options }) => {
             {option.text}
           </MenuItem>
         ))}
+        {auth && !isAdmin && <DonateButton isActive={location.pathname === '/donar'} to="/donar" />}
       </Stack>
     </Box>
   );
