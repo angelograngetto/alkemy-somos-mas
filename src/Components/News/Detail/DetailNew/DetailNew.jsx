@@ -3,29 +3,43 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { Container, Image, Stack, Text } from '@chakra-ui/react';
 import TitleComponent from '../../../Title/TitleComponent';
-import NewsService from '../../../../Services/NewsService';
+import CategoriesService from '../../../../Services/CategoriesServices';
+import { fetchNewsList } from '../../../../features/news/newsSlice';
 import { fetchCategoryById } from '../../../../features/categories/categoriesSlice';
+import Alert from '../../../Utils/Alert';
 
 const DetailNew = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const { newsList: newItem } = useSelector((state) => state.news);
   const { category } = useSelector((state) => state.categories);
-  const [newItem, setNewItem] = useState('');
-  const fetchData = async () => {
-    try {
-      const newsResponse = await NewsService.getNews(id);
-      setNewItem(newsResponse.data.data);
-      dispatch(fetchCategoryById(newsResponse.data.data.category_id));
-    } catch (err) {
-      alert(err);
-    }
-  };
+
+  const dispatch = useDispatch();
+
   useEffect(() => {
-    fetchData();
+    const fetchNew = async () => {
+      const response = await dispatch(fetchNewsList(id));
+
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.payload);
+      }
+    };
+
+    const getCategory = async () => {
+      const response = await dispatch(fetchCategoryById(newItem.category_id));
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.payload);
+      }
+    };
+    fetchNew();
+    if (newItem) {
+      getCategory();
+    }
   }, [id]);
 
   const content = newItem?.content?.replace(/<[^>]+>/g, '');
   const image = newItem?.image !== '' ? newItem?.image : 'https://via.placeholder.com/350';
+  if (!newItem) return null;
+
   return (
     <Container maxWidth={{ base: 'container.xl', md: 'container.xl' }} paddingY={20}>
       <TitleComponent text={newItem?.name} />
@@ -42,7 +56,7 @@ const DetailNew = () => {
             minWidth={{ base: '40%', md: '25%' }}
             padding={1}
           >
-            <Text>{category?.name}</Text>
+            {category ? <Text>{category.name}</Text> : null}
           </Stack>
           <Text fontSize={24} fontWeight="bold">
             Descripción

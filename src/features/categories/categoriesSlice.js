@@ -51,7 +51,7 @@ export const categoriesSlice = createSlice({
     },
     [fetchCategoryById.fulfilled]: (state, action) => {
       state.status = 'complete';
-      state.category = action.payload.data;
+      state.category = action.payload.data[0];
     },
     [fetchCategoryById.rejected]: (state, action) => {
       state.status = 'failed';

@@ -1,28 +1,27 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 import NewsService from '../../Services/NewsService';
+import getSpanishError from '../../Components/Utils/HttpErrors';
 
 import Alert from '../../Components/Utils/Alert';
 
 const initialState = {
   newsList: [],
-
   loading: false,
-
   success: false,
-
   error: null,
 };
 
 export const fetchNewsList = createAsyncThunk(
   'news/get',
 
-  async (_, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await NewsService.getNews();
+      const response = await NewsService.getNews(id);
       return response.data.data;
     } catch (error) {
-      return rejectWithValue([], error);
+      const errorMessage = getSpanishError(error.message);
+      return rejectWithValue(errorMessage || error.message);
     }
   },
 );
@@ -35,7 +34,8 @@ export const createNews = createAsyncThunk(
       const response = await NewsService.create(news);
       return response.data.data;
     } catch (error) {
-      return rejectWithValue(error);
+      const errorMessage = getSpanishError(error.message);
+      return rejectWithValue(errorMessage || error.message);
     }
   },
 );
@@ -59,40 +59,32 @@ export const deleteNews = createAsyncThunk(
         return id;
       }
     } catch (error) {
-      return rejectWithValue(error);
+      const errorMessage = getSpanishError(error.message);
+      return rejectWithValue(errorMessage);
     }
   },
 );
 
 const newsSlice = createSlice({
   name: 'news',
-
   initialState,
-
   reducers: {},
-
   extraReducers: {
     [fetchNewsList.pending]: (state) => {
       state.loading = true;
+      state.success = false;
     },
 
     [fetchNewsList.fulfilled]: (state, { payload }) => {
       state.newsList = payload;
-
       state.loading = false;
-
       state.success = true;
-
       state.error = null;
     },
 
-    [fetchNewsList.rejected]: (state, { payload, error }) => {
-      state.newsList = payload;
-
-      state.error = error;
-
+    [fetchNewsList.rejected]: (state, { payload }) => {
+      state.error = payload;
       state.success = false;
-
       state.loading = false;
     },
 
@@ -102,20 +94,15 @@ const newsSlice = createSlice({
 
     [createNews.fulfilled]: (state, { payload }) => {
       state.loading = false;
-
       state.success = true;
-
       state.error = null;
-
       state.newsList = [...state.newsList, payload];
     },
 
-    [createNews.rejected]: (state, { error }) => {
+    [createNews.rejected]: (state, { payload }) => {
       state.loading = false;
-
       state.success = false;
-
-      state.error = error;
+      state.error = payload;
     },
 
     [updateNews.pending]: (state) => {
@@ -128,47 +115,36 @@ const newsSlice = createSlice({
       const updatedNews = { ...state.newsList[index], ...payload };
 
       state.loading = false;
-
       state.success = true;
-
       state.error = null;
-
       state.newsList = [
         ...state.newsList.slice(0, index),
-
         updatedNews,
-
         ...state.newsList.slice(index + 1),
       ];
     },
 
     [updateNews.rejected]: (state, { error }) => {
       state.loading = false;
-
       state.success = false;
-
       state.error = error;
     },
 
     [deleteNews.pending]: (state) => {
       state.loading = true;
+      state.success = false;
     },
 
     [deleteNews.fulfilled]: (state, { payload }) => {
       state.loading = false;
-
       state.success = true;
-
       state.error = null;
-
       state.newsList = state.newsList.filter((news) => news.id !== payload);
     },
 
     [deleteNews.rejected]: (state, { error }) => {
       state.loading = false;
-
       state.success = false;
-
       state.error = error;
     },
   },

@@ -16,7 +16,8 @@ const validationSchema = yup.object().shape({
         (value && value.type === 'image/jpeg') ||
         (value && value.type === 'image/jpg') ||
         (value && value.type === 'image/gif') ||
-        (value && value.type === 'image/png')
+        (value && value.type === 'image/png') ||
+        (value && typeof value === 'string')
       );
     }),
 });

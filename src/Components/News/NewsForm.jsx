@@ -1,76 +1,79 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { createNews, updateNews } from '../../features/news/newsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchCategories } from '../../features/categories/categoriesSlice';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
 import {
-  Text,
-  InputGroup,
-  Input,
-  Stack,
-  FormControl,
-  Select,
-  FormLabel,
   Button,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  InputGroup,
+  Select,
+  Stack,
+  Text,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
 import validationSchema from './ValidationSchema';
-import '../../Components/FormStyles.css';
 import { useHistory } from 'react-router-dom';
-import Alert from '../Utils/Alert';
+import Alert from '../../Components/Utils/Alert';
+import '../../Components/FormStyles.css';
 
 const NewsForm = ({ news, setIsEditOpen }) => {
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
   const history = useHistory();
 
-  // FETCHING CATEGORIES
+  const fetchCategories = async () => {
+    try {
+      const response = await CategoriesService.getAll();
+      setCategories(response);
+    } catch (error) {
+      Alert('error', 'Algo salió mal', error.message);
+    }
+  };
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
 
-  //SUBMIT OR EDIT FUNCTION DEPENDING ON EXISTENCE OF NEWS
   const onSubmit = async (values) => {
-    try {
-      const img = await convertBase64(values.image);
-      let data = {
-        name: values.name,
-        required: false,
-        content: values.content,
-        category: values.category,
-        image: img,
-      };
+    const img = await convertBase64(values.image);
 
-      if (news) {
-        data.id = news.id;
-        dispatch(updateNews(data));
-        setIsEditOpen(false);
-        await Alert('success', 'Novedad Editada', 'La novedad se editó correctamente');
-      } else {
-        dispatch(createNews(data));
-        formik.resetForm();
-        await Alert('success', 'Novedad Creada', 'La novedad se creó correctamente');
-        history.push('.');
+    let data = {
+      name: values.name,
+      required: false,
+      content: values.content,
+      category_id: values.category,
+      image: img,
+    };
+
+    if (news) {
+      data.id = news.id;
+      const response = await dispatch(updateNews(data));
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.payload);
       }
-    } catch (error) {
-      await Alert(
-        'error',
-        'Ocurrió un error',
-        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
-      );
+      setIsEditOpen(false);
+      Alert('success', 'Éxito', 'Novedad editada correctamente');
+    } else {
+      const response = await dispatch(createNews(data));
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.payload);
+      }
+      Alert('success', 'Éxito', 'Novedad creada correctamente');
+      history.push('/backoffice/news');
     }
   };
 
-  //INITIAL VALUES
   const initialValues = {
     name: news?.name ?? '',
     content: news?.content ?? '',
-    category: news?.category ?? '',
+    category: news?.category_id ?? '',
     image: news?.image ?? '',
   };
 
-  //FORMIK INITIAL VALUES
   const formik = useFormik({
     initialValues: initialValues,
     validateOnBlur: true,
@@ -78,6 +81,10 @@ const NewsForm = ({ news, setIsEditOpen }) => {
     validationSchema: validationSchema,
     enableReinitialize: true,
   });
+
+  const handleSelectChanged = (e) => {
+    formik.setFieldValue('category', e.currentTarget.value);
+  };
 
   return (
     <form className="form-container" onSubmit={formik.handleSubmit}>
@@ -124,15 +131,14 @@ const NewsForm = ({ news, setIsEditOpen }) => {
               className="select-field"
               name="category"
               value={formik.values.category}
-              onBlur={formik.handleBlur}
-              onChange={formik.handleChange}
+              onChange={handleSelectChanged}
             >
               <option disabled value="">
                 Elija una categoría
               </option>
               {categories &&
                 categories.map((category) => (
-                  <option key={category.id} value={category.name}>
+                  <option key={category.id} value={category.id}>
                     {category.name}
                   </option>
                 ))}
@@ -145,11 +151,12 @@ const NewsForm = ({ news, setIsEditOpen }) => {
           ) : null}
         </FormControl>
 
-        <FormControl isRequired>
+        <FormControl>
           <FormLabel>Imagen</FormLabel>
-          <InputGroup>
+          <InputGroup noValidate>
             <Input
               accept="image/png, image/jpg, image/jpeg"
+              color="transparent"
               name="image"
               padding="5px 30px"
               placeholder="Imagen"
@@ -157,6 +164,9 @@ const NewsForm = ({ news, setIsEditOpen }) => {
               onChange={(event) => formik.setFieldValue('image', event.currentTarget.files[0])}
             ></Input>
           </InputGroup>
+          <Stack marginTop={2}>
+            <Image src={formik.values.image} />
+          </Stack>
           {formik.touched.image && formik.errors.image ? (
             <Text fontSize="md" marginTop={2}>
               {formik.errors.image}

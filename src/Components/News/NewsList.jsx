@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Image,
+  Stack,
   Table,
   TableCaption,
   Tbody,
@@ -19,26 +20,25 @@ import LinkNews from './LinkNews';
 import Alert from '../Utils/Alert';
 import ModalEdit from '../Backoffice/Utils/ModalEdit';
 import NewsForm from './NewsForm';
+import { useHistory } from 'react-router-dom';
 
 const NewsList = () => {
   const dispatch = useDispatch();
-  const { newsList } = useSelector((state) => state.news);
-
-  useEffect(() => {
-    try {
-      dispatch(fetchNewsList());
-    } catch (error) {
-      Alert(
-        'error',
-        'Ocurrió un error',
-        'Comprueba tu conexión a internet o inténtalo nuevamente más tarde',
-      );
-    }
-  }, []);
-
-  //MODAL EDIT
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [toEditNew, setToEditNew] = useState([]);
+  const { newsList, loading } = useSelector((state) => state.news);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      const response = await dispatch(fetchNewsList());
+
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.payload);
+      }
+    };
+    fetchNews();
+  }, []);
+
   const handleEditOpen = (newItem) => {
     setIsEditOpen(true);
     setToEditNew(newItem);
@@ -51,9 +51,15 @@ const NewsList = () => {
       'Esta acción no se puede deshacer',
     );
     if (respAlert) {
-      dispatch(deleteNews(id));
-      await Alert('success', 'Novedad Eliminada', 'Novedad eliminada correctamente');
-      dispatch(fetchNewsList());
+      const response = await dispatch(deleteNews(id));
+
+      if (response.error) {
+        Alert('error', 'Algo salió mal', response.error);
+      }
+
+      if (response.meta.requestStatus == 'fulfilled') {
+        Alert('success', 'Éxito', 'Novedad eliminada correctamente');
+      }
     }
   };
 
@@ -76,40 +82,49 @@ const NewsList = () => {
             </Tr>
           </Thead>
           <Tbody>
-            {newsList?.length > 0 ? (
-              newsList.map((news, index) => (
-                <Tr key={index}>
-                  <Td textAlign="center">{news.name}</Td>
-                  <Td>
-                    <AspectRatio maxW="100px" ratio={4 / 3}>
-                      <Image
-                        alt="Image Card"
-                        fallbackSrc="../images/placeholder/100x100.png"
-                        objectFit="cover"
-                        src={news.image}
-                      />
-                    </AspectRatio>
-                  </Td>
-                  <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
-                  <Td textAlign="center">
-                    <Button backgroundColor="yellow" onClick={() => handleEditOpen(news)}>
-                      Editar
-                    </Button>
-                    <Button backgroundColor="red.500" m="2" onClick={() => handleDelete(news.id)}>
-                      Borrar
-                    </Button>
-                  </Td>
-                </Tr>
-              ))
-            ) : (
-              <Text>No hay novedades.</Text>
-            )}
+            {newsList?.length > 0
+              ? newsList.map((news, index) => (
+                  <Tr key={index}>
+                    <Td textAlign="center">{news.name}</Td>
+                    <Td>
+                      <AspectRatio maxW="100px" ratio={4 / 3}>
+                        <Image
+                          alt="Image Card"
+                          fallbackSrc="../images/placeholder/100x100.png"
+                          objectFit="cover"
+                          src={news.image}
+                        />
+                      </AspectRatio>
+                    </Td>
+                    <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
+                    <Td textAlign="center">
+                      <Button backgroundColor="yellow" onClick={() => handleEditOpen(news)}>
+                        Editar
+                      </Button>
+                      <Button backgroundColor="red.500" m="2" onClick={() => handleDelete(news.id)}>
+                        Borrar
+                      </Button>
+                    </Td>
+                  </Tr>
+                ))
+              : null}
           </Tbody>
         </Table>
+        {!loading && !newsList.length ? (
+          <Stack
+            alignItems="center"
+            direction="row"
+            height="100%"
+            justifyContent="center"
+            width="100%"
+          >
+            <Text textAlign="center">No hay novedades.</Text>
+          </Stack>
+        ) : null}
       </Box>
 
       <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-        <NewsForm isEditOpen={isEditOpen} news={toEditNew} setIsEditOpen={setIsEditOpen} />
+        <NewsForm news={toEditNew} setIsEditOpen={setIsEditOpen} />
       </ModalEdit>
     </Box>
   );
