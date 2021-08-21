@@ -10440,6 +10440,14 @@ react-scripts@4.0.3:
   optionalDependencies:
     fsevents "^2.1.3"
 
+react-social-plugins@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-social-plugins/-/react-social-plugins-2.1.0.tgz#ef26e87c5a0bb7a25ff5406c0342752471681c2b"
+  integrity sha512-TiCJI8DGtMn+NjkjgH0QoGrAl3Mplg//c0/r8nF13nl8fgBzEP0QTvBR3pJnc+Klb4N5oBEeWim6jWntjW/eSg==
+  dependencies:
+    prop-types "^15.7.2"
+    react "^16.13.1"
+
 react-style-singleton@^2.1.0:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-style-singleton/-/react-style-singleton-2.1.1.tgz#ce7f90b67618be2b6b94902a30aaea152ce52e66"

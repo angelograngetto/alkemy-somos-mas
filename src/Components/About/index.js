@@ -7,6 +7,7 @@ import { getMembers, getOrganization } from '../../features/about/aboutSlice';
 import Description from './Description';
 import MembersList from './MembersList';
 import { Container } from '@chakra-ui/layout';
+import SocialWidgets from './SocialWidgets';
 
 const index = () => {
   const [loading, setLoading] = useState(false);
@@ -33,6 +34,7 @@ const index = () => {
       <TitleComponent text={'Nosotros'} />
       <Description description={about.aboutUS.long_description} />
       <MembersList membersData={about.membersList} />
+      <SocialWidgets />
     </div>
   );
 };
