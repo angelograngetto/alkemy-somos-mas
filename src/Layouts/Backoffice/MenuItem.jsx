@@ -1,10 +1,10 @@
 import React from 'react';
-
-import { Link, Text } from '@chakra-ui/react';
+import { Link } from 'react-router-dom';
+import { Text } from '@chakra-ui/react';
 
 const MenuItem = ({ children, to = '/', ...rest }) => {
   return (
-    <Link href={to}>
+    <Link to={to}>
       <Text color="white" cursor="pointer" display="block" {...rest} _hover={{ color: 'blue.200' }}>
         {children}
       </Text>

@@ -26,6 +26,14 @@
   color: rgb(112, 76, 182);
 }
 
+.switch-wrapper {
+  position: relative;
+}
+
+.switch-wrapper > div {
+  position: absolute;
+}
+
 @keyframes App-logo-float {
   0% {
     transform: translateY(0);
