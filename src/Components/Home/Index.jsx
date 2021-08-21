@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box, Alert, AlertIcon, Button, Container } from '@chakra-ui/react';
-import Slides from '../Slides';
+import Slides from '../Slides/Index';
 import OrganizationService from '../../Services/OrganitationService';
 import ProgressBar from '../Utils/ProgressBar';
 import PublicHeader from '../Headers/PublicHeader';
 
 const linksList = [
-  { text: 'Home', to: '/', requireLogin: false },
-  { text: 'Nosotros', to: '/nosotros', requireLogin: false },
-  { text: 'Contacto', to: '/contacto', requireLogin: false },
-  { text: 'Admin', to: '/admin', requireLogin: true },
+  { text: 'Home', to: '/', requireLogin: false, showAuthorizedUsers: true },
+  { text: 'Nosotros', to: '/nosotros', requireLogin: false, showAuthorizedUsers: true },
+  { text: 'Contacto', to: '/contacto', requireLogin: false, showAuthorizedUsers: true },
+  { text: 'Admin', to: '/admin', requireLogin: true, showAuthorizedUsers: true },
+  { text: 'Registrarme', to: '/register', requireLogin: false, showAuthorizedUsers: false },
 ];
 
 export const Home = () => {

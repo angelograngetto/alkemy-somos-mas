@@ -1,13 +1,12 @@
-import { Stack } from '@chakra-ui/react';
 import React, { useState } from 'react';
+import { useSelector } from 'react-redux';
 import Logo from './Logo';
 import MenuLinks from './MenuLinks';
 import MenuToggle from './MenuToggle';
 import NavbarContainer from './NavbarContainer';
 
-const isLogged = true;
-
 const PublicHeader = ({ options }) => {
+  const { auth } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -18,7 +17,7 @@ const PublicHeader = ({ options }) => {
     <NavbarContainer>
       <Logo w={{ base: '35%', md: '15%' }} />
       <MenuToggle isOpen={isOpen} toggle={toggle} />
-      {options ? <MenuLinks isLogged={isLogged} isOpen={isOpen} options={options} /> : null}
+      {options ? <MenuLinks isLogged={auth} isOpen={isOpen} options={options} /> : null}
     </NavbarContainer>
   );
 };

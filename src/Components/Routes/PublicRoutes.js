@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import AuthRoute from './AuthRoute';
 
 import About from '../About';
 import ActivitiesList from '../Activities/ActivitiesList';
@@ -9,7 +10,7 @@ import DetailView from '../Activities/Detail/DetailView';
 import DetailNew from '../News/Detail/DetailNew';
 import Donacion from '../Donations/Donacion';
 import Gracias from '../Donations/Gracias';
-import Home from '../Home';
+import Home from '../Home/Index';
 import LoginForm from '../Auth/LoginForm';
 import News from '../News/index';
 import Newsletter from '../Newsletter';
@@ -45,7 +46,9 @@ const PublicRoutes = () => {
         <Route exact component={About} path="/nosotros" />
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
-        <Route exact component={RegisterForm} path="/register" />
+        <AuthRoute exact path="/register">
+          <RegisterForm />
+        </AuthRoute>
         <Route component={PageNotFound} path="*" />
       </Switch>
     </>

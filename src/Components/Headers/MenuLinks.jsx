@@ -8,6 +8,8 @@ const MenuLinks = ({ isOpen, isLogged, options }) => {
 
   if (!isLogged) {
     options = options.filter((option) => option.requireLogin == false);
+  } else {
+    options = options.filter((option) => option.showAuthorizedUsers == true);
   }
   return (
     <Box
