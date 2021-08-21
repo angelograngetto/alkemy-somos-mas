@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers } from '../../../features/users/usersSlice';
+import { fetchUsers, searchedUsers } from '../../../features/users/usersSlice';
 import {
   Flex,
   Button,
-  Divider,
   Text,
   Table,
   TableCaption,
@@ -22,10 +21,14 @@ import UserForm from '../../Users/UsersForm';
 import Error from '../Utils/Error';
 import ModalDelete from '../Utils/ModalDelete';
 import ModalEdit from '../Utils/ModalEdit';
+import { SearchInput } from '../../Utils/SearchInput/SearchInput';
 
 const UsersListScreen = (props) => {
   const dispatch = useDispatch();
-  const { usersList, error } = useSelector((state) => state.users);
+  const { usersList, usersSearch, error } = useSelector((state) => state.users);
+  const [toSearch, setToSearch] = useState('');
+  const [usersFiltered, setUsersFiltered] = useState([]);
+  const history = useHistory();
 
   const [next, setNext] = useState(10);
   const [prev, setPrev] = useState(0);
@@ -37,8 +40,6 @@ const UsersListScreen = (props) => {
     setNext(next + 10);
     setPrev(prev + 10);
   };
-
-  const history = useHistory();
 
   const toCreate = () => {
     history.push('/backoffice/users/create');
@@ -59,9 +60,17 @@ const UsersListScreen = (props) => {
     setToDeleteUser(user);
   };
 
+  const fetchAll = async () => {
+    if (toSearch.length >= 2) {
+      dispatch(searchedUsers(toSearch));
+    } else {
+      dispatch(fetchUsers());
+    }
+  };
+
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [isDeleteOpen, isEditOpen]);
+    fetchAll().then(setUsersFiltered(toSearch.length >= 2 ? usersSearch : usersList));
+  }, [isDeleteOpen, isEditOpen, toSearch]);
 
   if (error) {
     return <Error error={error} />;
@@ -78,18 +87,23 @@ const UsersListScreen = (props) => {
         p={{ base: 1, sm: 5 }}
         w="5xl"
       >
-        <Flex align="center" justify="space-between" m={{ base: 3, sm: 0 }}>
+        <Flex align="center" flexWrap="wrap" justify="space-between" m={{ base: 3, sm: 0 }}>
           <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
-            Users - Total: {usersList.length}
+            Usuarios - Total: {usersList.length === 0 ? null : usersList.length}
           </Text>
-          <Button colorScheme="green" onClick={toCreate}>
-            Create
+          <Button colorScheme="green" title="Crear nuevo usuario" onClick={toCreate}>
+            Crear
           </Button>
+          <SearchInput
+            placeholder="Buscar por nombre"
+            w="100%"
+            onDebounce={(value) => setToSearch(value)}
+          />
         </Flex>
-        <Divider mb="5" />
         {usersList.length !== 0 ? (
           <Table
             colorScheme="green"
+            mt="3"
             size={{ base: 'sm', md: 'md', lg: 'lg' }}
             style={{ tableLayout: 'fixed' }}
             variant="striped"
@@ -100,41 +114,55 @@ const UsersListScreen = (props) => {
                 colorScheme="blue"
                 isDisabled={prev >= 5 ? false : true}
                 m="3"
+                title="Ver los usuarios siguientes"
                 w="100px"
                 onClick={handlePrev}
               >
-                <ChevronLeftIcon /> Previous
+                <ChevronLeftIcon /> Anterior
               </Button>
               {`${prev === 0 ? 1 : prev} - ${next >= usersList.length ? usersList.length : next}`}
               <Button
                 colorScheme="blue"
                 isDisabled={next <= usersList.length - 1 ? false : true}
                 m="3"
+                title="Ver los usuarios siguientes"
                 w="100px"
                 onClick={handleNext}
               >
-                Next <ChevronRightIcon />
+                Siguiente <ChevronRightIcon />
               </Button>
             </TableCaption>
             <Thead>
               <Tr>
-                <Th>Name</Th>
+                <Th>Nombre</Th>
                 <Th>Email</Th>
-                <Th textAlign="center">Actions</Th>
+                <Th textAlign="center">Acciones</Th>
               </Tr>
             </Thead>
             <Tbody>
               {usersList ? (
-                usersList.slice(prev, next).map((user) => (
+                usersFiltered.slice(prev, next).map((user) => (
                   <Tr key={user.id}>
-                    <Td lineHeight="10">{user.name}</Td>
-                    <Td>{user.email}</Td>
+                    <Td lineHeight="10" title={`Nombre: ${user.name}`}>
+                      {user.name}
+                    </Td>
+                    <Td title={`Email: ${user.email}`}>{user.email}</Td>
                     <Td w="2">
                       <ButtonGroup d="flex" justifyContent="center">
-                        <Button colorScheme="green" size="xs" onClick={() => handleEditOpen(user)}>
+                        <Button
+                          colorScheme="green"
+                          size="xs"
+                          title={`Editar a ${user.name}`}
+                          onClick={() => handleEditOpen(user)}
+                        >
                           <EditIcon />
                         </Button>
-                        <Button colorScheme="red" size="xs" onClick={() => handleDeleteOpen(user)}>
+                        <Button
+                          colorScheme="red"
+                          size="xs"
+                          title={`Eliminar a ${user.name}`}
+                          onClick={() => handleDeleteOpen(user)}
+                        >
                           <DeleteIcon />
                         </Button>
                       </ButtonGroup>
@@ -144,14 +172,19 @@ const UsersListScreen = (props) => {
               ) : (
                 <Tr>
                   <Td colSpan="3" textAlign="center">
-                    No data...
+                    No hay datos...
                   </Td>
                 </Tr>
               )}
             </Tbody>
           </Table>
         ) : (
-          <Center m="5">there are no users yet, create one!</Center>
+          <>
+            <Center flexDirection="column" m="5">
+              <Text>Aun no hay usuarios 😢</Text>
+              <Text>Cree uno nuevo!</Text>
+            </Center>
+          </>
         )}
       </Flex>
       <ModalDelete

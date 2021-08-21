@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
 import { useFormik } from 'formik';
-import { Box, Icon, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
+import { Icon, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { Search2Icon } from '@chakra-ui/icons';
 import { useDebouncedValue } from '../../../hooks/useDebouncedValue';
 
-export const SearchInput = ({ onDebounce }) => {
+export const SearchInput = ({ onDebounce, placeholder }) => {
   const initialValues = {
     searchText: '',
   };
@@ -21,19 +21,18 @@ export const SearchInput = ({ onDebounce }) => {
   }, [debouncedValue]);
 
   return (
-    <Box mt="3">
-      <InputGroup>
-        <Input
-          name="searchText"
-          type="text"
-          value={formik.values.searchText}
-          onChange={formik.handleChange}
-        />
+    <InputGroup>
+      <Input
+        name="searchText"
+        placeholder={placeholder ? placeholder : null}
+        type="text"
+        value={formik.values.searchText}
+        onChange={formik.handleChange}
+      />
 
-        <InputRightElement>
-          <Icon as={Search2Icon} />
-        </InputRightElement>
-      </InputGroup>
-    </Box>
+      <InputRightElement>
+        <Icon as={Search2Icon} />
+      </InputRightElement>
+    </InputGroup>
   );
 };

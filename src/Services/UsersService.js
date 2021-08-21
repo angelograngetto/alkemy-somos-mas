@@ -1,4 +1,4 @@
-import { Get, Put, Post, Delete } from '../../Services/privateApiService';
+import { Get, Put, Post, Delete } from './privateApiService';
 
 class UsersService {
   static async get() {
@@ -38,6 +38,14 @@ class UsersService {
       const resp = await Delete('/users', id);
       return resp;
     } catch (error) {
+      throw new Error(error);
+    }
+  }
+  static async search(keys) {
+    try {
+      const resp = await Get(`/users?search=${keys}`);
+      return resp;
+    } catch {
       throw new Error(error);
     }
   }

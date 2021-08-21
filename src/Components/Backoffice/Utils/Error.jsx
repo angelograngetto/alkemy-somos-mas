@@ -16,7 +16,7 @@ const Error = ({ error }) => {
       >
         <Flex align="center" flexDir="column">
           <Text>{error.message ? `Message: ${error.message}` : <Skeleton />}</Text>
-          <Text>Reload the page</Text>
+          <Text>Recargue la página</Text>
           <Button
             _hover={{ boxShadow: 'xl', transform: 'scale(1.1)' }}
             borderRadius="full"

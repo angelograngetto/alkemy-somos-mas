@@ -21,7 +21,7 @@ const ModalEdit = ({ children, isEditOpen, setIsEditOpen }) => {
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button colorScheme="green" onClick={onEditClose}>
-            Done
+            Terminar de editar
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

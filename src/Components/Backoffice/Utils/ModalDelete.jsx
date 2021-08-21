@@ -1,4 +1,9 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteActivity } from '../../../features/activities/activitiesSlice';
+import { deleteSlide } from '../../../features/slides/slidesSlice';
+import { deleteCategory } from '../../../features/categories/categoriesSlice';
+import { deleteUser } from '../../../features/users/usersSlice';
 import {
   AlertDialog,
   AlertDialogBody,
@@ -17,10 +22,6 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react';
-import { useDispatch } from 'react-redux';
-import { deleteActivity } from '../../../features/activities/activitiesSlice';
-import { deleteSlide } from '../../../features/slides/slidesSlice';
-import { deleteCategory } from '../../../features/categories/categoriesSlice';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
   const toast = useToast();
@@ -31,6 +32,9 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
 
   const onDelete = (toDeleteObj) => {
     switch (toDeleteComponent) {
+      case 'users':
+        dispatch(deleteUser(toDeleteObj.id));
+        break;
       case 'slides':
         dispatch(deleteSlide(toDeleteObj.id));
         break;
@@ -51,7 +55,7 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
     <AlertDialog isOpen={isDeleteOpen} size="full" onEditClose={onDeleteClose}>
       <AlertDialogContent m="0">
         <AlertDialogHeader fontSize="x-large" fontWeight="bold" textAlign="center">
-          Do you want to delete {toDeleteObj.name}?
+          Quiere eliminar {toDeleteObj.name}?
           <Divider />
         </AlertDialogHeader>
         <AlertDialogBody>
@@ -70,17 +74,17 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
                 <Thead>
                   <Tr>
                     <Td colSpan="2" fontSize="xl" fontWeight="bold" textAlign="center">
-                      Information
+                      Información
                     </Td>
                   </Tr>
                 </Thead>
                 <Tbody>
                   <Tr>
-                    <Td>Name:</Td>
+                    <Td>Nombre:</Td>
                     <Td>{toDeleteObj.name}</Td>
                   </Tr>
                   <Tr>
-                    <Td>Created at:</Td>
+                    <Td>Creado el:</Td>
                     <Td>{new Date(toDeleteObj.created_at).toLocaleDateString()}</Td>
                   </Tr>
                   {!toDeleteObj.email ? null : (
@@ -91,19 +95,19 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
                   )}
                   {!toDeleteObj.description ? null : (
                     <Tr>
-                      <Td>Description:</Td>
+                      <Td>Descripción:</Td>
                       <Td>{plainStrToDelDesc}</Td>
                     </Tr>
                   )}
                   {!toDeleteObj.role_id ? null : (
                     <Tr>
-                      <Td>Role:</Td>
+                      <Td>Rol:</Td>
                       <Td>{toDeleteObj.role_id === 1 ? 'Administrator' : 'Regular'}</Td>
                     </Tr>
                   )}
                   {!toDeleteObj.address ? null : (
                     <Tr>
-                      <Td>Address:</Td>
+                      <Td>Dirección:</Td>
                       <Td>{toDeleteObj.adress}</Td>
                     </Tr>
                   )}
@@ -113,9 +117,9 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
           </Flex>
         </AlertDialogBody>
         <AlertDialogFooter>
-          <Button onClick={onDeleteClose}>Cancel</Button>
+          <Button onClick={onDeleteClose}>Cancelar</Button>
           <Button colorScheme="red" ml={3} onClick={() => onDelete(toDeleteObj)}>
-            Delete
+            Eliminar
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
