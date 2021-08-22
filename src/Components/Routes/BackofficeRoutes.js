@@ -14,7 +14,7 @@ import Organization from '../Backoffice/Organization/Index';
 import SlidesForm from '../Slides/SlidesForm';
 import SlidesListScreen from '../Backoffice/Slides/Index';
 import UsersForm from '../Users/UsersForm';
-import UsersListScreen from '../Backoffice/Users/Index';
+import UsersListScreen from '../Backoffice/Users';
 import PageNotFound from '../PageNotFound/PageNotFound';
 
 const BackofficeRoutes = () => {
