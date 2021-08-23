@@ -22,7 +22,7 @@ class ActivitiesService {
   }
 
   static async search(value) {
-    const response = await Get(`activities?search=${value}`);
+    const response = await Get(`${path}?search=${value}`);
     return response;
   }
 }

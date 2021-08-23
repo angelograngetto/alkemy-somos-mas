@@ -1,11 +1,12 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchActivitiesList } from '../../../features/activities/activitiesSlice';
+import { fetchActivitiesList, searchActivitiesList } from '../../../features/activities/activitiesSlice';
 import {
   AspectRatio,
   Box,
   Button,
+  HStack,
   Image,
   Stack,
   Table,
@@ -21,10 +22,13 @@ import LinkActivities from './LinkActivities';
 import ModalDelete from '../../Backoffice/Utils/ModalDelete';
 import ModalEdit from '../../Backoffice/Utils/ModalEdit';
 import ActivitiesForm from '../ActivitiesForm';
+import { SearchInput } from '../../Utils/SearchInput/SearchInput';
 
 const ActivitiesListBack = () => {
   const dispatch = useDispatch();
-  const { activitiesList, loading } = useSelector((state) => state.activities);
+  const [term, setTerm] = useState('');
+  const [activitiesFiltered, setActivitiesFiltered] = useState([])
+  const { activitiesList, searchResults, loading } = useSelector((state) => state.activities);
 
   // Modal Delete
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
@@ -45,6 +49,21 @@ const ActivitiesListBack = () => {
     dispatch(fetchActivitiesList());
   }, [isDeleteOpen, isEditOpen]);
 
+  useEffect(() => {
+    setActivitiesFiltered(activitiesList)
+  }, [activitiesList])
+
+  useEffect(() => {
+    if (term.length >= 3) {
+      dispatch(searchActivitiesList(term));
+    }
+  }, [term]);
+
+  useEffect(() => {
+    setActivitiesFiltered(searchResults)
+  }, [searchResults])
+  
+
   if (loading) return 'Loading...';
 
   return (
@@ -53,10 +72,15 @@ const ActivitiesListBack = () => {
         Listado de Actividades
       </Text>
       <Box m="5">
-        <Table size="md" variant="striped">
-          <TableCaption mb="2" placement="top">
+        <HStack justifyContent="center" mb="2">
             <LinkActivities />
-          </TableCaption>
+            <SearchInput
+        onDebounce={(value) => {
+          setTerm(value);
+        }}
+      />
+        </HStack>
+        <Table size="md" variant="striped">
           <Thead>
             <Tr>
               <Th textAlign="center">Nombre</Th>
@@ -67,7 +91,7 @@ const ActivitiesListBack = () => {
           </Thead>
           <Tbody>
             {activitiesList.length > 0
-              ? activitiesList.map((activity, index) => (
+              ? activitiesFiltered.map((activity, index) => (
                 <Tr key={index}>
                   <Td textAlign="center">{activity.name}</Td>
                   <Td>
