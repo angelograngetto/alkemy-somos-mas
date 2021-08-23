@@ -35,7 +35,9 @@ const PublicRoutes = () => {
           <Donacion text="¡Contribuye!" />
         </Route>
         <Route exact component={Gracias} path="/gracias" />
-        <Route exact component={LoginForm} path="/login" />
+        <AuthRoute exact path="/login">
+          <LoginForm />
+        </AuthRoute>
         <PrivateRoute
           exact
           errorMsg="Para poder suscribirte necesitás estar registrado"
