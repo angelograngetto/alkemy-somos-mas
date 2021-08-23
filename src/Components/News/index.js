@@ -3,6 +3,7 @@ import TitleComponent from '../Title/TitleComponent';
 import NewsCardList from './NewsCardList';
 import NewsService from '../../Services/NewsService';
 import { Container } from '@chakra-ui/react';
+import UltimoEvento from './UltimoEvento';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
 const News = () => {
@@ -40,6 +41,9 @@ const News = () => {
         }}
       />
       <NewsCardList newsData={news} />
+      <UltimoEvento
+        videoUrl={'https://www.youtube.com/watch?v=Zp8aZmqf_rU&ab_channel=EdesurArgentina'}
+      />
     </Container>
   );
 };
