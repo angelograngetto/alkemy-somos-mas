@@ -1,25 +1,26 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
-import AuthRoute from './AuthRoute';
+import ProgressBar from '../Utils/ProgressBar';
 
-import About from '../About';
-import ActivitiesList from '../Activities/ActivitiesList';
-import Contact from '../Contact';
-import DetailView from '../Activities/Detail/DetailView';
-import DetailNew from '../News/Detail/DetailNew';
-import Donacion from '../Donations/Donacion';
-import Gracias from '../Donations/Gracias';
-import Home from '../Home/Index';
-import LoginForm from '../Auth/LoginForm';
-import News from '../News/index';
-import Newsletter from '../Newsletter';
-import RegisterForm from '../Auth/RegisterForm';
-import PageNotFound from '../PageNotFound/PageNotFound';
+const About = lazy(() => import('../About/index'));
+const ActivitiesList = lazy(() => import('../Activities/ActivitiesList'));
+const AuthRoute = lazy(() => import('./AuthRoute'));
+const Contact = lazy(() => import('../Contact/index'));
+const DetailView = lazy(() => import('../Activities/Detail/DetailView'));
+const DetailNew = lazy(() => import('../News/Detail/DetailNew'));
+const Donacion = lazy(() => import('../Donations/Donacion'));
+const Gracias = lazy(() => import('../Donations/Gracias'));
+const Home = lazy(() => import('../Home/Index'));
+const LoginForm = lazy(() => import('../Auth/LoginForm'));
+const News = lazy(() => import('../News/index'));
+const Newsletter = lazy(() => import('../Newsletter'));
+const RegisterForm = lazy(() => import('../Auth/RegisterForm'));
+const PageNotFound = lazy(() => import('../PageNotFound/PageNotFound'));
 
 const PublicRoutes = () => {
   return (
-    <>
+    <Suspense fallback={<ProgressBar isIndeterminate />}>
       <Switch>
         <Route exact component={Home} path="/" />
         <Route exact component={ActivitiesList} path="/activities" />
@@ -53,7 +54,7 @@ const PublicRoutes = () => {
         </AuthRoute>
         <Route component={PageNotFound} path="*" />
       </Switch>
-    </>
+    </Suspense>
   );
 };
 

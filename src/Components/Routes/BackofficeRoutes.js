@@ -4,7 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import ActivitiesListBack from '../Activities/BackOffice/ActivitiesListBack';
 import Backoffice from '../Backoffice';
 import CategoriesForm from '../Categories/CategoriesForm';
-import CategoriesListScreen from '../Backoffice/Categories';
+import CategoriesListScreen from '../Backoffice/Categories/Index';
 import Edit from '../Backoffice/Organization/Edit';
 import MemberForm from '../Backoffice/MemberForm';
 import MemberList from '../Backoffice/MemberList';
