@@ -23,7 +23,7 @@ class NewsService {
   }
 
   static async search(value) {
-    const response = await Get(`/news?search=${value}`);
+    const response = await Get(`${path}?search=${value}`);
     return response;
   }
 }

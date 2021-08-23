@@ -7,6 +7,7 @@ import Alert from '../../Components/Utils/Alert';
 
 const initialState = {
   newsList: [],
+  searchNewsList: [],
   loading: false,
   success: false,
   error: null,
@@ -61,6 +62,20 @@ export const deleteNews = createAsyncThunk(
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
       return rejectWithValue(errorMessage);
+    }
+  },
+);
+
+export const searchNewsList = createAsyncThunk(
+  'news/search',
+
+  async (value, { rejectWithValue }) => {
+    try {
+      const response = await NewsService.search(value);
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = getSpanishError(error.message);
+      return rejectWithValue(errorMessage || error.message);
     }
   },
 );
@@ -146,6 +161,24 @@ const newsSlice = createSlice({
       state.loading = false;
       state.success = false;
       state.error = error;
+    },
+
+    [searchNewsList.pending]: (state) => {
+      state.loading = true;
+      state.success = false;
+    },
+
+    [searchNewsList.fulfilled]: (state, { payload }) => {
+      state.searchNewsList = payload;
+      state.loading = false;
+      state.success = true;
+      state.error = null;
+    },
+
+    [searchNewsList.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.success = false;
+      state.loading = false;
     },
   },
 });

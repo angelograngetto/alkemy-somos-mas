@@ -3,10 +3,10 @@ import {
   AspectRatio,
   Box,
   Button,
+  HStack,
   Image,
   Stack,
   Table,
-  TableCaption,
   Tbody,
   Td,
   Text,
@@ -15,17 +15,20 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchNewsList, deleteNews } from '../../features/news/newsSlice';
+import { fetchNewsList, deleteNews, searchNewsList } from '../../features/news/newsSlice';
 import LinkNews from './LinkNews';
 import Alert from '../Utils/Alert';
 import ModalEdit from '../Backoffice/Utils/ModalEdit';
 import NewsForm from './NewsForm';
 import { useHistory } from 'react-router-dom';
+import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
 const NewsList = () => {
   const dispatch = useDispatch();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [toEditNew, setToEditNew] = useState([]);
+  const [term, setTerm] = useState('');
+  const [newsFiltered, setNewsFiltered] = useState([]);
   const { newsList, loading } = useSelector((state) => state.news);
 
   useEffect(() => {
@@ -38,6 +41,20 @@ const NewsList = () => {
     };
     fetchNews();
   }, []);
+
+  const searchNews = async () => {
+    if (term.length >= 3) {
+      const resp = await dispatch(searchNewsList(term));
+      setNewsFiltered(resp.payload);
+    } else {
+      const resp = await dispatch(fetchNewsList());
+      setNewsFiltered(resp.payload);
+    }
+  };
+
+  useEffect(() => {
+    searchNews();
+  }, [term]);
 
   const handleEditOpen = (newItem) => {
     setIsEditOpen(true);
@@ -69,10 +86,16 @@ const NewsList = () => {
         Listado de Novedades
       </Text>
       <Box m="5">
+        <HStack justifyContent="center" mb="2">
+          <LinkNews />
+          <SearchInput
+            placeholder="Buscar por nombre"
+            onDebounce={(value) => {
+              setTerm(value);
+            }}
+          />
+        </HStack>
         <Table size="md" variant="striped">
-          <TableCaption mb="2" placement="top">
-            <LinkNews />
-          </TableCaption>
           <Thead>
             <Tr>
               <Th textAlign="center">Nombre</Th>
@@ -83,7 +106,7 @@ const NewsList = () => {
           </Thead>
           <Tbody>
             {newsList?.length > 0
-              ? newsList.map((news, index) => (
+              ? newsFiltered.map((news, index) => (
                   <Tr key={index}>
                     <Td textAlign="center">{news.name}</Td>
                     <Td>
