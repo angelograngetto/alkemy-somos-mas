@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box, Alert, AlertIcon, Button, Container } from '@chakra-ui/react';
-import Slides from '../Slides/Index';
+import Slides from '../Slides';
 import OrganizationService from '../../Services/OrganitationService';
 import ProgressBar from '../Utils/ProgressBar';
 import PublicHeader from '../Headers/PublicHeader';
+import PublicFooter from '../Footer/PublicFooter';
 
 const linksList = [
   { text: 'Home', to: '/', requireLogin: false, showAuthorizedUsers: true },
@@ -76,6 +77,7 @@ export const Home = () => {
           </Box>
         </>
       )}
+      <PublicFooter />
     </>
   );
 };
