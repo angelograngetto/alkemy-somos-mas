@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box, Alert, AlertIcon, Button, Container } from '@chakra-ui/react';
-import Slides from '../Slides';
 import OrganizationService from '../../Services/OrganitationService';
+import Slides from '../Slides/index';
 import PublicHeader from '../Headers/PublicHeader';
-import PublicFooter from '../Footer/PublicFooter';
 
 const linksList = [
   { text: 'Home', to: '/', requireLogin: false, showAuthorizedUsers: true },
   { text: 'Nosotros', to: '/nosotros', requireLogin: false, showAuthorizedUsers: true },
   { text: 'Contacto', to: '/contacto', requireLogin: false, showAuthorizedUsers: true },
   { text: 'Admin', to: '/admin', requireLogin: true, showAuthorizedUsers: true },
-  { text: 'Ingresar', to: '/login', requireLogin: false, showAuthorizedUsers: false },
   { text: 'Registrarme', to: '/register', requireLogin: false, showAuthorizedUsers: false },
 ];
 
@@ -64,8 +62,8 @@ export const Home = () => {
       ) : (
         <>
           <Slides />
-          <Heading align="center" m="3">
-            Texto de bienvenida
+          <Heading align="center" fontSize={{ base: '20px', lg: '2em' }} m="5">
+            Bienvenidos a Somos Más
           </Heading>
           <Box mt="25" p="2">
             <Heading align="center" as="h2" m="3" size="lg">
@@ -74,7 +72,6 @@ export const Home = () => {
           </Box>
         </>
       )}
-      <PublicFooter />
     </>
   );
 };

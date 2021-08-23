@@ -49,6 +49,7 @@ const PublicRoutes = () => {
         <Route exact component={About} path="/nosotros" />
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
+        <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
         <AuthRoute exact path="/register">
           <RegisterForm />
         </AuthRoute>
