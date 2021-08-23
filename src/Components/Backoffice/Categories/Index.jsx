@@ -13,6 +13,7 @@ import {
   Td,
   Th,
   Tbody,
+  Box,
 } from '@chakra-ui/react';
 import { EditIcon, CloseIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
@@ -20,16 +21,29 @@ import CategoriesForm from '../../Categories/CategoriesForm';
 import ModalEdit from '../Utils/ModalEdit';
 import ModalDelete from '../Utils/ModalDelete';
 import Error from '../Utils/Error';
-import { fetchCategories } from '../../../features/categories/categoriesSlice';
+import { fetchCategories, searchCategories } from '../../../features/categories/categoriesSlice';
+import { SearchInput } from '../../Utils/SearchInput/SearchInput';
 
 const CategoriesListScreen = () => {
   const dispatch = useDispatch();
+  const [term, setTerm] = useState('');
+  const [categoriesFiltered, setCategoriesFiltered] = useState([]);
   const { categories, status, error } = useSelector((state) => state.categories);
   const history = useHistory();
 
+  const searchCategoriesList = async () => {
+    if (term.length >= 3) {
+      const response = await dispatch(searchCategories(term));
+      setCategoriesFiltered(response.payload);
+    } else {
+      const response = await dispatch(fetchCategories());
+      setCategoriesFiltered(response.payload);
+    }
+  };
+
   useEffect(() => {
-    dispatch(fetchCategories());
-  }, []);
+    searchCategoriesList();
+  }, [term]);
 
   // ↓↓↓ MODAL EDIT ↓↓↓ //
   const [isEditOpen, setIsEditOpen] = useState(false);
@@ -69,6 +83,14 @@ const CategoriesListScreen = () => {
               Categories
               <Spacer />
             </Text>
+            <Box w="50%">
+              <SearchInput
+                placeholder="Buscar por nombre"
+                onDebounce={(value) => {
+                  setTerm(value);
+                }}
+              />
+            </Box>
             <Button colorScheme="green" onClick={toCreate}>
               Create
             </Button>
@@ -89,7 +111,7 @@ const CategoriesListScreen = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {categories.map((categorie) => (
+              {categoriesFiltered.map((categorie) => (
                 <Tr key={categorie.id}>
                   <Td lineHeight="10">{categorie.name}</Td>
                   <Td textAlign="center">{new Date(categorie.created_at).toLocaleDateString()}</Td>

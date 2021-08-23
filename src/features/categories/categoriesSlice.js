@@ -3,6 +3,7 @@ import CategoriesService from '../../Services/CategoriesServices';
 
 const initialState = {
   categories: [],
+  searchCategories: [],
   category: {},
   status: 'idle',
   error: null,
@@ -27,6 +28,11 @@ export const updateCategory = createAsyncThunk('categories/updateCategory', asyn
 export const deleteCategory = createAsyncThunk('categories/deleteCategory', async (id) => {
   const resp = await CategoriesService.delete(id);
   return { resp, id };
+});
+
+export const searchCategories = createAsyncThunk('categories/searchCategories', async (value) => {
+  const resp = await CategoriesService.search(value);
+  return resp;
 });
 
 export const categoriesSlice = createSlice({
@@ -91,6 +97,18 @@ export const categoriesSlice = createSlice({
       state.categories = state.categories.filter((item) => item.id !== action.payload.id);
     },
     [deleteCategory.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
+    },
+
+    [searchCategories.pending]: (state) => {
+      state.status = 'loading';
+    },
+    [searchCategories.fulfilled]: (state, action) => {
+      state.status = 'complete';
+      state.searchCategories = action.payload;
+    },
+    [searchCategories.rejected]: (state, action) => {
       state.status = 'failed';
       state.error = action.error.message;
     },

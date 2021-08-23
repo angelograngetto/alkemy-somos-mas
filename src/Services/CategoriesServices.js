@@ -21,4 +21,8 @@ export default class CategoriesServices {
     const response = await Delete(path, id);
     return response.data;
   }
+  static async search(value) {
+    const response = await Get(`${path}?search=${value}`);
+    return response.data.data;
+  }
 }
