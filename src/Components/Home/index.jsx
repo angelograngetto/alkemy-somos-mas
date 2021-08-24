@@ -10,6 +10,7 @@ const linksList = [
   { text: 'Contacto', to: '/contacto', requireLogin: false, showAuthorizedUsers: true },
   { text: 'Admin', to: '/admin', requireLogin: true, showAuthorizedUsers: true },
   { text: 'Registrarme', to: '/register', requireLogin: false, showAuthorizedUsers: false },
+  { text: 'Ingresar', to: '/login', requireLogin: false, showAuthorizedUsers: false },
 ];
 
 export const Home = () => {

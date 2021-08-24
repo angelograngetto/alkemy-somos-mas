@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useLocation, useHistory } from 'react-router-dom';
 import { FormControl, FormErrorMessage, Input } from '@chakra-ui/react';
-import { Button, ButtonGroup } from '@chakra-ui/react';
+import { Button } from '@chakra-ui/react';
 import '../FormStyles.css';
-import { Form, useFormik } from 'formik';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { login } from '../../features/auth/authSlice';
+import { loginUser } from '../../features/auth/authSlice';
 
 const LoginForm = () => {
-  let user = {
-    email: '',
-    password: '',
-  };
-
+  const location = useLocation();
+  const history = useHistory();
   const dispatch = useDispatch();
   // Expresion regular para un número, una letra y un símbolo
   const passRegex = /^(?=.*[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
@@ -30,12 +28,9 @@ const LoginForm = () => {
         .required('requerido'),
     }),
     onSubmit: (values) => {
-      user = {
-        email: values.email,
-        password: values.password,
-      };
-      localStorage.setItem('token', 'tokenValueExample');
-      dispatch(login(user));
+      const { email, password } = values;
+      dispatch(loginUser({ email, password }));
+      history.push(location?.state?.from?.pathname || '/');
     },
   });
 

@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { registerUser } from '../../features/auth/authSlice';
 import { Formik } from 'formik';
 import {
   Alert,
@@ -14,6 +17,9 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const RegisterForm = () => {
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   return (
     <Box borderRadius="md" borderWidth="1px" flex="1" m="auto" mt="80px" p="5" shadow="md" w="80%">
@@ -38,11 +44,13 @@ const RegisterForm = () => {
         }}
         onSubmit={({ name, lastname, email, password }) => {
           const data = {
-            name: name + ' ' + lastname,
+            name: `${name} ${lastname}`,
             email,
             password,
+            role_id: 0,
           };
-          // send data to api here
+          dispatch(registerUser(data));
+          history.push(location?.state?.from?.pathname || '/');
         }}
       >
         {({ errors, handleChange, handleSubmit }) => (
