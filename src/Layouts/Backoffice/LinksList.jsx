@@ -12,4 +12,6 @@ export const linksList = [
   { text: 'Diapositivas', to: '/backoffice/slides' },
 
   { text: 'Usuarios', to: '/backoffice/users' },
+
+  { text: 'Salir', to: '/logout' },
 ];

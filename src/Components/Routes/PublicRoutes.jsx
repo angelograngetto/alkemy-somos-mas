@@ -19,6 +19,8 @@ const News = lazy(() => import('../News'));
 const Newsletter = lazy(() => import('../Newsletter'));
 const RegisterForm = lazy(() => import('../Auth/RegisterForm'));
 const PageNotFound = lazy(() => import('../PageNotFound/PageNotFound'));
+const Logout = lazy(() => import('../Auth/Logout'));
+const CampañaEscolarLanding = lazy(() => import('../Landings/CampañaEscolar'));
 
 const PublicRoutes = () => {
   const { isAdmin } = useSelector((state) => state.auth);
@@ -64,6 +66,7 @@ const PublicRoutes = () => {
         <Route exact component={About} path="/nosotros" />
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
+        <Route exact component={Logout} path="/logout" />
         <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
         <Route exact component={CampañaJuguetesLanding} path="/campaña-juguetes" />
         <AuthRoute exact path="/register">
