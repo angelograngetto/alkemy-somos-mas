@@ -9,7 +9,6 @@ const NavbarContainer = ({ children, ...props }) => {
       backgroundColor="blue.900"
       color="white"
       justify="flex-start"
-      mb={8}
       p={8}
       w="100%"
       wrap="wrap"
