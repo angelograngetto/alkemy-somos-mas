@@ -53,12 +53,7 @@ const ContactForm = () => {
   return (
     <>
       <Flex align="center" alignItems="center" direction="column" justify="center" margin="auto">
-        <Flex
-          align="center"
-          h="100vh"
-          justify="center"
-          w={{ base: '400px', md: '600px', lg: '850px' }}
-        >
+        <Flex align="center" justify="center" w={{ base: '400px', md: '600px', lg: '850px' }}>
           <form className="form-container" onSubmit={formik.handleSubmit}>
             <Stack spacing={3}>
               <FormControl isRequired rounded="sm">

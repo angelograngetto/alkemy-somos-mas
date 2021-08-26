@@ -16,12 +16,15 @@
     "formik": "^2.2.6",
     "framer-motion": "^4.1.11",
     "gsap": "^3.6.1",
+    "leaflet": "^1.7.1",
+    "leaflet-geosearch": "^3.5.0",
     "luxon": "^1.27.0",
     "react": "^16.13.1",
     "react-content-loader": "^6.0.3",
     "react-dom": "^16.13.1",
     "react-google-maps": "^9.4.5",
     "react-icons": "^4.2.0",
+    "react-leaflet": "^3.2.1",
     "react-loader-spinner": "^4.0.0",
     "react-pdf": "^5.3.2",
     "react-player": "^2.9.0",
@@ -57,16 +60,9 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ]
 }
