@@ -25,6 +25,11 @@ class SlidesService {
     const response = await Delete(path, id);
     return response.data;
   }
+
+  static async search(keys) {
+    const response = await Get(`/slides?search=${keys}`);
+    return response.data;
+  }
 }
 
 export default SlidesService;

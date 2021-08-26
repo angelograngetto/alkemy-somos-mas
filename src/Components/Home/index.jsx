@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Heading, Box, Alert, AlertIcon, Button, Container, Text } from '@chakra-ui/react';
 import OrganizationService from '../../Services/OrganitationService';
-import Slides from '../Slides/index';
+import Slides from '../Slides';
 import PublicHeader from '../Headers/PublicHeader';
 import CampañaJuguetes from '../Landings/Campaña Juguetes/Contenido/index';
 

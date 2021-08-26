@@ -4,8 +4,9 @@ import SlidesServices from '../../Services/SlidesService';
 const initialState = {
   slidesList: [],
   slideActive: [],
+  slidesSearch: [],
   loading: false,
-  error: '',
+  error: false,
 };
 
 export const getSlidesList = createAsyncThunk('slides/fetchList', async () => {
@@ -53,6 +54,15 @@ export const deleteSlide = createAsyncThunk('slide/delete', async (id, { rejectW
   }
 });
 
+export const getSlidesSearched = createAsyncThunk('slides/search', async (keys) => {
+  try {
+    const response = await SlidesServices.search(keys);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
 const slidesSlice = createSlice({
   name: 'slides',
   initialState,
@@ -64,7 +74,7 @@ const slidesSlice = createSlice({
     [getSlidesList.fulfilled]: (state, { payload }) => {
       state.slidesList = payload;
       state.loading = false;
-      state.error = '';
+      state.error = false;
     },
     [getSlidesList.rejected]: (state, action) => {
       state.error = action.error.message;
@@ -77,7 +87,7 @@ const slidesSlice = createSlice({
     [getSlideById.fulfilled]: (state, { payload }) => {
       state.slideActive = payload;
       state.loading = false;
-      state.error = '';
+      state.error = false;
     },
     [getSlideById.rejected]: (state, action) => {
       state.error = action.error.message;
@@ -87,7 +97,6 @@ const slidesSlice = createSlice({
     [createSlide.pending]: (state) => {
       state.loading = true;
     },
-
     [createSlide.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.slidesList = [...state.slidesList, payload];
@@ -96,33 +105,45 @@ const slidesSlice = createSlice({
       state.loading = false;
       state.error = action.error.payload;
     },
-  },
 
-  [updateSlide.pending]: (state) => {
-    state.loading = true;
-  },
+    [updateSlide.pending]: (state) => {
+      state.loading = true;
+    },
+    [updateSlide.fulfilled]: (state, { payload }) => {
+      state.slidesList = state.slidesList.map((slide) =>
+        slide.id === payload.id ? payload : slide,
+      );
+      state.loading = false;
+    },
+    [updateSlide.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
 
-  [updateSlide.fulfilled]: (state, { payload }) => {
-    state.slidesList = state.slidesList.map((slide) => (slide.id === payload.id ? payload : slide));
-    state.loading = false;
-  },
-  [updateSlide.rejected]: (state, action) => {
-    state.loading = false;
-    state.error = action.payload;
-  },
+    [deleteSlide.pending]: (state) => {
+      state.loading = true;
+    },
+    [deleteSlide.fulfilled]: (state, { payload }) => {
+      state.loading = false;
+      state.slidesList = state.slidesList.filter((slide) => slide.id !== payload.id);
+    },
+    [deleteSlide.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
 
-  [deleteSlide.pending]: (state) => {
-    state.loading = true;
-  },
-
-  [deleteSlide.fulfilled]: (state, { payload }) => {
-    state.loading = false;
-    state.slidesList = state.slidesList.filter((slide) => slide.id !== payload.id);
-  },
-
-  [deleteSlide.rejected]: (state, action) => {
-    state.loading = false;
-    state.error = action.error.message;
+    [getSlidesSearched.pending]: (state) => {
+      state.loading = true;
+    },
+    [getSlidesSearched.fulfilled]: (state, { payload }) => {
+      state.slidesList = payload;
+      state.loading = false;
+      state.error = false;
+    },
+    [getSlidesSearched.rejected]: (state, action) => {
+      state.error = action.error.message;
+      state.loading = false;
+    },
   },
 });
 
