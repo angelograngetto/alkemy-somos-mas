@@ -4,7 +4,6 @@ import UsersService from '../../Services/UsersService';
 
 const initialState = {
   usersList: [],
-  usersSearch: [],
   loading: false,
   success: false,
   error: null,
@@ -58,6 +57,15 @@ export const deleteUser = createAsyncThunk('user/delete', async (id) => {
 export const searchedUsers = createAsyncThunk('users/search', async (keys) => {
   try {
     const response = await UsersService.search(keys);
+    return response.data.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const filteredUsers = createAsyncThunk('users/filter', async ({ keys, role }) => {
+  try {
+    const response = await UsersService.filter(keys, role);
     return response.data.data;
   } catch (error) {
     throw error;
@@ -155,12 +163,28 @@ export const usersSlice = createSlice({
       state.success = false;
     },
     [searchedUsers.fulfilled]: (state, action) => {
-      state.usersSearch = action.payload;
+      state.usersList = action.payload;
       state.loading = false;
       state.success = true;
       state.error = null;
     },
     [searchedUsers.rejected]: (state, action) => {
+      state.error = action.error.message;
+      state.loading = false;
+      state.success = false;
+    },
+
+    [filteredUsers.pending]: (state) => {
+      state.loading = true;
+      state.success = false;
+    },
+    [filteredUsers.fulfilled]: (state, action) => {
+      state.usersList = action.payload;
+      state.loading = false;
+      state.success = true;
+      state.error = null;
+    },
+    [filteredUsers.rejected]: (state, action) => {
       state.error = action.error.message;
       state.loading = false;
       state.success = false;

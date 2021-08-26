@@ -49,6 +49,14 @@ class UsersService {
       throw new Error(error);
     }
   }
+  static async filter(keys, role) {
+    try {
+      const resp = await Get(`/users?search=${keys}&role=${role}`);
+      return resp;
+    } catch {
+      throw new Error(error);
+    }
+  }
 }
 
 export default UsersService;

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsers, searchedUsers } from '../../../features/users/usersSlice';
+import { fetchUsers, searchedUsers, filteredUsers } from '../../../features/users/usersSlice';
 import {
   Flex,
   Button,
@@ -14,8 +14,18 @@ import {
   Th,
   ButtonGroup,
   Center,
+  Select,
+  HStack,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuOptionGroup,
+  MenuItemOption,
+  MenuDivider,
+  Spacer,
 } from '@chakra-ui/react';
-import { ChevronLeftIcon, ChevronRightIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, ChevronLeftIcon, ChevronRightIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { FaBullseye, FaFilter } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import UserForm from '../../Users/UsersForm';
 import Error from '../Utils/Error';
@@ -25,9 +35,8 @@ import { SearchInput } from '../../Utils/SearchInput/SearchInput';
 
 const UsersListScreen = (props) => {
   const dispatch = useDispatch();
-  const { usersList, usersSearch, error } = useSelector((state) => state.users);
+  const { usersList, error } = useSelector((state) => state.users);
   const [toSearch, setToSearch] = useState('');
-  const [usersFiltered, setUsersFiltered] = useState([]);
   const history = useHistory();
 
   const [next, setNext] = useState(10);
@@ -60,45 +69,72 @@ const UsersListScreen = (props) => {
     setToDeleteUser(user);
   };
 
-  const fetchAll = async () => {
+  const handleFilter = (role) => {
+    dispatch(filteredUsers({ keys: toSearch, role }));
+    console.log(role);
+  };
+
+  useEffect(() => {
     if (toSearch.length >= 2) {
       dispatch(searchedUsers(toSearch));
     } else {
       dispatch(fetchUsers());
     }
-  };
-
-  useEffect(() => {
-    fetchAll().then(setUsersFiltered(toSearch.length >= 2 ? usersSearch : usersList));
   }, [isDeleteOpen, isEditOpen, toSearch]);
 
   if (error) {
     return <Error error={error} />;
   }
   return (
-    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
+    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 0, lg: 5 }}>
       <Flex
-        borderRadius={{ base: '0', sm: 'xl' }}
+        borderRadius={{ base: '0', sm: '0', lg: 'xl' }}
         borderWidth="1px"
         boxShadow="2xl"
         flexDir="column"
         justify="center"
         overflow="hidden"
-        p={{ base: 1, sm: 5 }}
+        p={{ base: 0, sm: 1, lg: 2 }}
         w="5xl"
       >
         <Flex align="center" flexWrap="wrap" justify="space-between" m={{ base: 3, sm: 0 }}>
           <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
-            Usuarios - Total: {usersList.length === 0 ? null : usersList.length}
+            Usuarios
           </Text>
-          <Button colorScheme="green" title="Crear nuevo usuario" onClick={toCreate}>
-            Crear
+          <Spacer />
+          <Menu closeOnSelect={false}>
+            <MenuButton
+              as={Button}
+              colorScheme="blue"
+              mr="2"
+              rightIcon={<FaFilter />}
+              title="Buscar y filtrar"
+            >
+              Buscar
+            </MenuButton>
+            <MenuList minWidth="230px">
+              <Center pl="2" pr="2">
+                <SearchInput
+                  placeholder="Buscar por nombre"
+                  w="90%"
+                  onDebounce={(value) => setToSearch(value)}
+                />
+              </Center>
+              <MenuOptionGroup
+                defaultValue="0"
+                title="Ver:"
+                type="radio"
+                onChange={(e) => handleFilter(e)}
+              >
+                <MenuItemOption value="0">Todos los usuarios</MenuItemOption>
+                <MenuItemOption value="1">Usuarios administrativos</MenuItemOption>
+                <MenuItemOption value="2">Usuarios regulares</MenuItemOption>
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
+          <Button colorScheme="green" mr="2" title="Crear nuevo usuario" onClick={toCreate}>
+            Nuevo <AddIcon ml="2" />
           </Button>
-          <SearchInput
-            placeholder="Buscar por nombre"
-            w="100%"
-            onDebounce={(value) => setToSearch(value)}
-          />
         </Flex>
         {usersList.length !== 0 ? (
           <Table
@@ -114,7 +150,7 @@ const UsersListScreen = (props) => {
                 colorScheme="blue"
                 isDisabled={prev >= 5 ? false : true}
                 m="3"
-                title="Ver los usuarios siguientes"
+                title="Ver los usuarios anteriores"
                 w="100px"
                 onClick={handlePrev}
               >
@@ -141,7 +177,7 @@ const UsersListScreen = (props) => {
             </Thead>
             <Tbody>
               {usersList ? (
-                usersFiltered.slice(prev, next).map((user) => (
+                usersList.slice(prev, next).map((user) => (
                   <Tr key={user.id}>
                     <Td lineHeight="10" title={`Nombre: ${user.name}`}>
                       {user.name}
