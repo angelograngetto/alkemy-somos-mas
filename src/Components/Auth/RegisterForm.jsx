@@ -5,22 +5,52 @@ import { registerUser } from '../../features/auth/authSlice';
 import { Formik } from 'formik';
 import {
   Alert,
+  Checkbox,
+  Box,
+  Button,
   Heading,
+  IconButton,
   Input,
   InputGroup,
   InputRightElement,
+  Stack,
   Text,
-  Button,
-  IconButton,
-  Box,
 } from '@chakra-ui/react';
+import Swal from 'sweetalert2';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
+import TermsPopup from './TermsPopup';
 
 const RegisterForm = () => {
   const location = useLocation();
   const history = useHistory();
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+
+  const [isPopupVisible, setPopupVisible] = useState(false);
+  const [termsAccepted, setTermsAccepted] = useState(false);
+
+  const openPopup = () => {
+    setPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
+
+  const handleCancel = () => {
+    setPopupVisible(false);
+    setTermsAccepted(false);
+  };
+
+  const acceptTerms = () => {
+    setTermsAccepted(true);
+    setPopupVisible(false);
+  };
+
+  const handleCheckChange = () => {
+    setTermsAccepted(!termsAccepted);
+  };
+
   return (
     <Box borderRadius="md" borderWidth="1px" flex="1" m="auto" mt="80px" p="5" shadow="md" w="80%">
       <Heading align="center">Registro</Heading>
@@ -43,6 +73,15 @@ const RegisterForm = () => {
           return errors;
         }}
         onSubmit={({ name, lastname, email, password }) => {
+          if (!termsAccepted) {
+            Swal.fire({
+              title: 'Warning',
+              text: 'You have to accept terms and conditions',
+              icon: 'warning',
+              confirmButtonText: 'Ok',
+            });
+            return;
+          }
           const data = {
             name: `${name} ${lastname}`,
             email,
@@ -135,12 +174,32 @@ const RegisterForm = () => {
                 {errors.confirmPassword}
               </Alert>
             )}
-            <Button mt="8px" type="submit">
-              Registrarme
-            </Button>
+            <Stack alignItems="center" direction="row">
+              <Checkbox
+                isChecked={termsAccepted}
+                isDisabled={!termsAccepted}
+                marginY={5}
+                onChange={handleCheckChange}
+              ></Checkbox>
+              <Text cursor="pointer" fontWeight="bold" onClick={openPopup}>
+                Términos y Condiciones
+              </Text>
+            </Stack>
+
+            <Stack direction="row" justifyContent="center">
+              <Button mt={16} type="submit">
+                Registrarme
+              </Button>
+            </Stack>
           </form>
         )}
       </Formik>
+      <TermsPopup
+        acceptTerms={acceptTerms}
+        closePopup={closePopup}
+        isPopupVisible={isPopupVisible}
+        onCancel={handleCancel}
+      />
     </Box>
   );
 };
