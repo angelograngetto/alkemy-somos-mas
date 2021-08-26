@@ -3,6 +3,7 @@ import MembersService from '../../Services/MembersService';
 
 const initialState = {
   membersList: [],
+  membersSearch: [],
   loading: false,
   error: '',
 };
@@ -37,6 +38,15 @@ export const createMember = createAsyncThunk('members/create', async (member) =>
 export const updateMember = createAsyncThunk('members/update', async (member) => {
   try {
     const response = await MembersService.update(member);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+});
+
+export const searchedMembers = createAsyncThunk('members/search', async (keys) => {
+  try {
+    const response = await MembersService.search(keys);
     return response.data;
   } catch (error) {
     throw error;
@@ -92,6 +102,17 @@ export const membersSlice = createSlice({
       state.loading = false;
     },
     [updateMember.rejected]: (state, action) => {
+      state.error = action.error.message;
+    },
+
+    [searchedMembers.pending]: (state) => {
+      state.loading = true;
+    },
+    [searchedMembers.fulfilled]: (state, action) => {
+      state.membersList = action.payload;
+      state.loading = false;
+    },
+    [searchedMembers.rejected]: (state, action) => {
       state.error = action.error.message;
     },
   },

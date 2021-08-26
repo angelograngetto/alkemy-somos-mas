@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import { useParams, useHistory } from 'react-router-dom';
-import { Box, Input, Text, Button, Image, Heading, Alert } from '@chakra-ui/react';
+import { Box, Input, Text, Button, Image, Heading, Alert, Spacer, Flex } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMembers, createMember, updateMember } from '../../features/members/membersSlice';
 import CustomAlert from '../Utils/Alert';
@@ -52,7 +52,17 @@ const MemberForm = () => {
   };
 
   return (
-    <Box borderRadius="md" borderWidth="1px" flex="1" m="auto" mt="80px" p="5" shadow="md" w="80%">
+    <Box
+      borderRadius="lg"
+      borderWidth="1px"
+      flex="1"
+      m="auto"
+      mb="50px"
+      mt="50px"
+      p="5"
+      shadow="lg"
+      w="80%"
+    >
       <Heading align="center" m="15px">
         {id ? 'Editar miembro' : 'Crear miembro'}
       </Heading>
@@ -199,9 +209,12 @@ const MemberForm = () => {
                 {errors.description}
               </Alert>
             )}
-            <Button mt="8px" type="submit">
-              Guardar
-            </Button>
+            <Flex>
+              <Spacer />
+              <Button colorScheme="green" mt="8px" type="submit">
+                Guardar
+              </Button>
+            </Flex>
           </form>
         )}
       </Formik>

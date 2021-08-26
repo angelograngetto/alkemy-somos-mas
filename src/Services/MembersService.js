@@ -25,6 +25,11 @@ class MembersService {
     const response = await Delete(path, id);
     return response.data;
   }
+
+  static async search(keys) {
+    const response = await Get(`/members?search=${keys}`);
+    return response.data;
+  }
 }
 
 export default MembersService;

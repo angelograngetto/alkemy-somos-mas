@@ -1,51 +1,80 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchMembers, deleteMember } from '../../features/members/membersSlice';
+import { fetchMembers, searchedMembers } from '../../features/members/membersSlice';
 import {
   Table,
   Thead,
   Tbody,
+  Flex,
   Tr,
   Th,
   Td,
   Image,
-  Box,
   Button,
-  Heading,
   Text,
+  Spacer,
 } from '@chakra-ui/react';
-import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
+import ModalDelete from './Utils/ModalDelete';
+import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
 export const MemberList = () => {
   const { membersList } = useSelector((state) => state.members);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  useEffect(() => {
-    dispatch(fetchMembers());
-  }, []);
+  const [toSearch, setToSearch] = useState('');
 
   const handleEdit = (id) => {
     history.push(`/backoffice/organization/edit/${id}`);
   };
 
-  const handleDelete = async (id) => {
-    dispatch(deleteMember(id));
+  // ↓↓↓ MODAL DELETE ↓↓↓ //
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+  const [toDeleteUser, setToDeleteUser] = useState([]);
+  const handleDeleteOpen = (user) => {
+    setIsDeleteOpen(true);
+    setToDeleteUser(user);
   };
 
+  const toCreate = () => {
+    history.push('/backoffice/members/create');
+  };
+
+  useEffect(() => {
+    if (toSearch.length > 2) {
+      dispatch(searchedMembers(toSearch));
+    } else {
+      dispatch(fetchMembers());
+    }
+  }, [dispatch, toSearch]);
+
   return (
-    <>
-      <Box m="auto" mb="10px" mt="25px" w="85%">
-        <Heading align="center" mb="20px">
-          Lista de miembros
-        </Heading>
-        <Link to="/backoffice/members/create">
-          <Button>Crear nuevo miembro</Button>
-        </Link>
-      </Box>
-      <Box borderRadius="md" borderWidth="1px" m="auto" shadow="md" w="85%">
+    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
+      <Flex
+        borderRadius={{ base: '0', sm: 'xl' }}
+        borderWidth="1px"
+        boxShadow="2xl"
+        flexDir="column"
+        justify="center"
+        overflow="hidden"
+        p={{ base: 1, sm: 5 }}
+        w="5xl"
+      >
+        <Flex align="center" flexWrap="wrap" justify="space-between" m={{ base: 3, sm: 0 }}>
+          <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
+            Miembros
+          </Text>
+          <Spacer />
+          <Button colorScheme="green" title="Crear nuevo Slide" onClick={toCreate}>
+            Nuevo <AddIcon ml="2" />
+          </Button>
+        </Flex>
+        <SearchInput
+          placeholder="Buscar por nombre"
+          w="100%"
+          onDebounce={(value) => setToSearch(value)}
+        />
         {membersList?.length > 0 ? (
           <Table w="100%">
             <Thead>
@@ -62,16 +91,20 @@ export const MemberList = () => {
                     <Image
                       alt={member.name}
                       borderRadius="full"
+                      boxShadow="md"
                       boxSize="80px"
                       fit="cover"
                       m="auto"
                       src={member.image}
+                      title={`Imagen de: ${member.name}`}
                     />
                   </Td>
-                  <Td textAlign="center">{member.name}</Td>
+                  <Td textAlign="center" title={`Nombre: ${member.name}`}>
+                    {member.name}
+                  </Td>
                   <Td textAlign="center">
                     <Button
-                      backgroundColor="yellow.200"
+                      colorScheme="green"
                       m="1"
                       title="Editar"
                       onClick={() => handleEdit(member.id)}
@@ -81,7 +114,7 @@ export const MemberList = () => {
                     <Button
                       backgroundColor="red.500"
                       title="Eliminar"
-                      onClick={() => handleDelete(member.id)}
+                      onClick={() => handleDeleteOpen(member)}
                     >
                       <DeleteIcon color="#fff" />
                     </Button>
@@ -95,8 +128,14 @@ export const MemberList = () => {
             No hay miembros registrados.
           </Text>
         )}
-      </Box>
-    </>
+      </Flex>
+      <ModalDelete
+        isDeleteOpen={isDeleteOpen}
+        setIsDeleteOpen={setIsDeleteOpen}
+        toDeleteComponent="users"
+        toDeleteObj={toDeleteUser}
+      />
+    </Flex>
   );
 };
 

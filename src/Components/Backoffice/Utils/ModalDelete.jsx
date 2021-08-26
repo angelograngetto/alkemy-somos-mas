@@ -20,11 +20,10 @@ import {
   Td,
   Thead,
   Tr,
-  useToast,
 } from '@chakra-ui/react';
+import { deleteMember } from '../../../features/members/membersSlice';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
-  const toast = useToast();
   const dispatch = useDispatch();
 
   const toDelDescHTML = toDeleteObj.description || '';
@@ -43,6 +42,8 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
         break;
       case 'categories':
         dispatch(deleteCategory(toDeleteObj.id));
+      case 'members':
+        dispatch(deleteMember(toDeleteObj.id));
       default:
         break;
     }
