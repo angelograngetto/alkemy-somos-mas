@@ -3,8 +3,9 @@ import { Stack } from '@chakra-ui/react';
 import HeaderLogo from './HeaderLogo';
 import MenuToggle from './MenuToggle';
 import MenuLinks from './MenuLinks';
+import { linksList } from './LinksList';
 
-const Header = ({ links }) => {
+const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggle = () => {
@@ -21,9 +22,9 @@ const Header = ({ links }) => {
       paddingX={8}
       w="100%"
     >
-      <MenuToggle isOpen={isOpen} links={links} toggle={toggle} />
+      <MenuToggle isOpen={isOpen} links={linksList} toggle={toggle} />
       <HeaderLogo />
-      <MenuLinks links={links} />
+      <MenuLinks links={linksList} />
     </Stack>
   );
 };

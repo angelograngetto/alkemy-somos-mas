@@ -1,11 +1,20 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+
 import { Text } from '@chakra-ui/react';
+import { Link, useLocation } from 'react-router-dom';
 
 const MenuItem = ({ children, to = '/', ...rest }) => {
+  const location = useLocation();
+
   return (
     <Link to={to}>
-      <Text color="white" cursor="pointer" display="block" {...rest} _hover={{ color: 'blue.200' }}>
+      <Text
+        color={to === location.pathname ? 'blue.200' : 'white'}
+        cursor="pointer"
+        display="block"
+        {...rest}
+        _hover={{ color: 'blue.200' }}
+      >
         {children}
       </Text>
     </Link>

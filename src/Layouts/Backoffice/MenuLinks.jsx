@@ -2,13 +2,9 @@ import React from 'react';
 
 import { Box, Stack } from '@chakra-ui/react';
 
-import { useLocation } from 'react-router-dom';
-
 import MenuItem from './MenuItem';
 
 const MenuLinks = ({ isOpen, links }) => {
-  const location = useLocation();
-
   return (
     <Box
       display={{ base: isOpen ? 'flex' : 'none', md: 'block' }}
@@ -25,7 +21,7 @@ const MenuLinks = ({ isOpen, links }) => {
         width="100%"
       >
         {links.map((link, index) => (
-          <MenuItem key={index} isActive={link.to === location.pathname} to={link.to}>
+          <MenuItem key={index} to={link.to}>
             {link.text}
           </MenuItem>
         ))}
