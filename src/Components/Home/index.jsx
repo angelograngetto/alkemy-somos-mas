@@ -1,19 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Heading, Box, Alert, AlertIcon, Button, Container, Text } from '@chakra-ui/react';
+import { Heading, Box, Alert, AlertIcon, Button, Container } from '@chakra-ui/react';
 import OrganizationService from '../../Services/OrganitationService';
-import Slides from '../Slides';
-import PublicHeader from '../Headers/PublicHeader';
-import CampañaJuguetes from '../Landings/Campaña Juguetes/Contenido/index';
-
-const linksList = [
-  { text: 'Home', to: '/', requireLogin: false, showAuthorizedUsers: true },
-  { text: 'Nosotros', to: '/nosotros', requireLogin: false, showAuthorizedUsers: true },
-  { text: 'Contacto', to: '/contacto', requireLogin: false, showAuthorizedUsers: true },
-  { text: 'Admin', to: '/admin', requireLogin: true, showAuthorizedUsers: true },
-  { text: 'Registrarme', to: '/register', requireLogin: false, showAuthorizedUsers: false },
-  { text: 'Salir', to: '/logout', requireLogin: true, showAuthorizedUsers: true },
-  { text: 'Ingresar', to: '/login', requireLogin: false, showAuthorizedUsers: false },
-];
+import Slides from '../Slides/index';
 
 export const Home = () => {
   const [organization, setOrganization] = useState([]);
@@ -36,7 +24,6 @@ export const Home = () => {
 
   return (
     <>
-      <PublicHeader options={linksList} />
       {utils.error ? (
         <Container>
           <Box alignItems="center" d="flex" justifyContent="center" minH="100vh">
@@ -72,10 +59,6 @@ export const Home = () => {
             <Heading align="center" as="h2" m="3" size="lg">
               Últimas novedades
             </Heading>
-          </Box>
-          {/* <Box borderRadius="lg" borderWidth="1px" boxShadow="lg" m="33" overflow="hidden" p="2"> */}
-          <Box borderRadius="lg" boxShadow="lg" mx="20%" overflow="hidden">
-            <CampañaJuguetes />
           </Box>
         </>
       )}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import Logo from './Logo';
+import { linksList } from '../../Layouts/WebPublica/LinksList';
 import MenuLinks from './MenuLinks';
 import MenuToggle from './MenuToggle';
 import NavbarContainer from './NavbarContainer';
@@ -17,7 +18,7 @@ const PublicHeader = ({ options }) => {
     <NavbarContainer>
       <Logo w={{ base: '35%', md: '15%' }} />
       <MenuToggle isOpen={isOpen} toggle={toggle} />
-      {options ? <MenuLinks isLogged={auth} isOpen={isOpen} options={options} /> : null}
+      {options ? <MenuLinks isLogged={auth} isOpen={isOpen} options={linksList} /> : null}
     </NavbarContainer>
   );
 };

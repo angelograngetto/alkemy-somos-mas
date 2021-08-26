@@ -9,8 +9,8 @@ import Logo from './Logo';
 
 const linksList = [
   { text: 'Home', to: '/' },
-  { text: 'Contacto', to: '/contact' },
-  { text: 'Nosotros', to: '/organization' },
+  { text: 'Contacto', to: '/contacto' },
+  { text: 'Nosotros', to: '/nosotros' },
 ];
 
 const PublicFooter = () => {

@@ -1,7 +1,9 @@
 import React, { lazy, Suspense } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import ProgressBar from '../Utils/ProgressBar';
+import WebPublicaLayout from '../../Layouts/WebPublica/WebPublicaLayout';
 
 const About = lazy(() => import('../About'));
 const ActivitiesList = lazy(() => import('../Activities/ActivitiesList'));
@@ -20,7 +22,6 @@ const Newsletter = lazy(() => import('../Newsletter'));
 const RegisterForm = lazy(() => import('../Auth/RegisterForm'));
 const PageNotFound = lazy(() => import('../PageNotFound/PageNotFound'));
 const Logout = lazy(() => import('../Auth/Logout'));
-const CampañaEscolarLanding = lazy(() => import('../Landings/CampañaEscolar'));
 
 const PublicRoutes = () => {
   const { isAdmin } = useSelector((state) => state.auth);
@@ -28,51 +29,48 @@ const PublicRoutes = () => {
   return (
     <Suspense fallback={<ProgressBar isIndeterminate />}>
       <Switch>
-        <Route exact component={Home} path="/" />
-        <Route exact component={ActivitiesList} path="/activities" />
-        <Route exact component={DetailView} path="/activities/:id" />
-        {!isAdmin ? (
-          <Route
-            exact
-            path="/contacto"
-            render={() => (
-              <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
-            )}
-          />
-        ) : (
-          <Redirect to="/" />
-        )}
-        <Route
-          exact
-          path="/contacto"
-          render={() => (
-            <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
-          )}
-        />
-        <Route exact path="/donar">
-          <Donacion text="¡Contribuye!" />
-        </Route>
-        <Route exact component={Gracias} path="/gracias" />
-        <AuthRoute exact path="/login">
-          <LoginForm />
-        </AuthRoute>
-        <PrivateRoute
-          exact
-          errorMsg="Para poder suscribirte necesitás estar registrado"
-          path="/newsletter"
-        >
-          <Newsletter />
-        </PrivateRoute>
-        <Route exact component={About} path="/nosotros" />
-        <Route exact component={News} path="/novedades" />
-        <Route exact component={DetailNew} path="/novedades/:id" />
-        <Route exact component={Logout} path="/logout" />
         <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
         <Route exact component={CampañaJuguetesLanding} path="/campaña-juguetes" />
-        <AuthRoute exact path="/register">
-          <RegisterForm />
-        </AuthRoute>
-        <Route component={PageNotFound} path="*" />
+        <WebPublicaLayout>
+          <Switch>
+            <Route exact component={Home} path="/" />
+            <Route exact component={ActivitiesList} path="/activities" />
+            <Route exact component={DetailView} path="/activities/:id" />
+            {!isAdmin ? (
+              <Route
+                exact
+                path="/contacto"
+                render={() => (
+                  <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
+                )}
+              />
+            ) : (
+              <Redirect to="/" />
+            )}
+            <Route exact path="/donar">
+              <Donacion text="¡Contribuye!" />
+            </Route>
+            <Route exact component={Gracias} path="/gracias" />
+            <AuthRoute exact path="/login">
+              <LoginForm />
+            </AuthRoute>
+            <PrivateRoute
+              exact
+              errorMsg="Para poder suscribirte necesitás estar registrado"
+              path="/newsletter"
+            >
+              <Newsletter />
+            </PrivateRoute>
+            <Route exact component={About} path="/nosotros" />
+            <Route exact component={News} path="/novedades" />
+            <Route exact component={DetailNew} path="/novedades/:id" />
+            <Route exact component={Logout} path="/logout" />
+            <AuthRoute exact path="/register">
+              <RegisterForm />
+            </AuthRoute>
+            <Route component={PageNotFound} path="*" />
+          </Switch>
+        </WebPublicaLayout>
       </Switch>
     </Suspense>
   );
