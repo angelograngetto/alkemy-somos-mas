@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
 import ProgressBar from '../Utils/ProgressBar';
 
@@ -20,12 +20,25 @@ const RegisterForm = lazy(() => import('../Auth/RegisterForm'));
 const PageNotFound = lazy(() => import('../PageNotFound/PageNotFound'));
 
 const PublicRoutes = () => {
+  const { isAdmin } = useSelector((state) => state.auth);
+
   return (
     <Suspense fallback={<ProgressBar isIndeterminate />}>
       <Switch>
         <Route exact component={Home} path="/" />
         <Route exact component={ActivitiesList} path="/activities" />
         <Route exact component={DetailView} path="/activities/:id" />
+        {!isAdmin ? (
+          <Route
+            exact
+            path="/contacto"
+            render={() => (
+              <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
+            )}
+          />
+        ) : (
+          <Redirect to="/" />
+        )}
         <Route
           exact
           path="/contacto"
