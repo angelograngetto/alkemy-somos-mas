@@ -7,6 +7,7 @@ const About = lazy(() => import('../About'));
 const ActivitiesList = lazy(() => import('../Activities/ActivitiesList'));
 const AuthRoute = lazy(() => import('./AuthRoute'));
 const CampañaEscolarLanding = lazy(() => import('../Landings/CampañaEscolar'));
+const CampañaJuguetesLanding = lazy(() => import('../Landings/CampañaJuguetes'));
 const Contact = lazy(() => import('../Contact'));
 const DetailView = lazy(() => import('../Activities/Detail/DetailView'));
 const DetailNew = lazy(() => import('../News/Detail/DetailNew'));
@@ -64,6 +65,7 @@ const PublicRoutes = () => {
         <Route exact component={News} path="/novedades" />
         <Route exact component={DetailNew} path="/novedades/:id" />
         <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
+        <Route exact component={CampañaJuguetesLanding} path="/campaña-juguetes" />
         <AuthRoute exact path="/register">
           <RegisterForm />
         </AuthRoute>
