@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { chakra, Stack, Text } from '@chakra-ui/react';
+import { Box, chakra, Stack, Text } from '@chakra-ui/react';
+import { createBreakpoints } from '@chakra-ui/theme-tools';
 import { SocialMediaLinks } from './SocialMediaLinks';
 import { FaInstagramSquare, FaFacebookSquare, FaTwitter, FaLinkedin } from 'react-icons/fa';
 import OrganizationService from '../../Services/OrganitationService';
@@ -26,7 +27,7 @@ const PublicFooter = () => {
   }, []);
 
   return (
-    <Stack backgroundColor="blue.900" paddingY={10} spacing={5}>
+    <Stack backgroundColor="#6767FF" paddingY={10} spacing={5}>
       {organization ? (
         <Stack
           direction={{ base: 'column', xl: 'row' }}
@@ -36,15 +37,22 @@ const PublicFooter = () => {
         >
           <Stack>
             <Logo url={organization.logo} />
-            <OrganizationTitle color="white" fontSize="2xl" title={organization.name} />
+            <OrganizationTitle
+              color="white"
+              display={{ sm: 'none' }}
+              fontSize="2xl"
+              title={organization.name}
+            />
           </Stack>
-          <MenuFooter list={linksList} />
+          <Box display={{ sm: 'none', md: 'inherit' }}>
+            <MenuFooter list={linksList} />
+          </Box>
           <Stack alignItems="center" direction="column" justifyContent="center">
-            <Text color="white" fontWeight="bold">
+            <Text color="white" display={{ sm: 'none', lg: 'inherit' }} fontWeight="bolder">
               Siguenos
             </Text>
             <SocialMediaLinks
-              color="gray.900"
+              color="white"
               links={[
                 { name: 'Facebook', url: organization.facebook_url, icon: FaFacebookSquare },
                 { name: 'Instagram', url: organization.instagram_url, icon: FaInstagramSquare },
@@ -56,8 +64,8 @@ const PublicFooter = () => {
         </Stack>
       ) : null}
       <Stack direction="row" justifyContent="center" paddingTop={8}>
-        <Text color="white" fontSize="sm">
-          <chakra.span color="black" fontWeight="bold">
+        <Text color="white" fontSize="xs">
+          <chakra.span color="white" fontWeight="bold">
             @{today.getFullYear()}
           </chakra.span>{' '}
           By Alkemy All Rights Reserved

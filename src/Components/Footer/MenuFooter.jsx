@@ -15,7 +15,7 @@ const MenuFooter = ({ list }) => {
         {list.map((item, index) => (
           <MenuItem
             key={index}
-            _hover={{ color: 'gray.500' }}
+            _hover={{ color: 'blue.200' }}
             color="white"
             fontSize="2xl"
             fontWeight="bold"
