@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { ArrowBackIcon, ArrowForwardIcon } from '@chakra-ui/icons';
-import { Heading } from '@chakra-ui/react';
+import { Heading, Text } from '@chakra-ui/react';
 
 import styles from './slides.module.css';
 
@@ -51,8 +51,13 @@ const Slides = () => {
             <img src={slidesList[index].image} />
             <div className={styles.info__container}>
               <div className={styles.info__text}>
-                <Heading>{slidesList[index].name}</Heading>
-                <div dangerouslySetInnerHTML={{ __html: `${slidesList[index].description}` }}></div>
+                <Heading fontSize={{ base: '1.3rem', md: '2.6rem', lg: '3.2rem' }}>
+                  {slidesList[index].name}
+                </Heading>
+                <Text
+                  dangerouslySetInnerHTML={{ __html: `${slidesList[index].description}` }}
+                  display={{ base: 'none', lg: 'block' }}
+                ></Text>
               </div>
             </div>
             <div className={styles.buttons}>

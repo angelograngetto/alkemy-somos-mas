@@ -2,11 +2,13 @@ import { Box, Text, Image } from '@chakra-ui/react';
 import React from 'react';
 import Countdown from './Contenido/Countdown';
 import Header from './Header/Header';
+import Slider from '../Slider/index';
 
 const CampañaJuguetesLanding = () => {
   return (
     <>
       <Header />
+      <Slider />
       <Box
         alignItems="center"
         //   backgroundImage="url('https://i.ibb.co/vBSgtCd/Im-genes-contenido-opci-n-2.png')"

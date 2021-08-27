@@ -55,3 +55,21 @@
     max-width: 15rem;
   }
 }
+
+@media (max-width: 425px){
+  .image__container{
+    height: 19rem;
+  }
+}
+
+@media(min-width: 426px){
+  .image__container{
+    height: 22rem;
+  }
+}
+
+@media(min-width: 769px){
+  .image__container{
+    height: 28rem;
+  }
+}

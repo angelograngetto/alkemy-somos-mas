@@ -1,13 +1,14 @@
 import React from 'react';
 import { Box, Heading, Image, Text } from '@chakra-ui/react';
 import Countdown from './Countdown';
+import TitleComponent from '../../../Title/TitleComponent';
+import Slider from '../../Slider/index';
 
 const Contenido = () => {
   return (
     <Box>
-      <Heading align="center" fontSize={{ base: '20px', lg: '2em' }}>
-        Campaña Escolar 2021
-      </Heading>
+      <TitleComponent text="Campaña Escolar 2021" textCenter="center" />
+      <Slider />
       <Box bg={{ base: 'gray.400' }} mt="25px" p={5}>
         <Box
           d="flex"
