@@ -13,9 +13,13 @@ const MenuLinks = ({ isOpen, isLogged, options }) => {
     options = options.filter((option) => option.requireLogin == false);
   } else {
     if (isAdmin) {
-      options = options.filter((option) => option.text !== 'Contacto');
+      options = options.filter(
+        (option) => option.text !== 'Contacto' && option.showAuthorizedUsers,
+      );
     } else {
-      options = options.filter((option) => option.showAuthorizedUsers == true);
+      options = options.filter(
+        (option) => option.showAuthorizedUsers && option.requireAdmin == false,
+      );
     }
   }
   return (

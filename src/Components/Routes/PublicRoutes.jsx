@@ -36,17 +36,17 @@ const PublicRoutes = () => {
             <Route exact component={Home} path="/" />
             <Route exact component={ActivitiesList} path="/activities" />
             <Route exact component={DetailView} path="/activities/:id" />
-            {!isAdmin ? (
-              <Route
-                exact
-                path="/contacto"
-                render={() => (
+            <Route
+              exact
+              path="/contacto"
+              render={() =>
+                !isAdmin ? (
                   <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
-                )}
-              />
-            ) : (
-              <Redirect to="/" />
-            )}
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
             <Route exact path="/donar">
               <Donacion text="¡Contribuye!" />
             </Route>
