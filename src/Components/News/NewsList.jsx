@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { useEffect, useState } from 'react';
 import {
   AspectRatio,
@@ -74,7 +75,6 @@ const NewsList = () => {
   }, [toSearch]);
 
   const handleFilter = (category) => {
-    console.log(category);
     if (category !== 'todas') {
       dispatch(filterNewsList({ value: toSearch, category: category })).then(
         setNewsFiltered(categories),
@@ -173,44 +173,44 @@ const NewsList = () => {
           <Tbody>
             {newsList?.length > 0
               ? newsFiltered.map((news, index) => (
-                  <Tr key={index}>
-                    <Td textAlign="center">{news.name}</Td>
-                    <Td>
-                      <AspectRatio maxW="100px" ratio={4 / 3}>
-                        <Image
-                          alt="Image Card"
-                          fallbackSrc="../images/placeholder/100x100.png"
-                          objectFit="cover"
-                          src={news.image}
-                        />
-                      </AspectRatio>
-                    </Td>
-                    <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
-                    <Td textAlign="center">
-                      <Button
-                        colorScheme="green"
-                        rightIcon={<EditIcon />}
-                        title={`Editar ${news.name}`}
-                        onClick={() => handleEditOpen(news)}
-                      >
-                        Editar
-                      </Button>
-                      <Button
-                        colorScheme="red"
-                        m="2"
-                        rightIcon={<DeleteIcon />}
-                        title={`Borrar ${news.name}`}
-                        onClick={() => handleDelete(news.id)}
-                      >
-                        Borrar
-                      </Button>
-                    </Td>
-                  </Tr>
-                ))
+                <Tr key={index}>
+                  <Td textAlign="center">{news.name}</Td>
+                  <Td>
+                    <AspectRatio maxW="100px" ratio={4 / 3}>
+                      <Image
+                        alt="Image Card"
+                        fallbackSrc="../images/placeholder/100x100.png"
+                        objectFit="cover"
+                        src={news.image}
+                      />
+                    </AspectRatio>
+                  </Td>
+                  <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
+                  <Td textAlign="center">
+                    <Button
+                      colorScheme="green"
+                      rightIcon={<EditIcon />}
+                      title={`Editar ${news.name}`}
+                      onClick={() => handleEditOpen(news)}
+                    >
+                      Editar
+                    </Button>
+                    <Button
+                      colorScheme="red"
+                      m="2"
+                      rightIcon={<DeleteIcon />}
+                      title={`Borrar ${news.name}`}
+                      onClick={() => handleDelete(news.id)}
+                    >
+                      Borrar
+                    </Button>
+                  </Td>
+                </Tr>
+              ))
               : null}
           </Tbody>
         </Table>
-        {!loading && !newsList.length ? (
+        {newsFiltered?.length < 1 ? (
           <Stack
             alignItems="center"
             direction="row"

@@ -21,6 +21,7 @@ import CategoriesForm from '../../Categories/CategoriesForm';
 import ModalEdit from '../Utils/ModalEdit';
 import ModalDelete from '../Utils/ModalDelete';
 import Error from '../Utils/Error';
+import Spinner from '../../Spinner/SpinnerComponent';
 import { fetchCategories, searchCategories } from '../../../features/categories/categoriesSlice';
 import { SearchInput } from '../../Utils/SearchInput/SearchInput';
 
@@ -63,8 +64,15 @@ const CategoriesListScreen = () => {
 
   const toCreate = () => history.push('/backoffice/categories/create');
 
+  if (categoriesFiltered.length < 1) {
+    return (
+      <Box alignItems="center" d="flex" justifyContent="center" minH="100vh">
+        <Spinner />
+      </Box>
+    );
+  }
   if (error) {
-    return <Error error={error} />;
+    return <Error error={error ?? { message: 'Ocurrió un error, intenta más tarde' }} />;
   } else {
     return (
       <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>

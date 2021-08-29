@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchActivitiesList, searchActivitiesList } from '../../../features/activities/activitiesSlice';
 import {
+  Alert,
+  AlertIcon,
   AspectRatio,
   Box,
   Button,
@@ -23,6 +25,7 @@ import ModalDelete from '../../Backoffice/Utils/ModalDelete';
 import ModalEdit from '../../Backoffice/Utils/ModalEdit';
 import ActivitiesForm from '../ActivitiesForm';
 import { SearchInput } from '../../Utils/SearchInput/SearchInput';
+import Spinner from '../../Spinner/SpinnerComponent'
 
 const ActivitiesListBack = () => {
   const dispatch = useDispatch();
@@ -62,9 +65,9 @@ const ActivitiesListBack = () => {
   useEffect(() => {
     setActivitiesFiltered(searchResults)
   }, [searchResults])
-  
 
-  if (loading) return 'Loading...';
+
+  if (loading) return <Box alignItems="center" d="flex" justifyContent="center" minH="100vh"><Spinner /></Box>;
 
   return (
     <Box mt="3">
@@ -73,12 +76,12 @@ const ActivitiesListBack = () => {
       </Text>
       <Box m="5">
         <HStack justifyContent="center" mb="2">
-            <LinkActivities />
-            <SearchInput
-        onDebounce={(value) => {
-          setTerm(value);
-        }}
-      />
+          <LinkActivities />
+          <SearchInput
+            onDebounce={(value) => {
+              setTerm(value);
+            }}
+          />
         </HStack>
         <Table size="md" variant="striped">
           <Thead>
@@ -123,9 +126,19 @@ const ActivitiesListBack = () => {
           </Tbody>
         </Table>
         {!activitiesList.length && (
-          <Stack direction="row" justifyContent="center" marginTop={5} width="100%">
-            <Text textAlign="center">No hay novedades</Text>
-          </Stack>
+          <Box alignItems="center" d="flex" flexDirection="column" justifyContent="center" m="4">
+            <Alert
+              alignItems="center"
+              d="flex"
+              flexDirection="column"
+              justifyContent="center"
+              status="error"
+              textAlign="center"
+            >
+              <AlertIcon />
+              No hay actividades en este momento
+            </Alert>
+          </Box>
         )}
       </Box>
       <ModalDelete

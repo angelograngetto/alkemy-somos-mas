@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchUsers, searchedUsers, filteredUsers } from '../../../features/users/usersSlice';
 import {
+  Box,
   Flex,
   Button,
   Text,
@@ -14,24 +15,22 @@ import {
   Th,
   ButtonGroup,
   Center,
-  Select,
-  HStack,
   Menu,
   MenuButton,
   MenuList,
   MenuOptionGroup,
   MenuItemOption,
-  MenuDivider,
   Spacer,
 } from '@chakra-ui/react';
 import { AddIcon, ChevronLeftIcon, ChevronRightIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
-import { FaBullseye, FaFilter } from 'react-icons/fa';
+import { FaFilter } from 'react-icons/fa';
 import { useHistory } from 'react-router-dom';
 import UserForm from '../../Users/UsersForm';
 import Error from '../Utils/Error';
 import ModalDelete from '../Utils/ModalDelete';
 import ModalEdit from '../Utils/ModalEdit';
 import { SearchInput } from '../../Utils/SearchInput/SearchInput';
+import Spinner from '../../Spinner/SpinnerComponent';
 
 const UsersListScreen = (props) => {
   const dispatch = useDispatch();
@@ -71,7 +70,6 @@ const UsersListScreen = (props) => {
 
   const handleFilter = (role) => {
     dispatch(filteredUsers({ keys: toSearch, role }));
-    console.log(role);
   };
 
   useEffect(() => {
@@ -81,6 +79,14 @@ const UsersListScreen = (props) => {
       dispatch(fetchUsers());
     }
   }, [isDeleteOpen, isEditOpen, toSearch]);
+
+  if (usersList.length < 1) {
+    return (
+      <Box alignItems="center" d="flex" justifyContent="center" minH="100vh">
+        <Spinner />
+      </Box>
+    );
+  }
 
   if (error) {
     return <Error error={error} />;
