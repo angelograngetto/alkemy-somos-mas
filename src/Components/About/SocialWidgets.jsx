@@ -1,6 +1,6 @@
-import { Container, Button, HStack, Link } from '@chakra-ui/react';
+import { Container, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
-import { TwitterButton, TwitterTweet } from 'react-social-plugins';
+import { TwitterTweet } from 'react-social-plugins';
 import { FaLinkedin, FaTwitter } from 'react-icons/fa';
 
 const linkedinLink = 'https://www.linkedin.com/company/alkemy2020/?originalSubdomain=ar';
@@ -9,15 +9,27 @@ const twitterTweet =
 
 const SocialWidgets = () => {
   return (
-    <Container>
-      <HStack>
-        <Button as="a" colorScheme="facebook" href={`${linkedinLink}`} leftIcon={<FaLinkedin />}>
+    <Container alignItems="center" display="flex" flexDirection="column">
+      <Flex justify="center">
+        <Button
+          as="a"
+          colorScheme="linkedin"
+          href={`${linkedinLink}`}
+          leftIcon={<FaLinkedin />}
+          m="3"
+        >
           Linkedin
         </Button>
-        <Button as="a" colorScheme="twitter" href={`${twitterTweet}`} leftIcon={<FaTwitter />}>
+        <Button
+          as="a"
+          colorScheme="twitter"
+          href={`${twitterTweet}`}
+          leftIcon={<FaTwitter />}
+          m="3"
+        >
           Twitter
         </Button>
-      </HStack>
+      </Flex>
       <div>
         <TwitterTweet
           align="left"

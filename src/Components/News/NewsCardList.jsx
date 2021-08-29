@@ -15,7 +15,7 @@ const NewsCardList = ({ newsData }) => {
             overflow="hidden"
             p="4"
           >
-            <Image boxSize="200px" objectFit="cover" src={news.image} />
+            <Image boxSize="100%" h="10rem" mb="1rem" objectFit="cover" src={news.image} />
             <Text>{news.name}</Text>
             <Text dangerouslySetInnerHTML={{ __html: news.content }}></Text>
           </Box>

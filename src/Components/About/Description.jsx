@@ -1,9 +1,16 @@
-import { Container } from '@chakra-ui/react';
+import { Container, Text, Box } from '@chakra-ui/react';
 import React from 'react';
 
 const Description = ({ description }) => {
   return (
-    <div> {description ? <Container maxWidth="container.xl">{description}</Container> : null}</div>
+    <Box m="5">
+      {description ? (
+        <Container borderRadius="lg" boxShadow="md" maxWidth="100%" p="5">
+          <Text fontWeight="black">Nuestra historia:</Text>
+          <Text dangerouslySetInnerHTML={{ __html: description }}></Text>
+        </Container>
+      ) : null}
+    </Box>
   );
 };
 

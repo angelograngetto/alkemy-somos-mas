@@ -1,40 +1,55 @@
 import React from 'react';
-import { Avatar, Box, Flex, Text } from '@chakra-ui/react';
-import { Container } from '@chakra-ui/react';
+import { Avatar, Box, Flex, LinkBox, Text, Badge, Image, Wrap } from '@chakra-ui/react';
+import { Container, Link } from '@chakra-ui/react';
 import { SiFacebook } from 'react-icons/si';
 import { SiLinkedin } from 'react-icons/si';
 
 const MembersList = ({ membersData }) => {
   return (
-    <Container centerContent>
-      <Box>
-        {membersData.length > 0 ? (
-          membersData.map((member, index) => (
-            <Flex key={index} borderRadius="lg" borderWidth="1px" m="5" overflow="hidden" p="4">
-              <Avatar size="xl" src={`${member.image}`} />
-              <Box m="3" p="3">
-                <Text fontWeight="bold" pt="2">
-                  {member.name}
-                </Text>
-                <Text fontsize="sm" pt="2">
-                  {member.description}
-                </Text>
-                <Flex alignItems="center" pt="2">
-                  <SiFacebook />
-                  <Text px="2">{member.facebookUrl}</Text>
-                </Flex>
-                <Flex alignItems="center" pt="2">
-                  <SiLinkedin />
-                  <Text px="2">{member.linkedinUrl}</Text>
-                </Flex>
+    <Wrap justify="center" spacing="1rem">
+      {membersData.length > 0 ? (
+        membersData.map((member, index) => (
+          <Box
+            key={index}
+            borderRadius="lg"
+            borderWidth="1px"
+            boxShadow="lg"
+            m="5"
+            overflow="hidden"
+            w="sm"
+          >
+            <Image alt={member.imageAlt} h="25rem" objectFit="cover" src={member.image} w="100%" />
+
+            <Box p="6" pt="3">
+              <Box isTruncated as="h4" fontWeight="semibold" lineHeight="tight" mt="1">
+                {member.name}
               </Box>
-            </Flex>
-          ))
-        ) : (
-          <p>Miembros no disponibles</p>
-        )}
-      </Box>
-    </Container>
+              <Box mb="10px">
+                <Box as="span" color="gray.600" fontSize="sm">
+                  <Text dangerouslySetInnerHTML={{ __html: member.description }}></Text>
+                </Box>
+              </Box>
+              <Box alignItems="baseline" d="flex">
+                <Badge borderRadius="full" colorScheme="facebook" mr="10px" p="2">
+                  <Link isExternal alignItems="center" display="flex" href={member.facebookUrl}>
+                    <SiFacebook p="20px" />
+                    <Text ml="5px">Facebook</Text>
+                  </Link>
+                </Badge>
+                <Badge borderRadius="full" colorScheme="linkedin" mr="10px" p="2">
+                  <Link isExternal alignItems="center" display="flex" href={member.linkedinUrl}>
+                    <SiLinkedin p="20px" />
+                    <Text ml="5px">LinkedIn</Text>
+                  </Link>
+                </Badge>
+              </Box>
+            </Box>
+          </Box>
+        ))
+      ) : (
+        <p>Miembros no disponibles</p>
+      )}
+    </Wrap>
   );
 };
 
