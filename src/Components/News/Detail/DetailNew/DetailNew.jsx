@@ -7,6 +7,7 @@ import CategoriesService from '../../../../Services/CategoriesServices';
 import { fetchNewsList } from '../../../../features/news/newsSlice';
 import { fetchCategoryById } from '../../../../features/categories/categoriesSlice';
 import Alert from '../../../Utils/Alert';
+import Comments from '../../Comments';
 
 const DetailNew = () => {
   const { id } = useParams();
@@ -64,6 +65,7 @@ const DetailNew = () => {
             <Text textAlign="justify">{content}</Text>
           </Stack>
         </Stack>
+        <Comments />
       </Box>
     </Box>
   );
