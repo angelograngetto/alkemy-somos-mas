@@ -9,6 +9,7 @@ const MenuItem = ({ isActive, children, reqLogin, to = '/', ...rest }) => {
         _hover={{ textDecoration: 'none', color: 'blue.200' }}
         color={isActive && 'blue.200'}
         display="block"
+        fontSize={{ base: '14px' }}
         {...rest}
       >
         {children}

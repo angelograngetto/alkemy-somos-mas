@@ -1,5 +1,5 @@
 export const linksList = [
-  { text: 'Home', to: '/', requireLogin: false, showAuthorizedUsers: true, requireAdmin: false },
+  { text: 'Inicio', to: '/', requireLogin: false, showAuthorizedUsers: true, requireAdmin: false },
   {
     text: 'Nosotros',
     to: '/nosotros',
@@ -36,7 +36,7 @@ export const linksList = [
     requireAdmin: false,
   },
   {
-    text: 'Cerrar sesión',
+    text: 'Logout',
     to: '/logout',
     requireLogin: true,
     showAuthorizedUsers: true,

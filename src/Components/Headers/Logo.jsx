@@ -1,14 +1,13 @@
 import React from 'react';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Image, Text } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
+import LogoNav from '../../assets/LOGO-SOMOS-MAS-nav.png';
 
 const Logo = (props) => {
   return (
-    <Box {...props}>
+    <Box {...props} ml="3">
       <Link to="/">
-        <Text color="white" cursor="pointer" fontSize="lg" fontWeight="bold">
-          Somos más
-        </Text>
+        <Image borderRadius="50%" src={LogoNav} width={150} />
       </Link>
     </Box>
   );
