@@ -15,7 +15,7 @@ import {
   Tbody,
   Box,
 } from '@chakra-ui/react';
-import { EditIcon, CloseIcon } from '@chakra-ui/icons';
+import { EditIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
 import { useHistory } from 'react-router-dom';
 import CategoriesForm from '../../Categories/CategoriesForm';
 import ModalEdit from '../Utils/ModalEdit';
@@ -80,7 +80,7 @@ const CategoriesListScreen = () => {
         >
           <Flex align="center" justify="space-between" m={{ base: 3, sm: 0 }}>
             <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
-              Categories
+              Categorías
               <Spacer />
             </Text>
             <Box w="50%">
@@ -91,8 +91,8 @@ const CategoriesListScreen = () => {
                 }}
               />
             </Box>
-            <Button colorScheme="green" onClick={toCreate}>
-              Create
+            <Button colorScheme="green" title="Crear nueva categoría" onClick={toCreate}>
+              Nuevo <AddIcon ml="2" />
             </Button>
           </Flex>
           <Divider mb="5" />
@@ -105,9 +105,9 @@ const CategoriesListScreen = () => {
           >
             <Thead>
               <Tr>
-                <Th>Name</Th>
-                <Th textAlign="center">Created at</Th>
-                <Th textAlign="center">Actions</Th>
+                <Th>Nombre</Th>
+                <Th textAlign="center">Fecha de creación</Th>
+                <Th textAlign="center">Acciones</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -120,6 +120,7 @@ const CategoriesListScreen = () => {
                       <Button
                         colorScheme="green"
                         size="xs"
+                        title={`Editar categoría ${categorie.name}`}
                         onClick={() => handleEditOpen(categorie)}
                       >
                         <EditIcon />
@@ -127,6 +128,7 @@ const CategoriesListScreen = () => {
                       <Button
                         colorScheme="red"
                         size="xs"
+                        title={`Eliminar categoría ${categorie.name}`}
                         onClick={() => handleDeleteOpen(categorie)}
                       >
                         <CloseIcon />
