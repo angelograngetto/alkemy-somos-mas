@@ -52,7 +52,10 @@ const ActivitiesList = () => {
         justifyContent="center"
         w="100%"
       >
-        <TitleComponent img="" text="ACTIVIDADES" />
+        <TitleComponent
+          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpq1M72SRK0DqxdgCfgCYq3WjeOPgurvGo4A&usqp=CAU"
+          text="ACTIVIDADES"
+        />
       </Box>
       <SearchInput
         onDebounce={(value) => {

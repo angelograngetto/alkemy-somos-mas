@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TitleComponent from '../Title/TitleComponent';
 import NewsCardList from './NewsCardList';
 import NewsService from '../../Services/NewsService';
-import { Container } from '@chakra-ui/react';
+import { Box, Container, Heading } from '@chakra-ui/react';
 import UltimoEvento from './UltimoEvento';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
@@ -33,18 +33,32 @@ const News = () => {
   }, [term]);
 
   return (
-    <Container centerContent maxW="container.xl">
-      <TitleComponent text={'Novedades'} />
-      <SearchInput
-        onDebounce={(value) => {
-          setTerm(value);
-        }}
+    <Box>
+      <TitleComponent
+        img={
+          'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+        }
+        text={'Novedades'}
       />
-      <NewsCardList newsData={news} />
-      <UltimoEvento
-        videoUrl={'https://www.youtube.com/watch?v=Zp8aZmqf_rU&ab_channel=EdesurArgentina'}
-      />
-    </Container>
+      <Box m="auto" mt="6" p="6" w={{ base: '60%', md: '40%' }}>
+        {/* <SearchInput
+          onDebounce={(value) => {
+            setTerm(value);
+          }}
+        /> */}
+      </Box>
+      <Box overflow="hidden">
+        <NewsCardList newsData={news} />
+      </Box>
+      <Box m="3" mb="12" overflow="hidden">
+        <Heading h="100px" m="auto" textAlign="center" w="50%">
+          Videos
+        </Heading>
+        <UltimoEvento
+          videoUrl={'https://www.youtube.com/watch?v=Zp8aZmqf_rU&ab_channel=EdesurArgentina'}
+        />
+      </Box>
+    </Box>
   );
 };
 

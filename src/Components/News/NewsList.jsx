@@ -22,6 +22,7 @@ import ModalEdit from '../Backoffice/Utils/ModalEdit';
 import NewsForm from './NewsForm';
 import { useHistory } from 'react-router-dom';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
+import SpinnerComponent from '../Spinner/SpinnerComponent';
 
 const NewsList = () => {
   const dispatch = useDispatch();
@@ -141,7 +142,7 @@ const NewsList = () => {
             justifyContent="center"
             width="100%"
           >
-            <Text textAlign="center">No hay novedades.</Text>
+            <SpinnerComponent />
           </Stack>
         ) : null}
       </Box>

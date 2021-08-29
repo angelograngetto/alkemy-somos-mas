@@ -41,7 +41,12 @@ const index = () => {
         w="5xl"
       >
         {loading && <ProgressBar isIndeterminate colorScheme="blue" />}
-        <TitleComponent text={'Nosotros'} />
+        <TitleComponent
+          img={
+            'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+          }
+          text={'Nosotros'}
+        />
         <Description description={about.aboutUS.long_description} />
         <MembersList membersData={about.membersList} />
         <Divider my="5" />

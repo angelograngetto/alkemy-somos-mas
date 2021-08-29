@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Container, Image, Stack, Text } from '@chakra-ui/react';
+import { Box, Container, Heading, Image, Stack, Tag, Text } from '@chakra-ui/react';
 import TitleComponent from '../../../Title/TitleComponent';
 import CategoriesService from '../../../../Services/CategoriesServices';
 import { fetchNewsList } from '../../../../features/news/newsSlice';
@@ -41,30 +41,31 @@ const DetailNew = () => {
   if (!newItem) return null;
 
   return (
-    <Container maxWidth={{ base: 'container.xl', md: 'container.xl' }} paddingY={20}>
-      <TitleComponent text={newItem?.name} />
-      <Stack direction={{ base: 'column', md: 'row' }} marginTop={10} spacing={10}>
-        <Stack alignItems="center" justifyContent="center">
-          <Image maxWidth={{ base: '100%', md: 350, lg: 500 }} src={image} />
-        </Stack>
-        <Stack alignItems={{ base: 'center', md: 'flex-start' }} spacing={4} width="100%">
-          <Stack
-            border="1px solid gray"
-            borderRadius={15}
-            direction="row"
-            justifyContent="center"
-            minWidth={{ base: '40%', md: '25%' }}
-            padding={1}
-          >
-            {category ? <Text>{category.name}</Text> : null}
+    <Box>
+      <TitleComponent
+        img={
+          'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+        }
+        text={'Novedades'}
+      />
+      <Box h="100%" mb={6}>
+        <Heading p={6} textAlign="center">
+          {newItem?.name}
+        </Heading>
+        <Stack direction={{ base: 'column', md: 'row' }} marginTop={10} mx="10%" spacing={10}>
+          <Stack alignItems="center" justifyContent="center">
+            <Image borderRadius="xl" maxWidth={{ base: '100%', md: 350, lg: 500 }} src={image} />
           </Stack>
-          <Text fontSize={24} fontWeight="bold">
-            Descripción
-          </Text>
-          <Text textAlign="justify">{content}</Text>
+          <Stack alignItems={{ base: 'center', md: 'flex-start' }} spacing={4} width="100%">
+            {category ? <Tag colorScheme="blue">{category.name}</Tag> : null}
+            <Text fontSize={24} fontWeight="bold">
+              Descripción
+            </Text>
+            <Text textAlign="justify">{content}</Text>
+          </Stack>
         </Stack>
-      </Stack>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 

@@ -17,8 +17,9 @@ const index = () => {
   return (
     <div>
       <TitleComponent
-        img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpq1M72SRK0DqxdgCfgCYq3WjeOPgurvGo4A&usqp=CAU
-"
+        img={
+          'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+        }
         text={'Contacto'}
       />
       <Box m="auto" w="80%">
