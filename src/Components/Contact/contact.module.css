@@ -1,0 +1,13 @@
+.formContainer{
+  width: 60%;
+  margin: 15px auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+@media screen and (max-width: 630px) {
+  .formContainer {
+    width: 300px;
+  }
+}

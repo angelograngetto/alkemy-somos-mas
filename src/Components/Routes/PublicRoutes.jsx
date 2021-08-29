@@ -39,13 +39,7 @@ const PublicRoutes = () => {
             <Route
               exact
               path="/contacto"
-              render={() =>
-                !isAdmin ? (
-                  <Contact datosContacto={'datos de contacto que serán recibidos de la API'} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              }
+              render={() => (!isAdmin ? <Contact /> : <Redirect to="/" />)}
             />
             <Route exact path="/donar">
               <Donacion text="¡Contribuye!" />
