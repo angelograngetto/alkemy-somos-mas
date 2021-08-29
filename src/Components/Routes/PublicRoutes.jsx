@@ -34,8 +34,8 @@ const PublicRoutes = () => {
         <WebPublicaLayout>
           <Switch>
             <Route exact component={Home} path="/" />
-            <Route exact component={ActivitiesList} path="/activities" />
-            <Route exact component={DetailView} path="/activities/:id" />
+            <Route exact component={ActivitiesList} path="/actividades" />
+            <Route exact component={DetailView} path="/actividades/:id" />
             <Route
               exact
               path="/contacto"

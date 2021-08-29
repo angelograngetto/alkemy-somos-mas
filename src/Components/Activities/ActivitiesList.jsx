@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import TitleComponent from '../Title/TitleComponent';
 import ActivityContent from './ActivityContent';
-import { Box, Flex, SimpleGrid, Alert as ChakraAlert, AlertIcon, Button } from '@chakra-ui/react';
+import { Box, SimpleGrid, Alert as ChakraAlert, AlertIcon, Button } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchActivitiesList,
@@ -9,8 +9,6 @@ import {
 } from '../../features/activities/activitiesSlice';
 import ProgressBar from '../Utils/ProgressBar';
 import '../CardListStyles.css';
-import Alert from '../Utils/Alert';
-import getError from '../Utils/HttpErrors';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
 
 const ActivitiesList = () => {
@@ -42,37 +40,38 @@ const ActivitiesList = () => {
   if (loading) return <ProgressBar colorScheme="blue" isIndeterminate={true} />;
 
   return (
-    <Flex alignItems="center" flexDirection="column" flexWrap="wrap" justifyContent="center">
-      <Box
-        alignItems="center"
-        d="flex"
-        fontSize="2em"
-        fontWeight="bold"
-        h="80px"
-        justifyContent="center"
-        w="100%"
-      >
-        <TitleComponent
-          img="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpq1M72SRK0DqxdgCfgCYq3WjeOPgurvGo4A&usqp=CAU"
-          text="ACTIVIDADES"
-        />
-      </Box>
+    <>
+      <TitleComponent
+        img="https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png"
+        text="ACTIVIDADES"
+      />
+
       <SearchInput
         onDebounce={(value) => {
           setTerm(value);
         }}
       />
-      <SimpleGrid columns={activitiesList.length > 0 ? [1, 2, 3] : [1, 1, 1]} gap={12} mt={4}>
+      <SimpleGrid
+        columns={{ base: 1, md: 2, lg: 3 }}
+        justifyItems="center"
+        m={{ base: 1, md: 6 }}
+        p="3"
+        px="12"
+        spacing={9}
+      >
         {activitiesList.length > 0 ? (
           activitiesFiltered.map((activity) => {
             return (
               <Box
                 key={activity.id}
-                alignItems="center"
-                className="card-info"
-                display="flex"
-                justifyContent="center"
-                w="300px"
+                _hover={{ boxShadow: 'dark-lg' }}
+                borderRadius="lg"
+                borderWidth="1px"
+                boxShadow="lg"
+                m="3"
+                overflow="hidden"
+                p="3"
+                w="100%"
               >
                 <ActivityContent activity={activity} />
               </Box>
@@ -104,7 +103,7 @@ const ActivitiesList = () => {
           </Box>
         )}
       </SimpleGrid>
-    </Flex>
+    </>
   );
 };
 

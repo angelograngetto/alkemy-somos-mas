@@ -145,7 +145,7 @@ const ActivitiesListBack = () => {
         isDeleteOpen={isDeleteOpen}
         setIsDeleteOpen={setIsDeleteOpen}
         setIsEditOpen={setIsEditOpen}
-        toDeleteComponent="activities"
+        toDeleteComponent="actividades"
         toDeleteObj={toDeleteActivity}
       />
 
