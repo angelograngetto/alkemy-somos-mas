@@ -1,10 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import {
   AspectRatio,
-  Box,
   Button,
-  HStack,
+  Center,
+  Divider,
+  Flex,
   Image,
+  Menu,
+  MenuButton,
+  MenuItemOption,
+  MenuList,
+  MenuOptionGroup,
+  Spacer,
   Stack,
   Table,
   Tbody,
@@ -15,22 +22,30 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchNewsList, deleteNews, searchNewsList } from '../../features/news/newsSlice';
+import {
+  fetchNewsList,
+  deleteNews,
+  searchNewsList,
+  filterNewsList,
+} from '../../features/news/newsSlice';
 import LinkNews from './LinkNews';
 import Alert from '../Utils/Alert';
 import ModalEdit from '../Backoffice/Utils/ModalEdit';
 import NewsForm from './NewsForm';
-import { useHistory } from 'react-router-dom';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
+import { FaFilter } from 'react-icons/fa';
+import { fetchCategories } from '../../features/categories/categoriesSlice';
+import { DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 
 const NewsList = () => {
   const dispatch = useDispatch();
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [toEditNew, setToEditNew] = useState([]);
-  const [term, setTerm] = useState('');
   const [newsFiltered, setNewsFiltered] = useState([]);
   const { newsList, loading } = useSelector((state) => state.news);
+  const { categories } = useSelector((state) => state.categories);
+  const [toSearch, setToSearch] = useState('');
 
   useEffect(() => {
     const fetchNews = async () => {
@@ -44,8 +59,8 @@ const NewsList = () => {
   }, []);
 
   const searchNews = async () => {
-    if (term.length >= 3) {
-      const resp = await dispatch(searchNewsList(term));
+    if (toSearch.length >= 3) {
+      const resp = await dispatch(searchNewsList(toSearch));
       setNewsFiltered(resp.payload);
     } else {
       const resp = await dispatch(fetchNewsList());
@@ -55,7 +70,19 @@ const NewsList = () => {
 
   useEffect(() => {
     searchNews();
-  }, [term]);
+    dispatch(fetchCategories());
+  }, [toSearch]);
+
+  const handleFilter = (category) => {
+    console.log(category);
+    if (category !== 'todas') {
+      dispatch(filterNewsList({ value: toSearch, category: category })).then(
+        setNewsFiltered(categories),
+      );
+    } else {
+      searchNews();
+    }
+  };
 
   const handleEditOpen = (newItem) => {
     setIsEditOpen(true);
@@ -82,20 +109,58 @@ const NewsList = () => {
   };
 
   return (
-    <Box mt="3">
-      <Text fontSize={24} fontWeight="bold" textAlign="center">
-        Listado de Novedades
-      </Text>
-      <Box m="5">
-        <HStack justifyContent="center" mb="2">
+    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
+      <Flex
+        borderRadius={{ base: 0, sm: 'xl' }}
+        borderWidth="1px"
+        boxShadow="2xl"
+        flexDir="column"
+        justify="center"
+        overflow="hidden"
+        p={{ base: 1, sm: 5 }}
+        w="5xl"
+      >
+        <Flex align="center" justify="space-between" m={{ base: 3, sm: 0 }}>
+          <Text isTruncated as="h1" fontSize="xx-large" fontWeight="semibold" lineHeight="tall">
+            Novedades
+          </Text>
+          <Spacer />
+          <Menu closeOnSelect={false}>
+            <MenuButton
+              as={Button}
+              colorScheme="blue"
+              mr="2"
+              rightIcon={<FaFilter />}
+              title="Buscar y filtrar"
+            >
+              Buscar
+            </MenuButton>
+            <MenuList minWidth="230px">
+              <Center pl="2" pr="2">
+                <SearchInput
+                  placeholder="Buscar por nombre"
+                  w="90%"
+                  onDebounce={(value) => setToSearch(value)}
+                />
+              </Center>
+              <MenuOptionGroup
+                defaultValue="todas"
+                title="Filtrar por categorias:"
+                type="radio"
+                onChange={(e) => handleFilter(e)}
+              >
+                <MenuItemOption value="todas">Ver todos</MenuItemOption>
+                {categories.map((category) => (
+                  <MenuItemOption key={category.id} value={category.name}>
+                    {category.name}
+                  </MenuItemOption>
+                ))}
+              </MenuOptionGroup>
+            </MenuList>
+          </Menu>
           <LinkNews />
-          <SearchInput
-            placeholder="Buscar por nombre"
-            onDebounce={(value) => {
-              setTerm(value);
-            }}
-          />
-        </HStack>
+        </Flex>
+        <Divider mb="5" mt="5" />
         <Table size="md" variant="striped">
           <Thead>
             <Tr>
@@ -122,10 +187,21 @@ const NewsList = () => {
                     </Td>
                     <Td textAlign="center">{new Date(news.created_at).toLocaleString()}</Td>
                     <Td textAlign="center">
-                      <Button backgroundColor="yellow" onClick={() => handleEditOpen(news)}>
+                      <Button
+                        colorScheme="green"
+                        rightIcon={<EditIcon />}
+                        title={`Editar ${news.name}`}
+                        onClick={() => handleEditOpen(news)}
+                      >
                         Editar
                       </Button>
-                      <Button backgroundColor="red.500" m="2" onClick={() => handleDelete(news.id)}>
+                      <Button
+                        colorScheme="red"
+                        m="2"
+                        rightIcon={<DeleteIcon />}
+                        title={`Borrar ${news.name}`}
+                        onClick={() => handleDelete(news.id)}
+                      >
                         Borrar
                       </Button>
                     </Td>
@@ -145,12 +221,11 @@ const NewsList = () => {
             <SpinnerComponent />
           </Stack>
         ) : null}
-      </Box>
-
-      <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-        <NewsForm news={toEditNew} setIsEditOpen={setIsEditOpen} />
-      </ModalEdit>
-    </Box>
+        <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
+          <NewsForm news={toEditNew} setIsEditOpen={setIsEditOpen} />
+        </ModalEdit>
+      </Flex>
+    </Flex>
   );
 };
 
