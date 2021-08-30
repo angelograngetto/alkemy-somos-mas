@@ -31,8 +31,8 @@ const PublicFooter = () => {
     <Stack backgroundColor="#6767FF">
       {organization ? (
         <Stack
-          direction={{ base: 'column', lg: 'row' }}
-          justifyContent={{ lg: 'space-evenly' }}
+          direction={{ base: 'column', md: 'row', lg: 'row' }}
+          justifyContent={{ md: 'space-evenly', lg: 'space-evenly' }}
           mt="3"
         >
           <Stack justifyContent="center">

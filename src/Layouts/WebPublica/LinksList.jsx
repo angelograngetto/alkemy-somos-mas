@@ -30,7 +30,7 @@ export const linksList = [
   },
   {
     text: 'Admin',
-    to: '/admin',
+    to: '/backoffice',
     requireLogin: true,
     showAuthorizedUsers: true,
     requireAdmin: true,

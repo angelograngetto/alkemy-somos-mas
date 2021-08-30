@@ -1,20 +1,25 @@
-import { Text, Box } from '@chakra-ui/react';
 import React from 'react';
+import { Box, Image, Button } from '@chakra-ui/react';
+import img404 from '../../assets/404.gif';
+import { Link } from 'react-router-dom';
 
 const PageNotFound = () => {
   return (
     <Box
       alignItems="center"
-      color="#0a0a0a"
-      d="flex"
-      fontSize={{ base: '1.5em', lg: '2em' }}
-      fontWeight="bold"
+      display="flex"
+      flexDirection="column"
       justifyContent="center"
-      marginTop={{ base: '70%', lg: '18%' }}
-      p={4}
+      mb={{ base: '0', md: '8', lg: '0' }}
+      mt={{ base: '14', md: '4', lg: '3' }}
       w="100%"
     >
-      <Text textAlign="center">PAGE NOT FOUND</Text>
+      <Image src={img404} width={{ base: '100%', md: '70%', lg: '50%' }} />
+      <Link to="/">
+        <Button color="white" colorScheme="green" fontSize="18px">
+          Volver a Inicio
+        </Button>
+      </Link>
     </Box>
   );
 };

@@ -43,7 +43,7 @@ const ActivitiesList = () => {
     <>
       <TitleComponent
         img="https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png"
-        text="ACTIVIDADES"
+        text="Actividades"
       />
 
       <SearchInput
