@@ -47,6 +47,7 @@ const PublicFooter = () => {
           <Stack display={{ sm: 'none', md: 'inherit' }}>
             <MenuFooter list={linksList} />
           </Stack>
+          {}
           <Stack display={{ base: 'none', lg: 'initial' }} justifyContent="center">
             <Newsletter />
           </Stack>
