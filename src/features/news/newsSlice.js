@@ -43,7 +43,6 @@ export const createNews = createAsyncThunk(
 export const updateNews = createAsyncThunk('news/update', async (news, { rejectWithValue }) => {
   try {
     const response = await NewsService.update(news);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     return rejectWithValue(error);
