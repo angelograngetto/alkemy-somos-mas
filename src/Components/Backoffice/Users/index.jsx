@@ -236,7 +236,7 @@ const UsersListScreen = (props) => {
         toDeleteObj={toDeleteUser}
       />
       <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-        <UserForm user={toEditUser} />
+        <UserForm setIsEditOpen={setIsEditOpen} user={toEditUser} />
       </ModalEdit>
     </Flex>
   );

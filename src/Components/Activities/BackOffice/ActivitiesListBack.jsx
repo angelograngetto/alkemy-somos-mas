@@ -50,7 +50,7 @@ const ActivitiesListBack = () => {
 
   useEffect(() => {
     dispatch(fetchActivitiesList());
-  }, [isDeleteOpen, isEditOpen]);
+  }, []);
 
   useEffect(() => {
     setActivitiesFiltered(activitiesList)
@@ -145,7 +145,7 @@ const ActivitiesListBack = () => {
         isDeleteOpen={isDeleteOpen}
         setIsDeleteOpen={setIsDeleteOpen}
         setIsEditOpen={setIsEditOpen}
-        toDeleteComponent="actividades"
+        toDeleteComponent="activities"
         toDeleteObj={toDeleteActivity}
       />
 

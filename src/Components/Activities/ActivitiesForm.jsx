@@ -7,11 +7,12 @@ import CKEditor from 'ckeditor4-react';
 import validationSchema from './ValidationSchema';
 import { convertBase64 } from '../Utils/ConvertBase64';
 import '../FormStyles.css';
+import Alert from '../Utils/Alert';
 
 const ActivitiesForm = ({ activity, setIsEditOpen }) => {
   const [file, setFile] = useState(null);
   const dispatch = useDispatch();
-  const { error } = useSelector((state) => state.activities);
+  const { loading } = useSelector((state) => state.activities);
 
   const initialValues = {
     name: activity ? activity.name : '',
@@ -36,11 +37,40 @@ const ActivitiesForm = ({ activity, setIsEditOpen }) => {
 
       if (activity) {
         data.id = activity.id;
-        dispatch(updateActivity(data));
+        dispatch(updateActivity(data)).then((resp) => {
+          if (resp.error) {
+            setIsEditOpen(false);
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo editar la actividad, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+            );
+          } else {
+            setIsEditOpen(false);
+            Alert(
+              'success',
+              'Operación completada con éxito',
+              'La actividad se creó correctamente',
+            );
+          }
+        });
       } else {
-        dispatch(createActivity(data));
+        dispatch(createActivity(data)).then((resp) => {
+          if (resp.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo editar la actividad, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+            );
+          } else {
+            Alert(
+              'success',
+              'Operación completada con éxito',
+              'La actividad se creó correctamente',
+            );
+          }
+        });
       }
-      setIsEditOpen(false);
     },
   });
 
@@ -60,7 +90,7 @@ const ActivitiesForm = ({ activity, setIsEditOpen }) => {
         border="1px solid #c1c1c1"
         name="name"
         padding="15px 30px"
-        placeholder="Activity Title"
+        placeholder="Título de la actividad"
         type="text"
         value={formik.values.name}
         onChange={formik.handleChange}
@@ -90,15 +120,15 @@ const ActivitiesForm = ({ activity, setIsEditOpen }) => {
 
       <CKEditor data={formik.values.description} onChange={handleEditorChange} />
 
-      <Button
-        backgroundColor="#2E86C1"
-        border="none"
-        color="#fff"
-        padding="10px 15px"
-        type="submit"
-      >
-        {activity ? 'Actualizar' : 'Enviar'}
-      </Button>
+      {loading ? (
+        <Button isLoading colorScheme="blue" loadingText="Enviando" my="2">
+          Enviar
+        </Button>
+      ) : (
+        <Button colorScheme="blue" my="2" type="submit">
+          Enviar
+        </Button>
+      )}
     </form>
   );
 };

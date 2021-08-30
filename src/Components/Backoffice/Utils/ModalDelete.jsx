@@ -22,6 +22,7 @@ import {
   Tr,
 } from '@chakra-ui/react';
 import { deleteMember } from '../../../features/members/membersSlice';
+import Alert from '../../Utils/Alert';
 
 const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteComponent }) => {
   const dispatch = useDispatch();
@@ -38,10 +39,38 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
         dispatch(deleteSlide(toDeleteObj.id));
         break;
       case 'activities':
-        dispatch(deleteActivity(toDeleteObj.id));
+        dispatch(deleteActivity(toDeleteObj.id)).then((resp) => {
+          if (resp.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo eliminar la actividad, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+            );
+          } else {
+            Alert(
+              'success',
+              'Operación completada con éxito',
+              'La actividad se eliminó correctamente',
+            );
+          }
+        });
         break;
       case 'categories':
-        dispatch(deleteCategory(toDeleteObj.id));
+        dispatch(deleteCategory(toDeleteObj.id)).then((resp) => {
+          if (resp.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo eliminar la categoría, comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+            );
+          } else {
+            Alert(
+              'success',
+              'Operación completada con éxito',
+              'La categoría se eliminó correctamente',
+            );
+          }
+        });
       case 'members':
         dispatch(deleteMember(toDeleteObj.id));
       default:

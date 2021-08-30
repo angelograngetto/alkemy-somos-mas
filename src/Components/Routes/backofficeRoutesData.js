@@ -47,6 +47,11 @@ export const routes = [
     exact: true,
   },
   {
+    path: '/backoffice/members/create',
+    component: MemberForm,
+    exact: true,
+  },
+  {
     path: '/backoffice/news',
     component: NewsList,
     exact: true,

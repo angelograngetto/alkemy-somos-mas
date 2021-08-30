@@ -49,15 +49,15 @@ const SlidesForm = ({ slide }) => {
   };
 
   const formatFileSupported = ['image/jpg', 'image/png', 'image/jpeg'];
-  const slideOrders = slidesList
+  const orders = slidesList
     .filter((item) => item?.order !== slide?.order)
     .map((item) => item?.order);
   const validateSchema = Yup.object().shape({
-    slideName: Yup.string()
+    name: Yup.string()
       .required('Campo requerido')
       .min(4, 'El nombre debe tener una longitud mínima de 4 carácteres'),
-    slideDescription: Yup.string().required('Campo requerido'),
-    slideOrder: Yup.mixed()
+    description: Yup.string().required('Campo requerido'),
+    order: Yup.mixed()
       .required('Campo requerido')
       .test({
         name: 'orderNumberValidation',
@@ -69,7 +69,7 @@ const SlidesForm = ({ slide }) => {
         name: 'uniqueOrderValidation',
         exclusive: true,
         message: 'Este orden ya fue utilizado en otro Slide, prueba con otro',
-        test: (value) => !slideOrders.includes(parseInt(value)),
+        test: (value) => !orders.includes(parseInt(value)),
       }),
     file: Yup.mixed()
       .required('Campo requerido')
@@ -85,35 +85,50 @@ const SlidesForm = ({ slide }) => {
     <Formik
       enableReinitialize={true}
       initialValues={{
-        slideName: slide?.name ?? '',
-        slideDescription: slide?.description ?? '',
-        slideOrder: slide?.order ?? '',
+        name: slide?.name ?? '',
+        description: slide?.description ?? '',
+        order: slide?.order ?? '',
         file: { url: slide?.image } ?? '',
       }}
       validationSchema={validateSchema}
       onSubmit={async (values, actions) => {
-        let response;
-        setUtils({ error: null, success: null, loading: true });
         if (slide && !slide.id) return;
-        const newSlide = {
-          name: values.slideName,
-          description: values.slideDescription,
-          order: values.slideOrder,
-          image: values.file.imageParsed,
-        };
+        setUtils({ error: null, success: null, loading: true });
+        const { name, description, order, file } = values;
+        let newSlide = { name, description, order };
 
-        if (!slide) {
-          response = dispatch(createSlide(newSlide));
-        } else {
+        if (slide) {
           newSlide.id = slide.id;
-          response = dispatch(updateSlide(newSlide));
-        }
-
-        if (response.success) {
-          setUtils({ error: false, success: true, loading: false });
-          actions.resetForm();
+          if (file.imageParsed) newSlide.image = file.imageParsed;
+          dispatch(updateSlide(newSlide))
+            .then((resp) => {
+              if (resp.error) {
+                setUtils({ error: true, sucess: false, loading: false });
+              } else {
+                setUtils({ error: false, success: true, loading: false });
+              }
+            })
+            .finally(() => {
+              setTimeout(() => {
+                setUtils({ error: false, success: false, loading: false });
+              }, 5000);
+            });
         } else {
-          setUtils({ error: true, sucess: false, loading: false });
+          newSlide.image = file.imageParsed;
+          dispatch(createSlide(newSlide))
+            .then((resp) => {
+              if (resp.error) {
+                setUtils({ error: true, sucess: false, loading: false });
+              } else {
+                setUtils({ error: false, success: true, loading: false });
+                actions.resetForm();
+              }
+            })
+            .finally(() => {
+              setTimeout(() => {
+                setUtils({ error: false, success: false, loading: false });
+              }, 5000);
+            });
         }
       }}
     >
@@ -131,38 +146,38 @@ const SlidesForm = ({ slide }) => {
                 </Link>
               </Alert>
             ) : null}
-            <Field name="slideName">
+            <Field name="name">
               {({ field, form, meta }) => (
-                <FormControl isInvalid={form.errors.slideName && form.touched.slideName} my="2">
-                  <Input id="slideName" placeholder="Nombre del slide" type="text" {...field} />
+                <FormControl isInvalid={form.errors.name && form.touched.name} my="2">
+                  <Input id="name" placeholder="Nombre del slide" type="text" {...field} />
                   {meta.touched && meta.error && <FormErrorMessage>{meta.error}</FormErrorMessage>}
                 </FormControl>
               )}
             </Field>
 
-            <FormControl isInvalid={errors.slideDescription && touched.slideDescription} my="2">
+            <FormControl isInvalid={errors.description && touched.description} my="2">
               <CKEditor
-                data={values.slideDescription}
-                id="slideDescription"
-                name="slideDescription"
+                data={values.description}
+                id="description"
+                name="description"
                 onBlur={(evt) => {
-                  setTouched({ ...touched, slideDescription: true }, true);
-                  setFieldValue('slideDescription', evt.editor.getData());
+                  setTouched({ ...touched, description: true }, true);
+                  setFieldValue('description', evt.editor.getData());
                 }}
                 onChange={(evt) => {
-                  setTouched({ ...touched, slideDescription: true }, true);
-                  setFieldValue('slideDescription', evt.editor.getData());
+                  setTouched({ ...touched, description: true }, true);
+                  setFieldValue('description', evt.editor.getData());
                 }}
               />
-              {touched.slideDescription && errors.slideDescription && (
-                <FormErrorMessage>{errors.slideDescription}</FormErrorMessage>
+              {touched.description && errors.description && (
+                <FormErrorMessage>{errors.description}</FormErrorMessage>
               )}
             </FormControl>
 
-            <Field name="slideOrder">
+            <Field name="order">
               {({ field, form, meta }) => (
-                <FormControl isInvalid={form.errors.slideOrder && form.touched.slideOrder} my="2">
-                  <Input id="slideOrder" placeholder="Orden del slide" type="text" {...field} />
+                <FormControl isInvalid={form.errors.order && form.touched.order} my="2">
+                  <Input id="order" placeholder="Orden del slide" type="text" {...field} />
                   {meta.touched && meta.error && <FormErrorMessage>{meta.error}</FormErrorMessage>}
                 </FormControl>
               )}
@@ -173,7 +188,7 @@ const SlidesForm = ({ slide }) => {
                 id="file"
                 name="file"
                 type="file"
-                onBlur={(evt) => setTouched({ ...touched, slideDescription: true }, true)}
+                onBlur={(evt) => setTouched({ ...touched, description: true }, true)}
                 onChange={async (event) => {
                   const fileImage = event.currentTarget.files[0];
                   const imageParsed = await convertBase64(fileImage);
@@ -189,8 +204,8 @@ const SlidesForm = ({ slide }) => {
               )}
             </FormControl>
 
-            {/* {show the image if is a valid image} */}
-            {values.file && !errors.file && touched.file ? (
+            {/* {show the image if is a valid image or comes from the api} */}
+            {values.file && !errors.file && (touched.file || values.file.url) ? (
               <img
                 alt={slide && values.file.url ? values?.description : values?.file?.image?.name}
                 src={slide && values.file.url ? values?.file.url : values?.file?.imageParsed}

@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import getSpanishError from '../../Components/Utils/HttpErrors';
 
 import ActivitiesService from '../../Services/ActivitiesService';
-import Alert from '../../Components/Utils/Alert';
 
 const initialState = {
   activitiesList: [],
@@ -19,7 +18,6 @@ export const fetchActivitiesList = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
-      Alert('error', 'Ocurrió un error', errorMessage);
       return rejectWithValue(errorMessage || error.message);
     }
   },
@@ -33,7 +31,6 @@ export const createActivity = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
-      Alert('error', 'Ocurrió un error', errorMessage);
       return rejectWithValue(errorMessage || error.message);
     }
   },
@@ -47,7 +44,6 @@ export const updateActivity = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
-      Alert('error', 'Ocurrió un error', errorMessage);
       return rejectWithValue(errorMessage || error.message);
     }
   },
@@ -58,11 +54,9 @@ export const deleteActivity = createAsyncThunk(
   async (id, { rejectWithValue }) => {
     try {
       const response = await ActivitiesService.remove(id);
-      Alert('success', 'Èxito', 'Actividad borrada correctamente');
       return id;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
-      Alert('error', 'Ocurrió un error', errorMessage);
       return rejectWithValue(errorMessage || error.message);
     }
   },
@@ -76,7 +70,6 @@ export const searchActivitiesList = createAsyncThunk(
       return response.data.data;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
-      Alert('error', 'Ocurrió un error', errorMessage);
       return rejectWithValue(errorMessage || error.message);
     }
   },
@@ -145,7 +138,7 @@ const activitiesSlice = createSlice({
     [deleteActivity.fulfilled]: (state, { payload }) => {
       state.loading = false;
       state.error = null;
-      state.activitiesList = state.activitiesList.filter((activity) => activity.id !== payload.id);
+      state.activitiesList = state.activitiesList.filter((activity) => activity.id !== payload);
     },
 
     [deleteActivity.rejected]: (state, action) => {

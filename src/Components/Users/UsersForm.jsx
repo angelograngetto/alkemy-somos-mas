@@ -10,16 +10,17 @@ import {
   FormErrorMessage,
   Select,
   Button,
-  Alert,
+  Alert as ChakraAlert,
   AlertIcon,
   Container,
   Box,
   Link,
 } from '@chakra-ui/react';
+import Alert from '../Utils/Alert';
 
-const UsersForm = ({ user }) => {
+const UsersForm = ({ user, setIsEditOpen }) => {
   const dispatch = useDispatch();
-  const { usersList, loading, error, success } = useSelector((state) => state.users);
+  const { usersList, loading } = useSelector((state) => state.users);
 
   useEffect(() => {
     dispatch(fetchUsers());
@@ -92,9 +93,27 @@ const UsersForm = ({ user }) => {
           role_id: values.role,
         };
         if (user) {
-          dispatch(updateUser({ ...userData, id: user.id }));
+          dispatch(updateUser({ ...userData, id: user.id })).then((resp) => {
+            if (resp.error) {
+              Alert(
+                'error',
+                'Error',
+                'Hubo un error en la edición del usuario, inténtalo nuevamente',
+              );
+            }
+            Alert('success', 'Operación exitosa', 'El usuario ha sido editado exitosamente');
+            setIsEditOpen(false);
+          });
         } else {
-          dispatch(createUser(userData)).then(
+          dispatch(createUser(userData)).then((resp) => {
+            if (resp.error) {
+              Alert(
+                'error',
+                'Error',
+                'Hubo un error en la creación del usuario, inténtalo nuevamente',
+              );
+            }
+            Alert('success', 'Operación exitosa', 'El usuario ha sido creado exitosamente');
             actions.resetForm({
               values: {
                 name: '',
@@ -103,8 +122,8 @@ const UsersForm = ({ user }) => {
                 password: '',
                 // file: '',
               },
-            }),
-          );
+            });
+          });
         }
       }}
     >
@@ -115,12 +134,12 @@ const UsersForm = ({ user }) => {
             {user ? 'Edición de usuario' : 'Creación de usuario'}
           </Box>
           {user && !user.id ? (
-            <Alert my="2" status="error">
+            <ChakraAlert my="2" status="error">
               <AlertIcon />
               <Link as={RouterLink} to="backoffice/users/create">
                 Este usuario no existe, haz clic aquí para crearlo
               </Link>
-            </Alert>
+            </ChakraAlert>
           ) : null}
           <Field name="name">
             {({ field, form, meta }) => (
@@ -189,21 +208,6 @@ const UsersForm = ({ user }) => {
               Enviar
             </Button>
           )}
-          {success ? (
-            <Alert status="success">
-              <AlertIcon />
-              {user
-                ? 'El usuario se ha editado exitosamente'
-                : 'El usuario ha sido creado exitosamente'}
-            </Alert>
-          ) : error ? (
-            <Alert status="error">
-              <AlertIcon />
-              {user
-                ? 'Hubo un error al editar el usuario, inténtalo de nuevo'
-                : 'Hubo un error en la creación del usuario, inténtalo nuevamente'}
-            </Alert>
-          ) : null}
         </Form>
       </Container>
       {/* )} */}

@@ -42,10 +42,6 @@ const CategoriesListScreen = () => {
     }
   };
 
-  useEffect(() => {
-    searchCategoriesList();
-  }, [term]);
-
   // ↓↓↓ MODAL EDIT ↓↓↓ //
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [toEditCategorie, setToEditCategorie] = useState([]);
@@ -61,6 +57,10 @@ const CategoriesListScreen = () => {
     setIsDeleteOpen(true);
     setToDeleteCategorie(categorie);
   };
+
+  useEffect(() => {
+    searchCategoriesList();
+  }, [term, isEditOpen, isDeleteOpen]);
 
   const toCreate = () => history.push('/backoffice/categories/create');
 
@@ -156,7 +156,7 @@ const CategoriesListScreen = () => {
         />
 
         <ModalEdit isEditOpen={isEditOpen} setIsEditOpen={setIsEditOpen}>
-          <CategoriesForm categorie={toEditCategorie} />
+          <CategoriesForm category={toEditCategorie} setIsEditOpen={setIsEditOpen} />
         </ModalEdit>
       </Flex>
     );

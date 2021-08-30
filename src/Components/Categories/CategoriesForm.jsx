@@ -4,9 +4,9 @@ import { Formik, Form, Field } from 'formik';
 import CKEditor from 'ckeditor4-react';
 import * as Yup from 'yup';
 import {
-  Button,
-  Alert,
+  Alert as ChakraAlert,
   AlertIcon,
+  Button,
   FormControl,
   FormErrorMessage,
   Input,
@@ -16,8 +16,9 @@ import {
 } from '@chakra-ui/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateCategory, createCategory } from '../../features/categories/categoriesSlice';
+import Alert from '../Utils/Alert';
 
-const CategoriesForm = ({ categorie }) => {
+const CategoriesForm = ({ category, setIsEditOpen }) => {
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.categories);
 
@@ -56,39 +57,48 @@ const CategoriesForm = ({ categorie }) => {
     <Formik
       enableReinitialize={true}
       initialValues={{
-        name: categorie?.name ?? '',
-        description: categorie?.description ?? '',
-        image: { url: categorie?.image } ?? '',
+        name: category?.name ?? '',
+        description: category?.description ?? '',
+        image: { url: category?.image } ?? '',
       }}
       validationSchema={validateSchema}
       onSubmit={(values, actions) => {
-        if (categorie && !categorie.id) return;
-        let data = {
-          name: values.name,
-          description: values.description,
-          image: values.image.imageParsed,
-        };
-        if (categorie) {
-          if (values.image.url) {
-            dispatch(
-              updateCategory({
-                name: values.name,
-                description: values.description,
-                id: categorie.id,
-              }),
-            );
-          } else {
-            dispatch(updateCategory({ ...data, id: categorie.id }));
-          }
+        if (category && !category.id) return;
+        const { name, description, image } = values;
+        let data = { name, description };
+        if (category) {
+          data.id = category.id;
+          if (image.imageParsed) data.image = image.imageParsed;
+          dispatch(updateCategory(data)).then((resp) => {
+            if (resp.error) {
+              Alert(
+                'error',
+                'Ocurrió un error',
+                'Algo salió mal editando la categoría, inténtalo de nuevo',
+              );
+            } else {
+              Alert('success', 'Operación exitosa', 'La categoría se ha editado exitosamente');
+            }
+            setIsEditOpen(false);
+          });
         } else {
-          dispatch(createCategory(data));
-          if (status === 'complete') {
-            actions.resetForm({
-              name: '',
-              description: '',
-              image: '',
-            });
-          }
+          data.image = image.imageParsed;
+          dispatch(createCategory(data)).then((resp) => {
+            if (resp.error) {
+              Alert(
+                'error',
+                'Ocurrió un error',
+                'Algo salió mal creando la categoría, inténtalo de nuevo',
+              );
+            } else {
+              actions.resetForm({
+                name: '',
+                description: '',
+                image: '',
+              });
+              Alert('success', 'Operación exitosa', 'La categoría se ha creado exitosamente');
+            }
+          });
         }
       }}
     >
@@ -96,15 +106,15 @@ const CategoriesForm = ({ categorie }) => {
         <Container>
           <Form>
             <Box color="gray.900" fontSize="3xl" fontWeight="bold">
-              {categorie ? 'Edición de categoría' : 'Creación de categoría'}
+              {category ? 'Edición de categoría' : 'Creación de categoría'}
             </Box>
-            {categorie && !categorie.id ? (
-              <Alert my="2" status="error">
+            {category && !category.id ? (
+              <ChakraAlert my="2" status="error">
                 <AlertIcon />
                 <Link as={RouterLink} to="backoffice/categories/create">
                   Esta categoría no existe, haz clic aquí para crearlo
                 </Link>
-              </Alert>
+              </ChakraAlert>
             ) : null}
 
             <Field name="name">
@@ -147,11 +157,11 @@ const CategoriesForm = ({ categorie }) => {
               {errors.image && touched.image && <FormErrorMessage>{errors.image}</FormErrorMessage>}
             </FormControl>
 
-            {!errors.image && values?.image ? (
+            {values.image && !errors.image && (values.image.url || touched.image) ? (
               <img
-                alt={categorie ? values?.image?.description : values?.image?.originalImage?.name}
+                alt={category ? values?.image?.description : values?.image?.originalImage?.name}
                 src={
-                  categorie
+                  category
                     ? values?.image?.url || values?.image?.imageParsed
                     : values?.image?.imageParsed
                 }
@@ -164,26 +174,10 @@ const CategoriesForm = ({ categorie }) => {
                 Enviar
               </Button>
             ) : (
-              <Button colorScheme="blue" disabled={categorie && !categorie.id} my="2" type="submit">
+              <Button colorScheme="blue" disabled={category && !category.id} my="2" type="submit">
                 Enviar
               </Button>
             )}
-
-            {status === 'complete' ? (
-              <Alert my="2" status="success">
-                <AlertIcon />
-                {categorie
-                  ? 'La categoría ha sido editada exitosamente '
-                  : 'La categoría se ha creado exitosamente'}
-              </Alert>
-            ) : status === 'failed' ? (
-              <Alert my="2" status="error">
-                <AlertIcon />
-                {categorie
-                  ? 'Algo salió mal editando la categoría, inténtalo de nuevo'
-                  : 'Algo salió mal creando la categoría, inténtalo de nuevo'}
-              </Alert>
-            ) : null}
           </Form>
         </Container>
       )}
