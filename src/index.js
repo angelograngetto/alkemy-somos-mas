@@ -13,6 +13,8 @@ import { ChakraProvider } from '@chakra-ui/react';
 import { extendTheme } from '@chakra-ui/react';
 import { createBreakpoints } from '@chakra-ui/theme-tools';
 
+import '@fontsource/poppins';
+
 const breakpoints = createBreakpoints({
   sm: '320px',
   md: '768px',
@@ -20,7 +22,12 @@ const breakpoints = createBreakpoints({
   xl: '1600px',
 });
 
-const theme = extendTheme({ breakpoints });
+const theme = extendTheme({
+  breakpoints,
+  fonts: {
+    body: 'Poppins',
+  },
+});
 
 const persistor = persistStore(store);
 
