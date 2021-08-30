@@ -7,17 +7,15 @@ const MenuFooter = ({ list }) => {
     <Stack direction="row" justifyContent="center" width="100%">
       <Stack
         align="center"
-        direction={['column', 'column', 'row', 'row']}
-        flexWrap="wrap"
+        direction={{ base: 'column', md: 'column', lg: 'column' }}
         justify="center"
-        paddingY={4}
       >
         {list.map((item, index) => (
           <MenuItem
             key={index}
             _hover={{ color: 'blue.200' }}
             color="white"
-            fontSize="2xl"
+            fontSize="sm"
             fontWeight="bold"
             to={item.to}
           >

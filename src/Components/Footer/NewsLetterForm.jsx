@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Container, Flex, Input } from '@chakra-ui/react';
+import { Button, Checkbox, Container, Flex, Input, Stack } from '@chakra-ui/react';
 
 const NewsLetterForm = () => {
   const [newsLetter, setNewsLetter] = useState(localStorage.getItem('newsletter'));
@@ -11,18 +11,18 @@ const NewsLetterForm = () => {
   };
 
   return (
-    <Container>
+    <Stack>
       {newsLetter === null ? (
         <form className="" onSubmit={handleSubmit}>
-          <Flex>
+          <Stack width="105%">
             <Input placeholder="Suscribirme al Newsletter" type="email" variant="flushed" />
-            <Button colorScheme="teal" type="submit" variant="outline">
+            <Button color="white" colorScheme="green" type="submit">
               Suscribirme
             </Button>
-          </Flex>
+          </Stack>
         </form>
       ) : null}
-    </Container>
+    </Stack>
   );
 };
 
