@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Container, Flex, Input, Stack } from '@chakra-ui/react';
+import { Button, Checkbox, Container, Flex, Input, Stack, Text } from '@chakra-ui/react';
+import { CheckCircleIcon } from '@chakra-ui/icons';
 
 const NewsLetterForm = () => {
   const [newsLetter, setNewsLetter] = useState(localStorage.getItem('newsletter'));
@@ -21,7 +22,19 @@ const NewsLetterForm = () => {
             </Button>
           </Stack>
         </form>
-      ) : null}
+      ) : (
+        <Stack
+          display={{ base: 'none', lg: 'block' }}
+          justifyContent="center"
+          textAlign="center"
+          width="100%"
+        >
+          <CheckCircleIcon color="white" fontSize="65px" mt="1" textAlign="center" />
+          <Text color="white" fontSize="16px" textAlign="center">
+            Ya estas suscripto a nuestro newsletter
+          </Text>
+        </Stack>
+      )}
     </Stack>
   );
 };
