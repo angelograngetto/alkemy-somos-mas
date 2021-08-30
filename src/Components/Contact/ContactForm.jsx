@@ -1,23 +1,25 @@
 import React from 'react';
-import { EmailIcon, InfoIcon, PhoneIcon } from '@chakra-ui/icons';
+import { EmailIcon, InfoIcon, PhoneIcon, CheckIcon } from '@chakra-ui/icons';
 import {
   Textarea,
   Alert,
   InputGroup,
-  InputLeftElement,
+  InputLeftAddon,
   Input,
   FormControl,
   Box,
   FormLabel,
   Button,
+  Text,
+  VStack,
+  HStack,
+  Spacer,
+  Heading,
 } from '@chakra-ui/react';
 import { useFormik } from 'formik';
-import '../../Components/FormStyles.css';
 import validationSchema from './ValidationSchema';
-import '../FormStyles.css';
 import ContactService from './ContactService';
 import AlertComponent from '../Utils/Alert';
-import styles from './contact.module.css';
 
 const ContactForm = () => {
   //INITIAL VALUES
@@ -51,27 +53,22 @@ const ContactForm = () => {
   });
 
   return (
-    <>
-      <Box
-        alignItems="center"
-        bg="whitesmoke"
-        borderRadius="15px"
-        d="flex"
-        justifyContent="center"
-        marginBottom="50px"
-        marginTop="30px"
-        padding="20px"
-      >
-        <form className={styles.formContainer} onSubmit={formik.handleSubmit}>
-          <FormControl isRequired rounded="sm">
+    <VStack py={{ sm: 4, md: 6, lg: 10 }}>
+      <Heading as="h1" fontSize={{ sm: 24, md: 32, lg: 40 }} fontWeight="bold" textAlign="center">
+        ¡Pongámonos en contacto!
+      </Heading>
+
+      <Box d="flex" flexDirection="column" w={{ sm: '95%', md: '80%', lg: '60%' }}>
+        <form onSubmit={formik.handleSubmit}>
+          <FormControl isRequired mt={{ sm: 3, md: 5, lg: 7 }} rounded="sm">
             <FormLabel>Nombre</FormLabel>
-            <InputGroup width="100%">
-              <InputLeftElement>
+            <InputGroup title="Ingrese su nombre" width="100%">
+              <InputLeftAddon>
                 <InfoIcon />
-              </InputLeftElement>
+              </InputLeftAddon>
               <Input
-                className="input-field"
                 name="name"
+                placeholder="Manuel Belgrano"
                 type="text"
                 value={formik.values.name}
                 onBlur={formik.handleBlur}
@@ -85,15 +82,15 @@ const ContactForm = () => {
             ) : null}
           </FormControl>
 
-          <FormControl isRequired rounded="sm">
+          <FormControl isRequired mt={{ sm: 3, md: 5, lg: 7 }} rounded="sm">
             <FormLabel>Email</FormLabel>
             <InputGroup>
-              <InputLeftElement>
+              <InputLeftAddon title="Ingrese su email">
                 <EmailIcon />
-              </InputLeftElement>
+              </InputLeftAddon>
               <Input
-                className="input-field"
                 name="email"
+                placeholder="ejemplo@suemail.com"
                 type="email"
                 value={formik.values.email}
                 onBlur={formik.handleBlur}
@@ -107,15 +104,15 @@ const ContactForm = () => {
             ) : null}
           </FormControl>
 
-          <FormControl isRequired rounded="sm">
+          <FormControl isRequired mt={{ sm: 3, md: 5, lg: 7 }} rounded="sm">
             <FormLabel>Teléfono</FormLabel>
             <InputGroup>
-              <InputLeftElement alignItems="center" justify="center">
+              <InputLeftAddon alignItems="center" justify="center" title="Ingrese su teléfono">
                 <PhoneIcon />
-              </InputLeftElement>
+              </InputLeftAddon>
               <Input
-                className="input-field"
                 name="phone"
+                placeholder="011 15 3899-9612"
                 type="number"
                 value={formik.values.phone}
                 onBlur={formik.handleBlur}
@@ -129,11 +126,12 @@ const ContactForm = () => {
             ) : null}
           </FormControl>
 
-          <FormControl isRequired rounded="sm">
+          <FormControl isRequired mt={{ sm: 3, md: 5, lg: 7 }} rounded="sm">
             <FormLabel>Mensaje</FormLabel>
-            <InputGroup>
+            <InputGroup title="Ingrese su mensaje">
               <Textarea
                 name="message"
+                placeholder="Escribe tu mensaje aquí..."
                 size="lg"
                 type="text"
                 value={formik.values.message}
@@ -148,18 +146,22 @@ const ContactForm = () => {
             ) : null}
           </FormControl>
 
-          <Button
-            className="submit-btn"
-            colorScheme="#6767ff"
-            disabled={!formik.isValid}
-            type="submit"
-            variant="solid"
-          >
-            Enviar
-          </Button>
+          <HStack my="5">
+            <Spacer />
+            <Button
+              colorScheme="green"
+              disabled={!formik.isValid}
+              rightIcon={<CheckIcon />}
+              title="Enviar mensaje"
+              type="submit"
+              variant="solid"
+            >
+              Enviar
+            </Button>
+          </HStack>
         </form>
       </Box>
-    </>
+    </VStack>
   );
 };
 
