@@ -72,7 +72,7 @@ const NewsList = () => {
   useEffect(() => {
     searchNews();
     dispatch(fetchCategories());
-  }, [toSearch]);
+  }, [toSearch, isEditOpen]);
 
   const handleFilter = (category) => {
     if (category !== 'todas') {
@@ -103,6 +103,8 @@ const NewsList = () => {
       }
 
       if (response.meta.requestStatus == 'fulfilled') {
+        searchNews();
+        dispatch(fetchCategories());
         Alert('success', 'Éxito', 'Novedad eliminada correctamente');
       }
     }
