@@ -7,9 +7,15 @@ import Slider from '../../Slider/index';
 const Contenido = () => {
   return (
     <Box>
-      <TitleComponent text="Campaña Escolar 2021" textCenter="center" />
+      <TitleComponent
+        img={
+          'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+        }
+        text="Campaña Escolar 2021"
+        textCenter="center"
+      />
       <Slider />
-      <Box bg={{ base: 'gray.400' }} mt="25px" p={5}>
+      <Box bg={{ base: 'gray.400' }} p={5}>
         <Box
           d="flex"
           justifyContent="space-evenly"

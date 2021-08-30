@@ -76,14 +76,16 @@ const NewsCardList = ({ newsData }) => {
         )}
       </SimpleGrid>
       <Box d="flex" justifyContent="center" mb="9">
-        <Button
-          colorScheme="blue"
-          justifyItems="center"
-          w={{ base: '150px', md: '230px' }}
-          onClick={handleShowMoreNews}
-        >
-          Cargar Más
-        </Button>
+        {next <= newsData.length ? (
+          <Button
+            colorScheme="blue"
+            justifyItems="center"
+            w={{ base: '150px', md: '230px' }}
+            onClick={handleShowMoreNews}
+          >
+            Cargar Más
+          </Button>
+        ) : null}
       </Box>
     </>
   );

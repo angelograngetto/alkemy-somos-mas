@@ -29,10 +29,10 @@ const PublicRoutes = () => {
   return (
     <Suspense fallback={<ProgressBar isIndeterminate />}>
       <Switch>
-        <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
-        <Route exact component={CampañaJuguetesLanding} path="/campaña-juguetes" />
         <WebPublicaLayout>
           <Switch>
+            <Route exact component={CampañaEscolarLanding} path="/campaña-escolar" />
+            <Route exact component={CampañaJuguetesLanding} path="/campaña-juguetes" />
             <Route exact component={Home} path="/" />
             <Route exact component={ActivitiesList} path="/actividades" />
             <Route exact component={DetailView} path="/actividades/:id" />

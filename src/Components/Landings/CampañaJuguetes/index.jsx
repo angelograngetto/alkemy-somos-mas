@@ -7,8 +7,10 @@ import Slider from '../Slider/index';
 const CampañaJuguetesLanding = () => {
   return (
     <>
-      <Header />
-      <Slider />
+      <Box mb="-0.5rem">
+        <Header />
+        <Slider />
+      </Box>
       <Box
         alignItems="center"
         //   backgroundImage="url('https://i.ibb.co/vBSgtCd/Im-genes-contenido-opci-n-2.png')"
@@ -19,6 +21,7 @@ const CampañaJuguetesLanding = () => {
         flexDirection="column"
         flexWrap="wrap"
         p="3"
+        py="9"
       >
         <Image
           alt="Logo Campaña"
@@ -28,11 +31,11 @@ const CampañaJuguetesLanding = () => {
           mb="4"
           src="https://i.ibb.co/JnpXr3W/Logotipo-campa-a-juguetes.png"
         />
-        <Text fontSize={{ base: '14px', md: '21px', lg: '29px', xl: '46px' }}>
+        <Text fontSize={{ base: '14px', md: '21px', lg: '29px', xl: '46px' }} fontWeight="bold">
           CAMPAÑA JUGUETES POR MÁS SONRISAS
         </Text>
-        <Text fontSize={{ base: '12px', md: '18px', lg: '28px', xl: '42px' }}>
-          16 Septiembre 2021 10:00 am - Obelisco{' '}
+        <Text fontSize={{ base: '12px', md: '18px', lg: '28px', xl: '42px' }} fontStyle="italic">
+          16 Septiembre 2021 10:00 am - La Cava Aprende{' '}
         </Text>
         <Box
           display={{ sm: 'none', md: 'block' }}
