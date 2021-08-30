@@ -12,7 +12,7 @@ const AdminPrivateRoute = ({ children: Children, ...props }) => {
         return auth && isAdmin ? (
           <Children />
         ) : (
-          <Redirect to={{ pathname: '/', state: { from: location } }} />
+          <Redirect to={{ pathname: '/login', state: { from: location } }} />
         );
       }}
     />

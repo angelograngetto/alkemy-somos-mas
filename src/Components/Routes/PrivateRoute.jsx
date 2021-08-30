@@ -21,7 +21,7 @@ const PrivateRoute = ({ children, errorMsg, ...props }) => {
             duration: 9000,
             isClosable: true,
           });
-          return <Redirect to={{ pathname: '/', state: { from: location } }} />;
+          return <Redirect to={{ pathname: '/login', state: { from: location } }} />;
         }
       }}
     />

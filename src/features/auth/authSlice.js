@@ -11,12 +11,16 @@ const initialState = {
 };
 
 export const loginUser = createAsyncThunk('auth/login', async (user) => {
-  const resp = await UsersService.get();
-  const userData = resp.data.data.find(
-    (item) => item.email === user.email && item.password === user.password,
-  );
-  if (userData) return userData;
-  else throw new Error('Credenciales inválidas');
+  try {
+    const resp = await UsersService.get();
+    const userData = resp.data.data.find(
+      (item) => item.email === user.email && item.password === user.password,
+    );
+    if (userData) return userData;
+    else throw new Error('Credenciales inválidas');
+  } catch (err) {
+    throw new Error(err);
+  }
 });
 
 export const registerUser = createAsyncThunk('auth/register', async (user) => {
