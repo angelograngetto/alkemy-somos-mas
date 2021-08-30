@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, chakra, Stack, Text } from '@chakra-ui/react';
+import { Box, chakra, Divider, Stack, Text } from '@chakra-ui/react';
 import { createBreakpoints } from '@chakra-ui/theme-tools';
 import { SocialMediaLinks } from './SocialMediaLinks';
 import { FaInstagramSquare, FaFacebookSquare, FaTwitter, FaLinkedin } from 'react-icons/fa';
@@ -7,9 +7,10 @@ import OrganizationService from '../../Services/OrganitationService';
 import OrganizationTitle from './OrganizationTitle';
 import MenuFooter from './MenuFooter';
 import Logo from './Logo';
+import Newsletter from './Newsletter';
 
 const linksList = [
-  { text: 'Home', to: '/' },
+  { text: 'Inicio', to: '/' },
   { text: 'Contacto', to: '/contacto' },
   { text: 'Nosotros', to: '/nosotros' },
 ];
@@ -27,26 +28,28 @@ const PublicFooter = () => {
   }, []);
 
   return (
-    <Stack backgroundColor="#6767FF" paddingY={10} spacing={5}>
+    <Stack backgroundColor="#6767FF">
       {organization ? (
         <Stack
-          direction={{ base: 'column', xl: 'row' }}
-          justifyContent={{ lg: 'space-around' }}
-          marginX={{ md: 'auto' }}
-          width={{ md: '70%' }}
+          direction={{ base: 'column', lg: 'row' }}
+          justifyContent={{ lg: 'space-evenly' }}
+          mt="3"
         >
-          <Stack>
+          <Stack justifyContent="center">
             <Logo url={organization.logo} />
-            <OrganizationTitle
+            {/* <OrganizationTitle
               color="white"
               display={{ sm: 'none' }}
               fontSize="2xl"
               title={organization.name}
-            />
+            /> */}
           </Stack>
-          <Box display={{ sm: 'none', md: 'inherit' }}>
+          <Stack display={{ sm: 'none', md: 'inherit' }}>
             <MenuFooter list={linksList} />
-          </Box>
+          </Stack>
+          <Stack display={{ base: 'none', lg: 'initial' }} justifyContent="center">
+            <Newsletter />
+          </Stack>
           <Stack alignItems="center" direction="column" justifyContent="center">
             <Text color="white" display={{ sm: 'none', lg: 'inherit' }} fontWeight="bolder">
               Siguenos
@@ -57,13 +60,14 @@ const PublicFooter = () => {
                 { name: 'Facebook', url: organization.facebook_url, icon: FaFacebookSquare },
                 { name: 'Instagram', url: organization.instagram_url, icon: FaInstagramSquare },
                 { name: 'LinkedIn', url: organization.linkedin, icon: FaLinkedin },
-                { name: 'Tweeter', url: organization.tweeter, icon: FaTwitter },
+                { name: 'Twitter', url: organization.tweeter, icon: FaTwitter },
               ]}
             />
           </Stack>
         </Stack>
       ) : null}
-      <Stack direction="row" justifyContent="center" paddingTop={8}>
+      <Divider />
+      <Stack direction="row" justifyContent="center" paddingBottom={1} paddingTop={1}>
         <Text color="white" fontSize="xs">
           <chakra.span color="white" fontWeight="bold">
             @{today.getFullYear()}

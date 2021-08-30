@@ -12,6 +12,7 @@ const SocialMediaItem = ({ icon, link, name }) => {
         icon={icon}
         rel="noopener"
         target="_blank"
+        title={name}
       />
 
       <Text display={{ sm: 'none', lg: 'inherit' }} fontSize="xs" fontWeight="bold">
