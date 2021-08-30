@@ -6,8 +6,9 @@ import Sidebar from './Sidebar';
 const MenuToggle = ({ toggle, isOpen, links }) => {
   return (
     <Box
-      display={{ base: 'block', md: 'none' }}
-      width={{ base: '65%', md: '100%' }}
+      display={{ base: 'block', md: 'block', lg: 'none' }}
+      transition="transform 2s ease-out"
+      width={{ base: '15%', md: '25%' }}
       onClick={toggle}
     >
       {isOpen ? (

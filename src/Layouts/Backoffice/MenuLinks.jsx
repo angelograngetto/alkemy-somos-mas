@@ -7,7 +7,7 @@ import MenuItem from './MenuItem';
 const MenuLinks = ({ isOpen, links }) => {
   return (
     <Box
-      display={{ base: isOpen ? 'flex' : 'none', md: 'block' }}
+      display={{ base: isOpen ? 'flex' : 'none', md: 'none', lg: 'flex' }}
       flex={{ base: 1, md: 0 }}
       marginTop={{ base: 5, md: 0 }}
       order={{ base: 1 }}

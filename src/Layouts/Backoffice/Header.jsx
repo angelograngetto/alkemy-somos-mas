@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack } from '@chakra-ui/react';
+import { Flex } from '@chakra-ui/react';
 import HeaderLogo from './HeaderLogo';
 import MenuToggle from './MenuToggle';
 import MenuLinks from './MenuLinks';
@@ -13,19 +13,21 @@ const Header = () => {
   };
 
   return (
-    <Stack
+    <Flex
       alignItems="center"
-      backgroundColor="blue.800"
+      as="nav"
+      backgroundColor="#6767FF"
       direction="row"
-      height="70px"
+      fontSize="1.1em"
+      height="100px"
       justifyContent="space-between"
-      paddingX={8}
+      p={4}
       w="100%"
     >
       <MenuToggle isOpen={isOpen} links={linksList} toggle={toggle} />
       <HeaderLogo />
       <MenuLinks links={linksList} />
-    </Stack>
+    </Flex>
   );
 };
 

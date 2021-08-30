@@ -7,14 +7,15 @@ const Sidebar = ({ links }) => {
   const location = useLocation();
 
   return (
-    <Box bg="blue.800" h="100%" mx={-8} pos="fixed" w="100%" zIndex="10000000000">
+    <Box bg="#6767FF" h="100%" mx={-4} position="absolute" vh="100%" w="100%" zIndex="1000">
       <Flex flexDirection="column" marginTop="60px">
         {links.map((link, index) => (
           <MenuItem
             key={index}
             color={link.to === location.pathname ? 'blue.200' : 'white'}
             fontSize="20px"
-            p={4}
+            p={{ base: '12px', md: '20px' }}
+            textAlign="center"
             to={link.to}
           >
             {link.text}

@@ -6,7 +6,7 @@ const Backoffice = ({ msg = '¡Bienvenidos al dashboard!' }) => {
     <>
       <Flex align="center" justify="center" minH="88vh">
         <Container centerContent>
-          <Box bg="blue.800" color="white" padding="4" px="10">
+          <Box bg="#6767FF" color="white" padding="5" px="10">
             {msg}
           </Box>
         </Container>
