@@ -1,6 +1,5 @@
 import React from 'react';
 import { IconButton, Stack, Text } from '@chakra-ui/react';
-import { createBreakpoints } from '@chakra-ui/theme-tools';
 
 const SocialMediaItem = ({ icon, link, name }) => {
   return (

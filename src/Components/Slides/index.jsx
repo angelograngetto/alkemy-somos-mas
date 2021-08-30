@@ -52,7 +52,7 @@ const Slides = () => {
             <div className={styles.info__container}>
               <div className={styles.info__text}>
                 <Heading fontSize={{ base: '1.3rem', md: '2.6rem', lg: '3.2rem' }}>
-                  {slidesList[index].name}
+                  <Text>{slidesList[index].name}</Text>
                 </Heading>
                 <Text
                   dangerouslySetInnerHTML={{ __html: `${slidesList[index].description}` }}
