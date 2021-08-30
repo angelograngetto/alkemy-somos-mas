@@ -86,7 +86,10 @@ const DetailView = () => {
               <Text fontSize={24} fontWeight="bold">
                 Descripción
               </Text>
-              <Text textAlign="justify">{description}</Text>
+              <Text
+                dangerouslySetInnerHTML={{ __html: activitiesList?.description }}
+                textAlign="justify"
+              />
             </Stack>
           </Stack>
           <Comments />
