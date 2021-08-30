@@ -190,19 +190,22 @@ export const Home = () => {
                     backgroundImage={item.image}
                     backgroundSize="cover"
                     borderRadius="5px"
-                    height="400px"
+                    height={{ base: '200px', md: '400px' }}
                     justifyContent="center"
                     padding={16}
                   >
-                    <Text color="white" fontSize="3xl" fontWeight="bolder">
-                      {item.name}
-                    </Text>
+                    <Link to="/novedades">
+                      <Text color="white" fontSize={{ base: 'md', md: '3xl' }} fontWeight="bolder">
+                        {item.name}
+                      </Text>
+                    </Link>
                   </Stack>
                 ))}
               </Grid>
             </Container>
           </Stack>
-          <Stack as="section" minHeight="100vh" padding={8} spacing={5}>
+
+          <Stack as="section" padding={{ base: 8, md: 16 }} spacing={8}>
             <Stack backgroundColor="gray.500" borderRadius={10}>
               <Text
                 color="white"
@@ -224,7 +227,7 @@ export const Home = () => {
               boxShadow="2px 2px 2px gray"
               className="ecolar-container"
               justifyContent="center"
-              minH={{ base: '30vh', md: '45vh' }}
+              minH={{ base: '30vh', md: '35vh' }}
             >
               <Stack alignItems="center" className="escolar-link" justifyContent="center">
                 <FaAngleDown color="white" size={50} />
@@ -249,7 +252,7 @@ export const Home = () => {
               boxShadow="2px 2px 2px gray"
               className="juguete-container"
               justifyContent="center"
-              minH={{ base: '30vh', md: '45vh' }}
+              minH={{ base: '30vh', md: '35vh' }}
             >
               <Stack alignItems="center" className="juguete-link" justifyContent="center">
                 <FaAngleDown color="white" size={50} />
