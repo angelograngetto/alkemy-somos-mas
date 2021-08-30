@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createNews, updateNews } from '../../features/news/newsSlice';
+import { fetchCategories } from '../../features/categories/categoriesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { convertBase64 } from './helpers/ConvertBase64';
 import CKEditor from 'ckeditor4-react';
@@ -25,32 +26,20 @@ const NewsForm = ({ news, setIsEditOpen }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const fetchCategories = async () => {
-    try {
-      const response = await CategoriesService.getAll();
-      setCategories(response);
-    } catch (error) {
-      Alert('error', 'Algo salió mal', error.message);
-    }
-  };
-
   useEffect(() => {
     dispatch(fetchCategories());
   }, []);
 
   const onSubmit = async (values) => {
-    const img = await convertBase64(values.image);
-
     let data = {
       name: values.name,
       required: false,
       content: values.content,
       category_id: values.category,
-      image: img,
     };
 
     if (news) {
-      data.id = news.id;
+      data.id = news?.id;
       const response = await dispatch(updateNews(data));
       if (response.error) {
         Alert('error', 'Algo salió mal', response.payload);
@@ -58,6 +47,7 @@ const NewsForm = ({ news, setIsEditOpen }) => {
       setIsEditOpen(false);
       Alert('success', 'Éxito', 'Novedad editada correctamente');
     } else {
+      data.image = values.image;
       const response = await dispatch(createNews(data));
       if (response.error) {
         Alert('error', 'Algo salió mal', response.payload);
@@ -161,7 +151,10 @@ const NewsForm = ({ news, setIsEditOpen }) => {
               padding="5px 30px"
               placeholder="Imagen"
               type="file"
-              onChange={(event) => formik.setFieldValue('image', event.currentTarget.files[0])}
+              onChange={async (event) => {
+                const image = await convertBase64(event.currentTarget.files[0]);
+                formik.setFieldValue('image', image);
+              }}
             ></Input>
           </InputGroup>
           <Stack marginTop={2}>
