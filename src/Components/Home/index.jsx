@@ -183,24 +183,30 @@ export const Home = () => {
                 padding={4}
                 templateColumns={{ base: 'repeat(1, 1fr)', lg: 'repeat(2, 1fr)' }}
               >
-                {newsList.slice(0, 4).map((item) => (
-                  <Stack
-                    key={item.id}
-                    alignItems="center"
-                    backgroundImage={item.image}
-                    backgroundSize="cover"
-                    borderRadius="5px"
-                    height={{ base: '200px', md: '400px' }}
-                    justifyContent="center"
-                    padding={16}
-                  >
-                    <Link to="/novedades">
-                      <Text color="white" fontSize={{ base: 'md', md: '3xl' }} fontWeight="bolder">
-                        {item.name}
-                      </Text>
-                    </Link>
-                  </Stack>
-                ))}
+                {newsList.length > 0
+                  ? newsList.slice(0, 4).map((item) => (
+                      <Stack
+                        key={item.id}
+                        alignItems="center"
+                        backgroundImage={item.image}
+                        backgroundSize="cover"
+                        borderRadius="5px"
+                        height={{ base: '200px', md: '400px' }}
+                        justifyContent="center"
+                        padding={16}
+                      >
+                        <Link to="/novedades">
+                          <Text
+                            color="white"
+                            fontSize={{ base: 'md', md: '3xl' }}
+                            fontWeight="bolder"
+                          >
+                            {item.name}
+                          </Text>
+                        </Link>
+                      </Stack>
+                    ))
+                  : null}
               </Grid>
             </Container>
           </Stack>
