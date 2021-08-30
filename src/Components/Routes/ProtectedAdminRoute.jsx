@@ -9,7 +9,7 @@ const AdminPrivateRoute = ({ children: Children, ...props }) => {
     <Route
       {...props}
       render={({ location }) => {
-        return !auth && !isAdmin ? (
+        return auth && isAdmin ? (
           <Children />
         ) : (
           <Redirect to={{ pathname: '/', state: { from: location } }} />

@@ -6,8 +6,10 @@ import { Formik } from 'formik';
 import {
   Alert,
   Checkbox,
-  Box,
   Button,
+  Container,
+  FormControl,
+  FormErrorMessage,
   Heading,
   IconButton,
   Input,
@@ -52,8 +54,28 @@ const RegisterForm = () => {
   };
 
   return (
-    <Box borderRadius="md" borderWidth="1px" flex="1" m="auto" mt="80px" p="5" shadow="md" w="80%">
-      <Heading align="center">Registro</Heading>
+    <Container
+      alignItems="center"
+      bg="white"
+      borderRadius="15px"
+      borderWidth="1px"
+      boxShadow="3px 1px 7px 2px #4c4c4c"
+      flex="1"
+      m="auto"
+      marginBottom="50px"
+      mt="80px"
+      padding="80px"
+      width={{ base: '90%', lg: '100%' }}
+    >
+      <Heading
+        align="center"
+        as="h1"
+        fontSize={{ base: '2em', sm: '1.3em', lg: '2em' }}
+        marginBottom="30px"
+        marginTop="-20px"
+      >
+        REGISTRO
+      </Heading>
       <Formik
         initialValues={{ name: '', lastname: '', email: '', password: '', confirmPassword: '' }}
         // Inputs validation
@@ -92,88 +114,123 @@ const RegisterForm = () => {
           history.push(location?.state?.from?.pathname || '/');
         }}
       >
-        {({ errors, handleChange, handleSubmit }) => (
+        {({ errors, handleChange, handleSubmit, touched }) => (
           <form onSubmit={handleSubmit}>
-            <Text mb="8px">Tu nombre: </Text>
-            <Input
-              isInvalid={errors.name}
-              name="name"
-              placeholder="Ingresa tu nombre"
-              onChange={handleChange}
-            />
-            {errors.name && (
-              <Alert borderRadius="md" mt="8px" status="error">
-                {errors.name}
-              </Alert>
-            )}
-            <Text mb="8px" mt="8px">
-              Tu apellido:
-            </Text>
-            <Input
-              isInvalid={errors.lastname}
-              name="lastname"
-              placeholder="Ingresa tu apellido"
-              onChange={handleChange}
-            />
-            {errors.lastname && (
-              <Alert borderRadius="md" mt="8px" status="error">
-                {errors.lastname}
-              </Alert>
-            )}
-            <Text mb="8px" mt="8px">
-              Tu email:
-            </Text>
-            <Input
-              isInvalid={errors.Email}
-              name="email"
-              placeholder="Ingresa tu email"
-              type="email"
-              onChange={handleChange}
-            />
-            {errors.email && (
-              <Alert borderRadius="md" mt="8px" status="error">
-                {errors.email}
-              </Alert>
-            )}
-            <Text mb="8px" mt="8px">
-              Contraseña:
-            </Text>
-            <InputGroup size="md">
+            <FormControl isInvalid={touched.name && errors.name} my="2">
+              <Text fontWeight="bold" mb="2">
+                Nombre:
+              </Text>
               <Input
-                isInvalid={errors.password}
-                name="password"
-                placeholder="Ingresa tu contraseña"
-                type={show ? 'text' : 'password'}
+                autoFocus
+                backgroundColor="transparent"
+                border="none"
+                isInvalid={touched.name}
+                name="name"
+                outline="none"
+                variant="flushed"
                 onChange={handleChange}
               />
-              <InputRightElement>
-                <IconButton
-                  icon={show ? <ViewOffIcon /> : <ViewIcon />}
-                  variant="outline"
-                  onClick={() => setShow(!show)}
+              <FormErrorMessage>
+                <Alert borderRadius="md" mt="8px" status="error">
+                  {errors.name}
+                </Alert>
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={touched.lastname && errors.lastname} my="2">
+              <Text fontWeight="bold" mt="15px">
+                Apellido:
+              </Text>
+              <Input
+                backgroundColor="transparent"
+                border="none"
+                isInvalid={touched.lastname}
+                name="lastname"
+                outline="none"
+                variant="flushed"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>
+                <Alert borderRadius="md" mt="15px" status="error">
+                  {errors.lastname}
+                </Alert>
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={touched.email && errors.email} my="2">
+              <Text fontWeight="bold" mt="15px">
+                Email:
+              </Text>
+              <Input
+                backgroundColor="transparent"
+                border="none"
+                isInvalid={touched.email}
+                name="email"
+                outline="none"
+                type="email"
+                variant="flushed"
+                onChange={handleChange}
+              />
+              <FormErrorMessage>
+                <Alert borderRadius="md" mt="8px" status="error">
+                  {errors.email}
+                </Alert>
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={touched.password && errors.password} my="2">
+              <Text fontWeight="bold" mt="15px">
+                Contraseña:
+              </Text>
+              <InputGroup size="md">
+                <Input
+                  backgroundColor="transparent"
+                  border="none"
+                  isInvalid={touched.password}
+                  name="password"
+                  outline="none"
+                  type={show ? 'text' : 'password'}
+                  variant="flushed"
+                  onChange={handleChange}
                 />
-              </InputRightElement>
-            </InputGroup>
-            {errors.password && (
-              <Alert borderRadius="md" mt="8px" status="error">
-                {errors.password}
-              </Alert>
-            )}
-            <Text mb="8px" mt="8px">
-              Confirmar contraseña:
-            </Text>
-            <Input
-              isInvalid={errors.confirmPassword}
-              name="confirmPassword"
-              placeholder="Confirma tu contraseña"
-              type={show ? 'text' : 'password'}
-              onChange={handleChange}
-            />
-            {errors.confirmPassword && (
-              <Alert borderRadius="md" mt="8px" status="error">
-                {errors.confirmPassword}
-              </Alert>
-            )}
+                <InputRightElement>
+                  <IconButton
+                    icon={show ? <ViewOffIcon /> : <ViewIcon />}
+                    variant="outline"
+                    onClick={() => setShow(!show)}
+                  />
+                </InputRightElement>
+              </InputGroup>
+
+              <FormErrorMessage>
+                <Alert borderRadius="md" mt="8px" status="error">
+                  {errors.password}
+                </Alert>
+              </FormErrorMessage>
+            </FormControl>
+
+            <FormControl isInvalid={touched.confirmPassword && errors.confirmPassword} my="2">
+              <Text fontWeight="bold" mt="15px">
+                Confirmar Contraseña:
+              </Text>
+              <Input
+                backgroundColor="transparent"
+                border="none"
+                isInvalid={touched.confirmPassword}
+                name="confirmPassword"
+                outline="none"
+                type={show ? 'text' : 'password'}
+                variant="flushed"
+                onChange={handleChange}
+              />
+
+              <FormErrorMessage>
+                <Alert borderRadius="md" mt="8px" status="error">
+                  {errors.confirmPassword}
+                </Alert>
+              </FormErrorMessage>
+            </FormControl>
+
             <Stack alignItems="center" direction="row">
               <Checkbox
                 isChecked={termsAccepted}
@@ -187,7 +244,7 @@ const RegisterForm = () => {
             </Stack>
 
             <Stack direction="row" justifyContent="center">
-              <Button mt={16} type="submit">
+              <Button backgroundColor="#6767ff" color="white" mt={16} type="submit" w="100%">
                 Registrarme
               </Button>
             </Stack>
@@ -200,7 +257,7 @@ const RegisterForm = () => {
         isPopupVisible={isPopupVisible}
         onCancel={handleCancel}
       />
-    </Box>
+    </Container>
   );
 };
 

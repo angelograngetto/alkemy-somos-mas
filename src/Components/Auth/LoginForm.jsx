@@ -1,6 +1,16 @@
 import React from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
-import { FormControl, FormErrorMessage, Input, Button, Heading, Container } from '@chakra-ui/react';
+import {
+  FormControl,
+  Alert as AlertMessage,
+  FormErrorMessage,
+  Text,
+  Input,
+  Button,
+  Heading,
+  Container,
+  Box,
+} from '@chakra-ui/react';
 import Alert from '../Utils/Alert';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -13,8 +23,7 @@ const LoginForm = () => {
   const dispatch = useDispatch();
   const { status } = useSelector((state) => state.auth);
   // Expresion regular para un número, una letra y un símbolo
-  const passRegex = /^(?=.*[A-Za-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-])/;
-
+  const passRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[.$,@$!|+¬%*?&/_()¡{}¿=#])/;
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -23,11 +32,11 @@ const LoginForm = () => {
     validationSchema: Yup.object({
       email: Yup.string()
         .email('Email inválido, por favor, intente con otro')
-        .required('Requerido'),
+        .required('Ingrese Email'),
       password: Yup.string()
         .min(6, 'Mínimo 6 carácteres')
         .matches(passRegex, 'La contraseña debe contener un número, una letra y un símbolo')
-        .required('Requerido'),
+        .required('Ingrese Contraseña'),
     }),
     onSubmit: (values) => {
       const { email, password } = values;
@@ -42,46 +51,90 @@ const LoginForm = () => {
   });
 
   return (
-    <Container>
-      <Heading as="h1" my="2" size="lg">
-        Iniciar sesión
+    <Container
+      alignItems="center"
+      bg="white"
+      borderRadius="15px"
+      boxShadow="3px 1px 7px 2px #4c4c4c"
+      display="flex"
+      flexDirection="column"
+      height="500px"
+      justifyContent="center"
+      margin="auto"
+      padding="80px"
+      width={{ base: '85%', lg: '400px' }}
+    >
+      <Heading as="h1" marginTop="-40px" my="2" size="lg">
+        INGRESAR
       </Heading>
-      <form onSubmit={formik.handleSubmit}>
+      <form style={{ padding: '30px', width: '300px' }} onSubmit={formik.handleSubmit}>
         <FormControl isInvalid={formik.touched.email && formik.errors.email} my="2">
+          <Text fontWeight="bold" mb="3">
+            Email:
+          </Text>
           <Input
+            autoFocus
+            backgroundColor="transparent"
+            border="none"
             className="input-field"
+            marginTop="-30px"
             name="email"
-            placeholder="Ingresa tu email"
+            outline="none"
             type="email"
             value={formik.values.email}
-            onBlur={formik.handleBlur}
+            variant="flushed"
             onChange={formik.handleChange}
           />
 
-          <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+          <FormErrorMessage>
+            <AlertMessage borderRadius="md" status="error">
+              {formik.errors.email}
+            </AlertMessage>
+          </FormErrorMessage>
         </FormControl>
 
         <FormControl isInvalid={formik.touched.password && formik.errors.password} my="2">
+          <Text fontWeight="bold" marginTop="15px" mb="3">
+            Contraseña:
+          </Text>
           <Input
+            backgroundColor="transparent"
+            border="none"
+            borderBottom="2px solid #adadad"
             className="input-field"
             name="password"
-            placeholder="Ingresa tu contraseña"
+            outline="none"
             type="password"
             value={formik.values.password}
-            onBlur={formik.handleBlur}
+            variant="flushed"
             onChange={formik.handleChange}
           ></Input>
-          <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+          <FormErrorMessage>
+            <AlertMessage magtin borderRadius="md" status="error">
+              {formik.errors.password}
+            </AlertMessage>
+          </FormErrorMessage>
         </FormControl>
 
         {status === 'loading' ? (
-          <Button isLoading colorScheme="blue" loadingText="Enviando" my="2">
-            Ingresar
-          </Button>
+          <Box d="flex" justifyContent="center">
+            <Button
+              isLoading
+              backgroundColor="#6767ff"
+              color="white"
+              loadingText="Enviando"
+              marginTop="20px"
+              w="100%"
+            >
+              Ingresar
+            </Button>
+          </Box>
         ) : (
-          <Button colorScheme="blue" my="2" type="submit">
-            Ingresar
-          </Button>
+          <Box d="flex" justifyContent="center">
+            <Button backgroundColor="#6767ff" color="white" marginTop="30px" type="submit" w="100%">
+              Ingresar
+            </Button>
+          </Box>
         )}
       </form>
     </Container>
