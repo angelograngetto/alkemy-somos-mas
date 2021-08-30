@@ -31,7 +31,7 @@ const NewsLetterForm = () => {
         >
           <CheckCircleIcon color="white" fontSize="65px" mt="1" textAlign="center" />
           <Text color="white" fontSize="16px" textAlign="center">
-            Ya estas suscripto a nuestro newsletter
+            Ya estás suscripto a nuestro newsletter
           </Text>
         </Stack>
       )}

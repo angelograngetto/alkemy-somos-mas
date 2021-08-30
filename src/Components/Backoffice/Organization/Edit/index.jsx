@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import CKEditor from 'ckeditor4-react';
 import { Formik, Form, Field } from 'formik';
@@ -21,6 +21,23 @@ import Alert from '../../../Utils/Alert';
 const Edit = (props) => {
   /*   let { name, file, shortDesc, longDesc, email, instagram, facebook, linkedin } = props;
    */
+  const [organizationData, setOrganizationData] = useState({});
+  const fetchData = async () => {
+    try {
+      const resp = await OrganizationService.get();
+      setOrganizationData(resp.data);
+    } catch (err) {
+      Alert(
+        'error',
+        'Error',
+        'Ocurrió un error al traer la información solicitada, por favor comprueba tu conexión a internet o vuélvelo a intentar más tarde',
+      );
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  });
+
   const validationSchema = Yup.object({
     name: Yup.string().required('El nombre es requerido.'),
     file: Yup.mixed().required('La imágen es requerida.'),
@@ -66,15 +83,16 @@ const Edit = (props) => {
         <Divider mb="5" />
         <Formik
           validateOnBlur
+          enableReinitialize={true}
           initialValues={{
-            name: props.name || '',
-            file: props.file || '',
-            shortDesc: props.shortDesc || '',
-            longDesc: props.longDesc || '',
-            email: props.email || '',
-            instagram: props.instagram || '',
-            facebook: props.facebook || '',
-            linkedin: props.linkedin || '',
+            name: organizationData?.name ?? '',
+            file: '',
+            shortDesc: organizationData?.short_description ?? '',
+            longDesc: organizationData?.long_description ?? '',
+            email: organizationData?.address ?? '',
+            instagram: organizationData?.instagram_url ?? '',
+            facebook: organizationData?.facebook_url ?? '',
+            linkedin: organizationData?.linkedin_url ?? '',
           }}
           validationSchema={validationSchema}
           onSubmit={async (values, actions) => {
