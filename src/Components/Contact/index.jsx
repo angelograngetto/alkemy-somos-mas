@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import TitleComponent from '../Title/TitleComponent';
-import { Box, Text, Link, Image, SimpleGrid, HStack, Center, VStack } from '@chakra-ui/react';
+import { Box, Text, Link, SimpleGrid, HStack, Center, VStack } from '@chakra-ui/react';
 import Map from '../Map';
 import { useSelector, useDispatch } from 'react-redux';
 import { getOrganization } from '../../features/about/aboutSlice';
@@ -14,10 +14,6 @@ const index = () => {
   useEffect(() => {
     dispatch(getOrganization());
   }, []);
-
-  /* const phone = () => {
-    
-  } */
 
   return (
     <>
@@ -121,6 +117,7 @@ const index = () => {
           </HStack>
         </Box>
       </SimpleGrid>
+
       <ContactForm />
       <Box h="20rem">
         <Map address={'San Isidro, Buenos Aires, Argentina'} markerTitle={aboutUS?.name} />
