@@ -33,10 +33,26 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
   const onDelete = (toDeleteObj) => {
     switch (toDeleteComponent) {
       case 'users':
-        dispatch(deleteUser(toDeleteObj.id));
+        dispatch(deleteUser(toDeleteObj.id)).then((res) => {
+          if (res.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo eliminar el usuario, comprueba tu conexión de internet o vuelve a internarlo mas tarde',
+            );
+          }
+        });
         break;
       case 'slides':
-        dispatch(deleteSlide(toDeleteObj.id));
+        dispatch(deleteSlide(toDeleteObj.id)).then((res) => {
+          if (res.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo eliminar el slide, comprueba tu conexión de internet o vuelve a internarlo mas tarde',
+            );
+          }
+        });
         break;
       case 'activities':
         dispatch(deleteActivity(toDeleteObj.id)).then((resp) => {
@@ -72,11 +88,18 @@ const ModalDelete = ({ isDeleteOpen, setIsDeleteOpen, toDeleteObj, toDeleteCompo
           }
         });
       case 'members':
-        dispatch(deleteMember(toDeleteObj.id));
+        dispatch(deleteMember(toDeleteObj.id)).then((res) => {
+          if (res.error) {
+            Alert(
+              'error',
+              'Ha ocurrido un error',
+              'No se pudo eliminar el miembro, comprueba tu conexión de internet o vuelve a internarlo mas tarde',
+            );
+          }
+        });
       default:
         break;
     }
-
     setIsDeleteOpen(false);
   };
 

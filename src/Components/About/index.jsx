@@ -8,7 +8,7 @@ import Description from './Description';
 import MembersList from './MembersList';
 import { Divider } from '@chakra-ui/layout';
 import SocialWidgets from './SocialWidgets';
-import { Flex } from '@chakra-ui/react';
+import { Flex, Box } from '@chakra-ui/react';
 
 const index = () => {
   const [loading, setLoading] = useState(false);
@@ -29,30 +29,31 @@ const index = () => {
   }, []);
 
   return (
-    <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 0, lg: 5 }}>
-      <Flex
-        borderRadius={{ base: '0', sm: '0', lg: 'xl' }}
-        borderWidth="1px"
-        boxShadow="2xl"
-        flexDir="column"
-        justify="center"
-        overflow="hidden"
-        p={{ base: 0, sm: 1, lg: 2 }}
-        w="5xl"
-      >
-        {loading && <ProgressBar isIndeterminate colorScheme="blue" />}
-        <TitleComponent
-          img={
-            'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
-          }
-          text={'Nosotros'}
-        />
-        <Description description={about.aboutUS.long_description} />
-        <MembersList membersData={about.membersList} />
-        <Divider my="5" />
-        <SocialWidgets />
-      </Flex>
-    </Flex>
+    <>
+      <TitleComponent
+        img={
+          'https://cdn.discordapp.com/attachments/872973629376319500/881352780260966400/foto.png'
+        }
+        text={'Nosotros'}
+      />
+      <Box align="center" justify="center" minH="100vh" p={{ base: 0, sm: 0, lg: 5 }}>
+        <Flex
+          // borderRadius={{ base: '0', sm: '0', lg: 'xl' }}
+          // borderWidth="1px"
+          // boxShadow="2xl"
+          flexDir="column"
+          justify="center"
+          overflow="hidden"
+          p={{ base: 0, sm: 1, lg: 2 }}
+        >
+          {loading && <ProgressBar isIndeterminate colorScheme="blue" />}
+          <Description description={about.aboutUS.long_description} />
+          <MembersList membersData={about.membersList} />
+          <Divider my="5" />
+          <SocialWidgets />
+        </Flex>
+      </Box>
+    </>
   );
 };
 

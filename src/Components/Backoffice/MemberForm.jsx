@@ -113,11 +113,15 @@ const MemberForm = () => {
             dispatch(updateMember(data));
           } else {
             data = { ...data, image };
-            dispatch(createMember(data));
+            dispatch(createMember(data)).then((res) => {
+              if (res.error) {
+                CustomAlert('error', 'Error', 'Ocurrió un error al guardar, vuelve a intentarlo.');
+              } else {
+                history.push('/backoffice/members');
+              }
+            });
           }
-          if (error)
-            CustomAlert('error', 'Error', 'Ocurrió un error al guardar, vuelve a intentarlo.');
-          if (!loading) history.push('/backoffice/members');
+          // if (!loading) history.push('/backoffice/members');
         }}
       >
         {({ values, errors, handleChange, handleSubmit, setFieldValue }) => (
@@ -211,9 +215,15 @@ const MemberForm = () => {
             )}
             <Flex>
               <Spacer />
-              <Button colorScheme="green" mt="8px" type="submit">
-                Guardar
-              </Button>
+              {loading ? (
+                <Button isLoading colorScheme="green" loadingText="Enviando" mt="8px" type="submit">
+                  Guardar
+                </Button>
+              ) : (
+                <Button colorScheme="green" mt="8px" type="submit">
+                  Guardar
+                </Button>
+              )}
             </Flex>
           </form>
         )}

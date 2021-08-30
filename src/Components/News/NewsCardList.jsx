@@ -2,17 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Box, Image, Text, SimpleGrid, GridItem, Button } from '@chakra-ui/react';
 import SpinnerComponent from '../Spinner/SpinnerComponent';
 import { Link } from 'react-router-dom';
-let arrayforHoldingNews = [];
 const postsPerPage = 2;
 
 const NewsCardList = ({ newsData }) => {
   const [newsToShow, setnewsToShow] = useState([]);
-  const [next, setNext] = useState(3);
+  const [next, setNext] = useState(2);
 
   const loopWithSlice = (start, end) => {
     const slicedPosts = newsData.slice(start, end);
-    arrayforHoldingNews = [...arrayforHoldingNews, ...slicedPosts];
-    setnewsToShow(arrayforHoldingNews);
+    setnewsToShow(slicedPosts);
   };
 
   useEffect(() => {
@@ -20,7 +18,7 @@ const NewsCardList = ({ newsData }) => {
   }, [newsData]);
 
   const handleShowMoreNews = () => {
-    loopWithSlice(next, next + postsPerPage);
+    loopWithSlice(0, next + postsPerPage);
     setNext(next + postsPerPage);
   };
   return (
@@ -33,7 +31,7 @@ const NewsCardList = ({ newsData }) => {
         px="12"
         spacing={9}
       >
-        {newsData ? (
+        {newsData.length > 0 ? (
           newsToShow.map((news, index) => (
             <Box
               key={index}

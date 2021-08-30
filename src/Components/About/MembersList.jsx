@@ -6,7 +6,7 @@ import { SiLinkedin } from 'react-icons/si';
 
 const MembersList = ({ membersData }) => {
   return (
-    <Wrap justify="center" spacing="1rem">
+    <Wrap justify="center" p="9" spacing="1rem">
       {membersData.length > 0 ? (
         membersData.map((member, index) => (
           <Box
@@ -29,7 +29,7 @@ const MembersList = ({ membersData }) => {
                   <Text dangerouslySetInnerHTML={{ __html: member.description }}></Text>
                 </Box>
               </Box>
-              <Box alignItems="baseline" d="flex">
+              <Box alignItems="baseline" d="flex" justifyContent="center">
                 <Badge borderRadius="full" colorScheme="facebook" mr="10px" p="2">
                   <Link isExternal alignItems="center" display="flex" href={member.facebookUrl}>
                     <SiFacebook p="20px" />

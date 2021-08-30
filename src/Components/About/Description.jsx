@@ -5,7 +5,12 @@ const Description = ({ description }) => {
   return (
     <Box m="5">
       {description ? (
-        <Container borderRadius="lg" boxShadow="md" maxWidth="100%" p="5">
+        <Container
+          borderRadius="lg"
+          boxShadow="md"
+          maxWidth={{ base: '100%', lg: '70%', xl: '60%' }}
+          p="5"
+        >
           <Text fontWeight="black">Nuestra historia:</Text>
           <Text dangerouslySetInnerHTML={{ __html: description }}></Text>
         </Container>

@@ -88,7 +88,7 @@ export const MemberList = () => {
           onDebounce={(value) => setToSearch(value)}
         />
         {membersList?.length > 0 ? (
-          <Table w="100%">
+          <Table mt="4" w="100%">
             <Thead>
               <Tr>
                 <Th textAlign="center">Imagen</Th>
@@ -154,7 +154,7 @@ export const MemberList = () => {
       <ModalDelete
         isDeleteOpen={isDeleteOpen}
         setIsDeleteOpen={setIsDeleteOpen}
-        toDeleteComponent="users"
+        toDeleteComponent="members"
         toDeleteObj={toDeleteUser}
       />
     </Flex>
