@@ -7,9 +7,10 @@ import OrganizationService from '../../Services/OrganitationService';
 import OrganizationTitle from './OrganizationTitle';
 import MenuFooter from './MenuFooter';
 import Logo from './Logo';
+import Newsletter from './Newsletter';
 
 const linksList = [
-  { text: 'Home', to: '/' },
+  { text: 'Inicio', to: '/' },
   { text: 'Contacto', to: '/contacto' },
   { text: 'Nosotros', to: '/nosotros' },
 ];
