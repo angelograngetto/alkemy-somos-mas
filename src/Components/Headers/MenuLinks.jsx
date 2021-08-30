@@ -32,10 +32,10 @@ const MenuLinks = ({ isOpen, isLogged, options }) => {
     >
       <Stack
         alignItems="center"
-        direction={['column', 'column', 'row', 'row']}
+        direction={{ base: 'column', md: 'column', lg: 'row' }}
         justify={['center, space-between', 'flex-start', 'flex-start']}
-        pt={[4, 4, 0, 0]}
-        spacing={8}
+        pt={{ base: 1, md: 4, lg: 0 }}
+        spacing={{ base: 2, lg: 8 }}
         width="100%"
       >
         {options.map((option, index) => (
