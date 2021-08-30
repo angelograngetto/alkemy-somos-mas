@@ -1,4 +1,5 @@
 import ActivitiesListBack from '../Activities/BackOffice/ActivitiesListBack';
+import ActivitiesForm from '../Activities/ActivitiesForm';
 import Backoffice from '../Backoffice';
 import CategoriesForm from '../Categories/CategoriesForm';
 import CategoriesListScreen from '../Backoffice/Categories';
@@ -23,6 +24,11 @@ export const routes = [
   {
     path: '/backoffice/activities',
     component: ActivitiesListBack,
+    exact: true,
+  },
+  {
+    path: '/backoffice/activities/create',
+    component: ActivitiesForm,
     exact: true,
   },
   {

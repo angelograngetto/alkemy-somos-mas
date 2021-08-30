@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { Box, Container, Heading, Image, Stack, Tag, Text } from '@chakra-ui/react';
+import { Box, Heading, Image, Stack, Tag, Text } from '@chakra-ui/react';
 import TitleComponent from '../../../Title/TitleComponent';
-import CategoriesService from '../../../../Services/CategoriesServices';
 import { fetchNewsList } from '../../../../features/news/newsSlice';
 import { fetchCategoryById } from '../../../../features/categories/categoriesSlice';
 import Alert from '../../../Utils/Alert';

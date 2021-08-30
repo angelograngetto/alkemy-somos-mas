@@ -3,11 +3,10 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import NewsService from '../../Services/NewsService';
 import getSpanishError from '../../Components/Utils/HttpErrors';
 
-import Alert from '../../Components/Utils/Alert';
-
 const initialState = {
   newsList: [],
   searchNewsList: [],
+  filterNewsList: [],
   loading: false,
   success: false,
   error: null,
@@ -72,6 +71,20 @@ export const searchNewsList = createAsyncThunk(
   async (value, { rejectWithValue }) => {
     try {
       const response = await NewsService.search(value);
+      return response.data.data;
+    } catch (error) {
+      const errorMessage = getSpanishError(error.message);
+      return rejectWithValue(errorMessage || error.message);
+    }
+  },
+);
+
+export const filterNewsList = createAsyncThunk(
+  'news/search',
+
+  async ({ value, category }, { rejectWithValue }) => {
+    try {
+      const response = await NewsService.filter(value, category);
       return response.data.data;
     } catch (error) {
       const errorMessage = getSpanishError(error.message);
@@ -170,6 +183,24 @@ const newsSlice = createSlice({
 
     [searchNewsList.fulfilled]: (state, { payload }) => {
       state.searchNewsList = payload;
+      state.loading = false;
+      state.success = true;
+      state.error = null;
+    },
+
+    [searchNewsList.rejected]: (state, { payload }) => {
+      state.error = payload;
+      state.success = false;
+      state.loading = false;
+    },
+
+    [filterNewsList.pending]: (state) => {
+      state.loading = true;
+      state.success = false;
+    },
+
+    [filterNewsList.fulfilled]: (state, { payload }) => {
+      state.filterNewsList = payload;
       state.loading = false;
       state.success = true;
       state.error = null;

@@ -23,15 +23,22 @@ export const SearchInput = ({ onDebounce, placeholder }) => {
   return (
     <InputGroup>
       <Input
+        margin="auto"
+        marginTop="40px"
         name="searchText"
         placeholder={placeholder ? placeholder : null}
         type="text"
         value={formik.values.searchText}
+        width={{ base: '70%', lg: '50%' }}
         onChange={formik.handleChange}
       />
-
       <InputRightElement>
-        <Icon as={Search2Icon} />
+        <Icon
+          as={Search2Icon}
+          position="absolute"
+          right={{ base: '65px', md: '135px', lg: '350px' }}
+          top={{ base: '52px', md: '52px', lg: '52px' }}
+        />
       </InputRightElement>
     </InputGroup>
   );

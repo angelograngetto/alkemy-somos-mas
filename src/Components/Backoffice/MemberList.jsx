@@ -3,6 +3,9 @@ import { useHistory } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchMembers, searchedMembers } from '../../features/members/membersSlice';
 import {
+  Box,
+  AlertIcon,
+  Alert,
   Table,
   Thead,
   Tbody,
@@ -18,6 +21,7 @@ import {
 import { AddIcon, DeleteIcon, EditIcon } from '@chakra-ui/icons';
 import ModalDelete from './Utils/ModalDelete';
 import { SearchInput } from '../Utils/SearchInput/SearchInput';
+import Spinner from '../Spinner/SpinnerComponent';
 
 export const MemberList = () => {
   const { membersList } = useSelector((state) => state.members);
@@ -48,6 +52,14 @@ export const MemberList = () => {
       dispatch(fetchMembers());
     }
   }, [dispatch, toSearch]);
+
+  if (membersList.length < 1) {
+    return (
+      <Box alignItems="center" d="flex" justifyContent="center" minH="100vh">
+        <Spinner />
+      </Box>
+    );
+  }
 
   return (
     <Flex align="center" justify="center" minH="100vh" p={{ base: 0, sm: 5 }}>
@@ -124,9 +136,19 @@ export const MemberList = () => {
             </Tbody>
           </Table>
         ) : (
-          <Text align="center" p="10">
-            No hay miembros registrados.
-          </Text>
+          <Box alignItems="center" d="flex" flexDirection="column" justifyContent="center" m="4">
+            <Alert
+              alignItems="center"
+              d="flex"
+              flexDirection="column"
+              justifyContent="center"
+              status="error"
+              textAlign="center"
+            >
+              <AlertIcon />
+              Ocurrió un error 😥 por favor, intenta más tarde o comprueba tu conexión a internet
+            </Alert>
+          </Box>
         )}
       </Flex>
       <ModalDelete

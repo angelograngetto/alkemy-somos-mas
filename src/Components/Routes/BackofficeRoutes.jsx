@@ -2,7 +2,6 @@ import React from 'react';
 import ProtectedAdminRoute from './ProtectedAdminRoute';
 import BackOfficeLayout from '../../Layouts/Backoffice/BackOfficeLayout';
 import { Switch } from 'react-router-dom';
-
 import { routes } from './backofficeRoutesData';
 
 const BackofficeRoutes = () => {

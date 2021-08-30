@@ -41,6 +41,7 @@ const MenuLinks = ({ isOpen, isLogged, options }) => {
         {options.map((option, index) => (
           <MenuItem
             key={index}
+            fontSize="1.1em"
             isActive={option.to === location.pathname}
             reqLogin={option.reqLogin}
             to={option.to}

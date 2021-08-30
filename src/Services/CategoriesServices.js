@@ -2,7 +2,7 @@ import { Delete, Get, Post, Put } from '../Services/privateApiService';
 const path = process.env.REACT_APP_CATEGORIES_ENDPOINT;
 export default class CategoriesServices {
   static async getAll() {
-    const response = await Get(path);
+    const response = await Get('categories');
     return response.data.data;
   }
   static async getById(id) {

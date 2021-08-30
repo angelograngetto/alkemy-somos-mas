@@ -26,6 +26,11 @@ class NewsService {
     const response = await Get(`${path}?search=${value}`);
     return response;
   }
+
+  static async filter(value, category) {
+    const response = await Get(`${path}?search=${value}&category=${category}`);
+    return response;
+  }
 }
 
 export default NewsService;

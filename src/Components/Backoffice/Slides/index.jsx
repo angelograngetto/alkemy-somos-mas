@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { EditIcon, DeleteIcon, AddIcon } from '@chakra-ui/icons';
-import { Flex, Text, Spacer, ButtonGroup, Button, Box, Center } from '@chakra-ui/react';
+import { Flex, Text, Spacer, ButtonGroup, Button, Box, Alert, AlertIcon } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
 import { getSlidesList } from '../../../features/slides/slidesSlice';
 import { getSlidesSearched } from '../../../features/slides/slidesSlice';
+import Spinner from '../../Spinner/SpinnerComponent';
 import Error from '../Utils/Error';
 import ModalEdit from '../Utils/ModalEdit';
 import ModalDelete from '../Utils/ModalDelete';
@@ -44,6 +45,13 @@ const SlidesListScreen = () => {
 
   const toCreate = () => history.push('/backoffice/slides/create');
 
+  if (slidesList.length < 1) {
+    return (
+      <Box alignItems="center" d="flex" justifyContent="center" minH="100vh">
+        <Spinner />
+      </Box>
+    );
+  }
   if (error) {
     return <Error error={error} />;
   } else {
@@ -131,10 +139,19 @@ const SlidesListScreen = () => {
               ))}
             </Flex>
           ) : (
-            <>
-              <Center>Aún no hay Slides 😥</Center>
-              <Center>Crea uno nuevo!</Center>
-            </>
+            <Box alignItems="center" d="flex" flexDirection="column" justifyContent="center" m="4">
+              <Alert
+                alignItems="center"
+                d="flex"
+                flexDirection="column"
+                justifyContent="center"
+                status="error"
+                textAlign="center"
+              >
+                <AlertIcon />
+                Aún no hay diapositivas 😥 Crea uno nuevo!
+              </Alert>
+            </Box>
           )}
         </Flex>
         <ModalDelete

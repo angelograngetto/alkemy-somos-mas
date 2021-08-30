@@ -8,6 +8,20 @@ export const linksList = [
     requireAdmin: false,
   },
   {
+    text: 'Actividades',
+    to: '/actividades',
+    requireLogin: false,
+    showAuthorizedUsers: true,
+    requireAdmin: false,
+  },
+  {
+    text: 'Novedades',
+    to: '/novedades',
+    requireLogin: false,
+    showAuthorizedUsers: true,
+    requireAdmin: false,
+  },
+  {
     text: 'Contacto',
     to: '/contacto',
     requireLogin: false,
